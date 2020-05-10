@@ -81477,7 +81477,84 @@ var NavigationLink = function NavigationLink(_ref) {
 
 var _default = NavigationLink;
 exports.default = _default;
-},{"react":"../node_modules/react/index.js","@material-ui/core/Link":"../node_modules/@material-ui/core/esm/Link/index.js","@material-ui/core/Typography":"../node_modules/@material-ui/core/esm/Typography/index.js","@material-ui/core/styles":"../node_modules/@material-ui/core/esm/styles/index.js"}],"Components/Header.jsx":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","@material-ui/core/Link":"../node_modules/@material-ui/core/esm/Link/index.js","@material-ui/core/Typography":"../node_modules/@material-ui/core/esm/Typography/index.js","@material-ui/core/styles":"../node_modules/@material-ui/core/esm/styles/index.js"}],"../node_modules/@babel/runtime/helpers/interopRequireDefault.js":[function(require,module,exports) {
+function _interopRequireDefault(obj) {
+  return obj && obj.__esModule ? obj : {
+    "default": obj
+  };
+}
+
+module.exports = _interopRequireDefault;
+},{}],"../node_modules/@babel/runtime/helpers/extends.js":[function(require,module,exports) {
+function _extends() {
+  module.exports = _extends = Object.assign || function (target) {
+    for (var i = 1; i < arguments.length; i++) {
+      var source = arguments[i];
+
+      for (var key in source) {
+        if (Object.prototype.hasOwnProperty.call(source, key)) {
+          target[key] = source[key];
+        }
+      }
+    }
+
+    return target;
+  };
+
+  return _extends.apply(this, arguments);
+}
+
+module.exports = _extends;
+},{}],"../node_modules/@material-ui/icons/utils/createSvgIcon.js":[function(require,module,exports) {
+"use strict";
+
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = createSvgIcon;
+
+var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/extends"));
+
+var _react = _interopRequireDefault(require("react"));
+
+var _SvgIcon = _interopRequireDefault(require("@material-ui/core/SvgIcon"));
+
+function createSvgIcon(path, displayName) {
+  var Component = _react.default.memo(_react.default.forwardRef(function (props, ref) {
+    return _react.default.createElement(_SvgIcon.default, (0, _extends2.default)({
+      ref: ref
+    }, props), path);
+  }));
+
+  if ("development" !== 'production') {
+    Component.displayName = "".concat(displayName, "Icon");
+  }
+
+  Component.muiName = _SvgIcon.default.muiName;
+  return Component;
+}
+},{"@babel/runtime/helpers/interopRequireDefault":"../node_modules/@babel/runtime/helpers/interopRequireDefault.js","@babel/runtime/helpers/extends":"../node_modules/@babel/runtime/helpers/extends.js","react":"../node_modules/react/index.js","@material-ui/core/SvgIcon":"../node_modules/@material-ui/core/esm/SvgIcon/index.js"}],"../node_modules/@material-ui/icons/Menu.js":[function(require,module,exports) {
+"use strict";
+
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireDefault(require("react"));
+
+var _createSvgIcon = _interopRequireDefault(require("./utils/createSvgIcon"));
+
+var _default = (0, _createSvgIcon.default)(_react.default.createElement("path", {
+  d: "M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"
+}), 'Menu');
+
+exports.default = _default;
+},{"@babel/runtime/helpers/interopRequireDefault":"../node_modules/@babel/runtime/helpers/interopRequireDefault.js","react":"../node_modules/react/index.js","./utils/createSvgIcon":"../node_modules/@material-ui/icons/utils/createSvgIcon.js"}],"Components/Header.jsx":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -81498,6 +81575,10 @@ var _NavigationLink = _interopRequireDefault(require("./NavigationLink.jsx"));
 var _styles = require("@material-ui/core/styles");
 
 var _Box = _interopRequireDefault(require("@material-ui/core/Box"));
+
+var _Hidden = _interopRequireDefault(require("@material-ui/core/Hidden"));
+
+var _Menu = _interopRequireDefault(require("@material-ui/icons/Menu"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -81527,7 +81608,9 @@ var Header = function Header(_ref) {
     className: classes.navSpace
   }, /*#__PURE__*/_react.default.createElement(_Logo.default, {
     name: name
-  }), /*#__PURE__*/_react.default.createElement(_Box.default, {
+  }), /*#__PURE__*/_react.default.createElement(_Hidden.default, {
+    only: "xs"
+  }, /*#__PURE__*/_react.default.createElement(_Box.default, {
     className: classes.posLink
   }, /*#__PURE__*/_react.default.createElement(_NavigationLink.default, {
     info: propos
@@ -81537,14 +81620,50 @@ var Header = function Header(_ref) {
     info: service
   }), /*#__PURE__*/_react.default.createElement(_NavigationLink.default, {
     info: contact
-  }))));
+  }))), /*#__PURE__*/_react.default.createElement(_Hidden.default, {
+    only: ["sm", "md", "lg", "xl"]
+  }, /*#__PURE__*/_react.default.createElement(_Menu.default, null))));
 };
 
 var _default = Header;
 exports.default = _default;
-},{"react":"../node_modules/react/index.js","@material-ui/core/AppBar":"../node_modules/@material-ui/core/esm/AppBar/index.js","@material-ui/core/Toolbar":"../node_modules/@material-ui/core/esm/Toolbar/index.js","./Logo.jsx":"Components/Logo.jsx","./NavigationLink.jsx":"Components/NavigationLink.jsx","@material-ui/core/styles":"../node_modules/@material-ui/core/esm/styles/index.js","@material-ui/core/Box":"../node_modules/@material-ui/core/esm/Box/index.js"}],"assets/professional-gardening-services-in-london-fantastic-gardeners_xiJZxU80_SD8X.mp4":[function(require,module,exports) {
-module.exports = "/professional-gardening-services-in-london-fantastic-gardeners_xiJZxU80_SD8X.6d071c77.mp4";
-},{}],"Components/Devis.jsx":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","@material-ui/core/AppBar":"../node_modules/@material-ui/core/esm/AppBar/index.js","@material-ui/core/Toolbar":"../node_modules/@material-ui/core/esm/Toolbar/index.js","./Logo.jsx":"Components/Logo.jsx","./NavigationLink.jsx":"Components/NavigationLink.jsx","@material-ui/core/styles":"../node_modules/@material-ui/core/esm/styles/index.js","@material-ui/core/Box":"../node_modules/@material-ui/core/esm/Box/index.js","@material-ui/core/Hidden":"../node_modules/@material-ui/core/esm/Hidden/index.js","@material-ui/icons/Menu":"../node_modules/@material-ui/icons/Menu.js"}],"Components/Devis.jsx":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireDefault(require("react"));
+
+var _core = require("@material-ui/core");
+
+var _styles = require("@material-ui/core/styles");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var useStyles = (0, _styles.makeStyles)(function () {
+  return {
+    espace: {
+      marginTop: "8em"
+    }
+  };
+});
+
+var Devis = function Devis() {
+  var classes = useStyles();
+  return /*#__PURE__*/_react.default.createElement(_core.Button, {
+    className: classes.espace,
+    color: "primary",
+    variant: "outlined",
+    size: "large"
+  }, "Demandez un devis !");
+};
+
+var _default = Devis;
+exports.default = _default;
+},{"react":"../node_modules/react/index.js","@material-ui/core":"../node_modules/@material-ui/core/esm/index.js","@material-ui/core/styles":"../node_modules/@material-ui/core/esm/styles/index.js"}],"Components/Title.jsx":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -81558,17 +81677,29 @@ var _core = require("@material-ui/core");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var Devis = function Devis() {
-  return /*#__PURE__*/_react.default.createElement(_core.Button, {
+var useStyles = (0, _core.makeStyles)(function () {
+  return {
+    text: {
+      textAlign: "center"
+    }
+  };
+});
+
+var Title = function Title(_ref) {
+  var description = _ref.description;
+  var classes = useStyles();
+  return /*#__PURE__*/_react.default.createElement(_core.Typography, {
     color: "primary",
-    variant: "outlined",
-    size: "large"
-  }, "Demandez un devis !");
+    variant: "h3",
+    className: classes.text
+  }, description);
 };
 
-var _default = Devis;
+var _default = Title;
 exports.default = _default;
-},{"react":"../node_modules/react/index.js","@material-ui/core":"../node_modules/@material-ui/core/esm/index.js"}],"Components/Test.jsx":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","@material-ui/core":"../node_modules/@material-ui/core/esm/index.js"}],"assets/hubert.jpg":[function(require,module,exports) {
+module.exports = "/hubert.3f07c9b0.jpg";
+},{}],"Components/Test.jsx":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -81594,6 +81725,8 @@ var _Button = _interopRequireDefault(require("@material-ui/core/Button"));
 
 var _Typography = _interopRequireDefault(require("@material-ui/core/Typography"));
 
+var _hubert = _interopRequireDefault(require("../assets/hubert.jpg"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var useStyles = (0, _styles.makeStyles)({
@@ -81611,7 +81744,7 @@ var MediaCard = function MediaCard() {
     className: classes.root
   }, /*#__PURE__*/_react.default.createElement(_CardActionArea.default, null, /*#__PURE__*/_react.default.createElement(_CardMedia.default, {
     className: classes.media,
-    image: "/static/images/cards/contemplative-reptile.jpg",
+    image: _hubert.default,
     title: "Contemplative Reptile"
   }), /*#__PURE__*/_react.default.createElement(_CardContent.default, null, /*#__PURE__*/_react.default.createElement(_Typography.default, {
     gutterBottom: true,
@@ -81632,7 +81765,9 @@ var MediaCard = function MediaCard() {
 
 var _default = MediaCard;
 exports.default = _default;
-},{"react":"../node_modules/react/index.js","@material-ui/core/styles":"../node_modules/@material-ui/core/esm/styles/index.js","@material-ui/core/Card":"../node_modules/@material-ui/core/esm/Card/index.js","@material-ui/core/CardActionArea":"../node_modules/@material-ui/core/esm/CardActionArea/index.js","@material-ui/core/CardActions":"../node_modules/@material-ui/core/esm/CardActions/index.js","@material-ui/core/CardContent":"../node_modules/@material-ui/core/esm/CardContent/index.js","@material-ui/core/CardMedia":"../node_modules/@material-ui/core/esm/CardMedia/index.js","@material-ui/core/Button":"../node_modules/@material-ui/core/esm/Button/index.js","@material-ui/core/Typography":"../node_modules/@material-ui/core/esm/Typography/index.js"}],"App.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","@material-ui/core/styles":"../node_modules/@material-ui/core/esm/styles/index.js","@material-ui/core/Card":"../node_modules/@material-ui/core/esm/Card/index.js","@material-ui/core/CardActionArea":"../node_modules/@material-ui/core/esm/CardActionArea/index.js","@material-ui/core/CardActions":"../node_modules/@material-ui/core/esm/CardActions/index.js","@material-ui/core/CardContent":"../node_modules/@material-ui/core/esm/CardContent/index.js","@material-ui/core/CardMedia":"../node_modules/@material-ui/core/esm/CardMedia/index.js","@material-ui/core/Button":"../node_modules/@material-ui/core/esm/Button/index.js","@material-ui/core/Typography":"../node_modules/@material-ui/core/esm/Typography/index.js","../assets/hubert.jpg":"assets/hubert.jpg"}],"assets/professional-gardening-services-in-london-fantastic-gardeners_xiJZxU80_SD8X.mp4":[function(require,module,exports) {
+module.exports = "/professional-gardening-services-in-london-fantastic-gardeners_xiJZxU80_SD8X.6d071c77.mp4";
+},{}],"Components/Video.jsx":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -81642,37 +81777,12 @@ exports.default = void 0;
 
 var _react = _interopRequireDefault(require("react"));
 
-var _core = require("@material-ui/core");
-
-var _Header = _interopRequireDefault(require("./Components/Header.jsx"));
-
-var _professionalGardeningServicesInLondonFantasticGardeners_xiJZxU80_SD8X = _interopRequireDefault(require("./assets/professional-gardening-services-in-london-fantastic-gardeners_xiJZxU80_SD8X.mp4"));
-
-var _Devis = _interopRequireDefault(require("./Components/Devis.jsx"));
-
-var _Test = _interopRequireDefault(require("./Components/Test.jsx"));
+var _professionalGardeningServicesInLondonFantasticGardeners_xiJZxU80_SD8X = _interopRequireDefault(require("../assets/professional-gardening-services-in-london-fantastic-gardeners_xiJZxU80_SD8X.mp4"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var useStyles = (0, _core.makeStyles)(function () {
-  return {
-    main: {
-      height: "100vh"
-    },
-    devisCenter: {
-      height: "80vh",
-      alignItems: "center"
-    }
-  };
-});
-
-var App = function App() {
-  var classes = useStyles();
-  return /*#__PURE__*/_react.default.createElement("main", null, /*#__PURE__*/_react.default.createElement("section", null, /*#__PURE__*/_react.default.createElement(_core.Grid, {
-    container: true,
-    direction: "column",
-    className: classes.main
-  }, /*#__PURE__*/_react.default.createElement("video", {
+var Video = function Video() {
+  return /*#__PURE__*/_react.default.createElement("video", {
     autoPlay: true,
     muted: true,
     loop: true,
@@ -81688,9 +81798,58 @@ var App = function App() {
   }), /*#__PURE__*/_react.default.createElement("source", {
     src: _professionalGardeningServicesInLondonFantasticGardeners_xiJZxU80_SD8X.default,
     type: "video/mp4"
-  })), /*#__PURE__*/_react.default.createElement(_core.Grid, {
+  }));
+};
+
+var _default = Video;
+exports.default = _default;
+},{"react":"../node_modules/react/index.js","../assets/professional-gardening-services-in-london-fantastic-gardeners_xiJZxU80_SD8X.mp4":"assets/professional-gardening-services-in-london-fantastic-gardeners_xiJZxU80_SD8X.mp4"}],"App.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireDefault(require("react"));
+
+var _core = require("@material-ui/core");
+
+var _Header = _interopRequireDefault(require("./Components/Header.jsx"));
+
+var _Devis = _interopRequireDefault(require("./Components/Devis.jsx"));
+
+var _Title = _interopRequireDefault(require("./Components/Title.jsx"));
+
+var _Test = _interopRequireDefault(require("./Components/Test.jsx"));
+
+var _Video = _interopRequireDefault(require("./Components/Video.jsx"));
+
+var _Hidden = _interopRequireDefault(require("@material-ui/core/Hidden"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var useStyles = (0, _core.makeStyles)(function () {
+  return {
+    main: {
+      height: "100vh"
+    },
+    devisCenter: {
+      alignItems: "center",
+      marginTop: "1em"
+    }
+  };
+});
+
+var App = function App() {
+  var classes = useStyles();
+  return /*#__PURE__*/_react.default.createElement("main", null, /*#__PURE__*/_react.default.createElement("section", null, /*#__PURE__*/_react.default.createElement(_core.Grid, {
+    container: true,
+    direction: "column",
+    className: classes.main
+  }, /*#__PURE__*/_react.default.createElement(_core.Grid, {
     item: true
-  }, /*#__PURE__*/_react.default.createElement(_Header.default, {
+  }, /*#__PURE__*/_react.default.createElement(_Video.default, null), /*#__PURE__*/_react.default.createElement(_Header.default, {
     name: "Hubert Krynski",
     service: "Services",
     propos: "\xE0 propos",
@@ -81701,15 +81860,12 @@ var App = function App() {
     direction: "column",
     className: classes.devisCenter
   }, /*#__PURE__*/_react.default.createElement(_core.Grid, {
-    item: true,
-    sm: 5
-  }), /*#__PURE__*/_react.default.createElement(_core.Grid, {
-    item: true,
-    sm: 2
-  }, /*#__PURE__*/_react.default.createElement(_Devis.default, null))), /*#__PURE__*/_react.default.createElement(_core.Grid, {
-    item: true,
-    sm: 5
-  }))), /*#__PURE__*/_react.default.createElement("section", null, /*#__PURE__*/_react.default.createElement(_core.Grid, {
+    item: true
+  }, /*#__PURE__*/_react.default.createElement(_Title.default, {
+    description: "The best solution for your garden"
+  })), /*#__PURE__*/_react.default.createElement(_core.Grid, {
+    item: true
+  }, /*#__PURE__*/_react.default.createElement(_Devis.default, null))))), /*#__PURE__*/_react.default.createElement("section", null, /*#__PURE__*/_react.default.createElement(_core.Grid, {
     container: true
   }, /*#__PURE__*/_react.default.createElement(_core.Grid, {
     item: true
@@ -81718,7 +81874,7 @@ var App = function App() {
 
 var _default = App;
 exports.default = _default;
-},{"react":"../node_modules/react/index.js","@material-ui/core":"../node_modules/@material-ui/core/esm/index.js","./Components/Header.jsx":"Components/Header.jsx","./assets/professional-gardening-services-in-london-fantastic-gardeners_xiJZxU80_SD8X.mp4":"assets/professional-gardening-services-in-london-fantastic-gardeners_xiJZxU80_SD8X.mp4","./Components/Devis.jsx":"Components/Devis.jsx","./Components/Test.jsx":"Components/Test.jsx"}],"index.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","@material-ui/core":"../node_modules/@material-ui/core/esm/index.js","./Components/Header.jsx":"Components/Header.jsx","./Components/Devis.jsx":"Components/Devis.jsx","./Components/Title.jsx":"Components/Title.jsx","./Components/Test.jsx":"Components/Test.jsx","./Components/Video.jsx":"Components/Video.jsx","@material-ui/core/Hidden":"../node_modules/@material-ui/core/esm/Hidden/index.js"}],"index.js":[function(require,module,exports) {
 "use strict";
 
 var _react = _interopRequireDefault(require("react"));
@@ -81775,7 +81931,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "37721" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "46079" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

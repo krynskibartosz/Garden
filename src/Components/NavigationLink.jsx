@@ -17,11 +17,12 @@ const NavigationLink = ({ info }) => {
         color="primary"
         underline="none"
         href="#"
-        onClick={e => e.preventDefault}
+        onClick={(e) => e.preventDefault}
       >
         {info}
       </Link>
     </Typography>
+
   );
 };
 export default NavigationLink;
