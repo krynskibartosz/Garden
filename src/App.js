@@ -6,7 +6,8 @@ import Title from "./Components/Title.jsx";
 import { makeStyles } from "@material-ui/core";
 import MediaCart from "./Components/Test.jsx";
 import Video from "./Components/Video.jsx";
-import Hidden from "@material-ui/core/Hidden"
+
+
 
 const useStyles = makeStyles(() => ({
   main: {

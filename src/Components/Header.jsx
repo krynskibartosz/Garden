@@ -6,7 +6,7 @@ import NavigationLink from "./NavigationLink.jsx";
 import { makeStyles } from "@material-ui/core/styles";
 import Box from "@material-ui/core/Box";
 import Hidden from "@material-ui/core/Hidden";
-import MenuIcon from '@material-ui/icons/Menu';
+import MenuHamburger from "./MenuHamburger.jsx";
 
 const useStyles = makeStyles(() => ({
   posLink: {
@@ -24,15 +24,15 @@ const Header = ({ name, propos, realisation, contact, service }) => {
       <Toolbar className={classes.navSpace}>
         <Logo name={name} />
         <Hidden only="xs">
-        <Box className={classes.posLink}>
-          <NavigationLink info={propos} />
-          <NavigationLink info={realisation} />
-          <NavigationLink info={service} />
-          <NavigationLink info={contact} />
-        </Box>
+          <Box className={classes.posLink}>
+            <NavigationLink info={propos} />
+            <NavigationLink info={realisation} />
+            <NavigationLink info={service} />
+            <NavigationLink info={contact} />
+          </Box>
         </Hidden>
-        <Hidden only={["sm","md","lg","xl"]}>
-        <MenuIcon />
+        <Hidden only={["sm", "md", "lg", "xl"]}>
+          <MenuHamburger />
         </Hidden>
       </Toolbar>
     </AppBar>
