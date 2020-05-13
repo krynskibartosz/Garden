@@ -14,6 +14,7 @@ const useStyles = makeStyles(() => ({
   },
   navSpace: {
     justifyContent: "space-between",
+    paddingLeft: 0,
   },
 }));
 
@@ -32,7 +33,7 @@ const Header = ({ name, propos, realisation, contact, service }) => {
           </Box>
         </Hidden>
         <Hidden only={["sm", "md", "lg", "xl"]}>
-          <MenuHamburger />
+          <MenuHamburger/>
         </Hidden>
       </Toolbar>
     </AppBar>

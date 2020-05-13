@@ -22,7 +22,6 @@ const NavigationLink = ({ info }) => {
         {info}
       </Link>
     </Typography>
-
   );
 };
 export default NavigationLink;

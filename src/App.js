@@ -7,8 +7,6 @@ import { makeStyles } from "@material-ui/core";
 import MediaCart from "./Components/Test.jsx";
 import Video from "./Components/Video.jsx";
 
-
-
 const useStyles = makeStyles(() => ({
   main: {
     height: "100vh",
@@ -20,7 +18,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 const App = () => {
-  const classes = useStyles();  
+  const classes = useStyles();
   return (
     <main>
       <section>
