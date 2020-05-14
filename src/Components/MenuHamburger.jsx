@@ -1,18 +1,14 @@
-import React, { useState } from "react";
+import React from "react";
 
-const MenuHamburger = () => {
-  const [state, setState] = useState("close");
-
-  return (
+const MenuHamburger = ( {open, setOpen}) => 
     <button
       className="BurgerMenu__container"
-      onClick={() => setState(state === "open" ? "close" : "open")}
+      onClick={() => setOpen()}
     >
-      <i className={state}></i>
-      <i className={state}></i>
-      <i className={state}></i>
+      <i className={open ? 'open' : 'close'}></i>
+      <i className={open ? 'open' : 'close'}></i>
+      <i className={open ? 'open' : 'close'}></i>
     </button>
-  );
-};
+
 
 export default MenuHamburger;
