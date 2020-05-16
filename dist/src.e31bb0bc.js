@@ -28991,7 +28991,7 @@ function clamp(value) {
 
 function hexToRgb(color) {
   color = color.substr(1);
-  var re = new RegExp(".{1,".concat(color.length / 3, "}"), 'g');
+  var re = new RegExp(".{1,".concat(color.length >= 6 ? 2 : 1, "}"), 'g');
   var colors = color.match(re);
 
   if (colors && colors[0].length === 1) {
@@ -29000,8 +29000,8 @@ function hexToRgb(color) {
     });
   }
 
-  return colors ? "rgb(".concat(colors.map(function (n) {
-    return parseInt(n, 16);
+  return colors ? "rgb".concat(colors.length === 4 ? 'a' : '', "(").concat(colors.map(function (n, index) {
+    return index < 3 ? parseInt(n, 16) : Math.round(parseInt(n, 16) / 255 * 1000) / 1000;
   }).join(', '), ")") : '';
 }
 
@@ -32846,2103 +32846,30 @@ function createMuiTheme() {
 
 var _default = createMuiTheme;
 exports.default = _default;
-},{"@babel/runtime/helpers/esm/defineProperty":"../node_modules/@babel/runtime/helpers/esm/defineProperty.js","@babel/runtime/helpers/esm/objectWithoutProperties":"../node_modules/@babel/runtime/helpers/esm/objectWithoutProperties.js","@material-ui/utils":"../node_modules/@material-ui/utils/esm/index.js","./createBreakpoints":"../node_modules/@material-ui/core/esm/styles/createBreakpoints.js","./createMixins":"../node_modules/@material-ui/core/esm/styles/createMixins.js","./createPalette":"../node_modules/@material-ui/core/esm/styles/createPalette.js","./createTypography":"../node_modules/@material-ui/core/esm/styles/createTypography.js","./shadows":"../node_modules/@material-ui/core/esm/styles/shadows.js","./shape":"../node_modules/@material-ui/core/esm/styles/shape.js","./createSpacing":"../node_modules/@material-ui/core/esm/styles/createSpacing.js","./transitions":"../node_modules/@material-ui/core/esm/styles/transitions.js","./zIndex":"../node_modules/@material-ui/core/esm/styles/zIndex.js"}],"../node_modules/clsx/dist/clsx.m.js":[function(require,module,exports) {
+},{"@babel/runtime/helpers/esm/defineProperty":"../node_modules/@babel/runtime/helpers/esm/defineProperty.js","@babel/runtime/helpers/esm/objectWithoutProperties":"../node_modules/@babel/runtime/helpers/esm/objectWithoutProperties.js","@material-ui/utils":"../node_modules/@material-ui/utils/esm/index.js","./createBreakpoints":"../node_modules/@material-ui/core/esm/styles/createBreakpoints.js","./createMixins":"../node_modules/@material-ui/core/esm/styles/createMixins.js","./createPalette":"../node_modules/@material-ui/core/esm/styles/createPalette.js","./createTypography":"../node_modules/@material-ui/core/esm/styles/createTypography.js","./shadows":"../node_modules/@material-ui/core/esm/styles/shadows.js","./shape":"../node_modules/@material-ui/core/esm/styles/shape.js","./createSpacing":"../node_modules/@material-ui/core/esm/styles/createSpacing.js","./transitions":"../node_modules/@material-ui/core/esm/styles/transitions.js","./zIndex":"../node_modules/@material-ui/core/esm/styles/zIndex.js"}],"../node_modules/@material-ui/core/esm/styles/createMuiStrictModeTheme.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = _default;
+exports.default = createMuiStrictModeTheme;
 
-function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function (obj) { return typeof obj; }; } else { _typeof = function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+var _utils = require("@material-ui/utils");
 
-function toVal(mix) {
-  var k,
-      y,
-      str = '';
-
-  if (mix) {
-    if (_typeof(mix) === 'object') {
-      if (Array.isArray(mix)) {
-        for (k = 0; k < mix.length; k++) {
-          if (mix[k] && (y = toVal(mix[k]))) {
-            str && (str += ' ');
-            str += y;
-          }
-        }
-      } else {
-        for (k in mix) {
-          if (mix[k] && (y = toVal(k))) {
-            str && (str += ' ');
-            str += y;
-          }
-        }
-      }
-    } else if (typeof mix !== 'boolean' && !mix.call) {
-      str && (str += ' ');
-      str += mix;
-    }
-  }
-
-  return str;
-}
-
-function _default() {
-  var i = 0,
-      x,
-      str = '';
-
-  while (i < arguments.length) {
-    if (x = toVal(arguments[i++])) {
-      str && (str += ' ');
-      str += x;
-    }
-  }
-
-  return str;
-}
-},{}],"../node_modules/@babel/runtime/helpers/esm/inheritsLoose.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = _inheritsLoose;
-
-function _inheritsLoose(subClass, superClass) {
-  subClass.prototype = Object.create(superClass.prototype);
-  subClass.prototype.constructor = subClass;
-  subClass.__proto__ = superClass;
-}
-},{}],"../node_modules/dom-helpers/esm/hasClass.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = hasClass;
-
-function hasClass(element, className) {
-  if (element.classList) return !!className && element.classList.contains(className);
-  return (" " + (element.className.baseVal || element.className) + " ").indexOf(" " + className + " ") !== -1;
-}
-},{}],"../node_modules/dom-helpers/esm/addClass.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = addClass;
-
-var _hasClass = _interopRequireDefault(require("./hasClass"));
+var _createMuiTheme = _interopRequireDefault(require("./createMuiTheme"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function addClass(element, className) {
-  if (element.classList) element.classList.add(className);else if (!(0, _hasClass.default)(element, className)) if (typeof element.className === 'string') element.className = element.className + " " + className;else element.setAttribute('class', (element.className && element.className.baseVal || '') + " " + className);
+function createMuiStrictModeTheme(options) {
+  for (var _len = arguments.length, args = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+    args[_key - 1] = arguments[_key];
+  }
+
+  return _createMuiTheme.default.apply(void 0, [(0, _utils.deepmerge)({
+    unstable_strictMode: true
+  }, options)].concat(args));
 }
-},{"./hasClass":"../node_modules/dom-helpers/esm/hasClass.js"}],"../node_modules/dom-helpers/esm/removeClass.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = removeClass;
-
-function replaceClassName(origClass, classToRemove) {
-  return origClass.replace(new RegExp("(^|\\s)" + classToRemove + "(?:\\s|$)", 'g'), '$1').replace(/\s+/g, ' ').replace(/^\s*|\s*$/g, '');
-}
-
-function removeClass(element, className) {
-  if (element.classList) {
-    element.classList.remove(className);
-  } else if (typeof element.className === 'string') {
-    ;
-    element.className = replaceClassName(element.className, className);
-  } else {
-    element.setAttribute('class', replaceClassName(element.className && element.className.baseVal || '', className));
-  }
-}
-},{}],"../node_modules/react-transition-group/esm/config.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-var _default = {
-  disabled: false
-};
-exports.default = _default;
-},{}],"../node_modules/react-transition-group/esm/utils/PropTypes.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.classNamesShape = exports.timeoutsShape = void 0;
-
-var _propTypes = _interopRequireDefault(require("prop-types"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var timeoutsShape = "development" !== 'production' ? _propTypes.default.oneOfType([_propTypes.default.number, _propTypes.default.shape({
-  enter: _propTypes.default.number,
-  exit: _propTypes.default.number,
-  appear: _propTypes.default.number
-}).isRequired]) : null;
-exports.timeoutsShape = timeoutsShape;
-var classNamesShape = "development" !== 'production' ? _propTypes.default.oneOfType([_propTypes.default.string, _propTypes.default.shape({
-  enter: _propTypes.default.string,
-  exit: _propTypes.default.string,
-  active: _propTypes.default.string
-}), _propTypes.default.shape({
-  enter: _propTypes.default.string,
-  enterDone: _propTypes.default.string,
-  enterActive: _propTypes.default.string,
-  exit: _propTypes.default.string,
-  exitDone: _propTypes.default.string,
-  exitActive: _propTypes.default.string
-})]) : null;
-exports.classNamesShape = classNamesShape;
-},{"prop-types":"../node_modules/prop-types/index.js"}],"../node_modules/react-transition-group/esm/TransitionGroupContext.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _react = _interopRequireDefault(require("react"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var _default = _react.default.createContext(null);
-
-exports.default = _default;
-},{"react":"../node_modules/react/index.js"}],"../node_modules/react-transition-group/esm/Transition.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = exports.EXITING = exports.ENTERED = exports.ENTERING = exports.EXITED = exports.UNMOUNTED = void 0;
-
-var _objectWithoutPropertiesLoose2 = _interopRequireDefault(require("@babel/runtime/helpers/esm/objectWithoutPropertiesLoose"));
-
-var _inheritsLoose2 = _interopRequireDefault(require("@babel/runtime/helpers/esm/inheritsLoose"));
-
-var _propTypes = _interopRequireDefault(require("prop-types"));
-
-var _react = _interopRequireDefault(require("react"));
-
-var _reactDom = _interopRequireDefault(require("react-dom"));
-
-var _config = _interopRequireDefault(require("./config"));
-
-var _PropTypes = require("./utils/PropTypes");
-
-var _TransitionGroupContext = _interopRequireDefault(require("./TransitionGroupContext"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var UNMOUNTED = 'unmounted';
-exports.UNMOUNTED = UNMOUNTED;
-var EXITED = 'exited';
-exports.EXITED = EXITED;
-var ENTERING = 'entering';
-exports.ENTERING = ENTERING;
-var ENTERED = 'entered';
-exports.ENTERED = ENTERED;
-var EXITING = 'exiting';
-/**
- * The Transition component lets you describe a transition from one component
- * state to another _over time_ with a simple declarative API. Most commonly
- * it's used to animate the mounting and unmounting of a component, but can also
- * be used to describe in-place transition states as well.
- *
- * ---
- *
- * **Note**: `Transition` is a platform-agnostic base component. If you're using
- * transitions in CSS, you'll probably want to use
- * [`CSSTransition`](https://reactcommunity.org/react-transition-group/css-transition)
- * instead. It inherits all the features of `Transition`, but contains
- * additional features necessary to play nice with CSS transitions (hence the
- * name of the component).
- *
- * ---
- *
- * By default the `Transition` component does not alter the behavior of the
- * component it renders, it only tracks "enter" and "exit" states for the
- * components. It's up to you to give meaning and effect to those states. For
- * example we can add styles to a component when it enters or exits:
- *
- * ```jsx
- * import { Transition } from 'react-transition-group';
- *
- * const duration = 300;
- *
- * const defaultStyle = {
- *   transition: `opacity ${duration}ms ease-in-out`,
- *   opacity: 0,
- * }
- *
- * const transitionStyles = {
- *   entering: { opacity: 1 },
- *   entered:  { opacity: 1 },
- *   exiting:  { opacity: 0 },
- *   exited:  { opacity: 0 },
- * };
- *
- * const Fade = ({ in: inProp }) => (
- *   <Transition in={inProp} timeout={duration}>
- *     {state => (
- *       <div style={{
- *         ...defaultStyle,
- *         ...transitionStyles[state]
- *       }}>
- *         I'm a fade Transition!
- *       </div>
- *     )}
- *   </Transition>
- * );
- * ```
- *
- * There are 4 main states a Transition can be in:
- *  - `'entering'`
- *  - `'entered'`
- *  - `'exiting'`
- *  - `'exited'`
- *
- * Transition state is toggled via the `in` prop. When `true` the component
- * begins the "Enter" stage. During this stage, the component will shift from
- * its current transition state, to `'entering'` for the duration of the
- * transition and then to the `'entered'` stage once it's complete. Let's take
- * the following example (we'll use the
- * [useState](https://reactjs.org/docs/hooks-reference.html#usestate) hook):
- *
- * ```jsx
- * function App() {
- *   const [inProp, setInProp] = useState(false);
- *   return (
- *     <div>
- *       <Transition in={inProp} timeout={500}>
- *         {state => (
- *           // ...
- *         )}
- *       </Transition>
- *       <button onClick={() => setInProp(true)}>
- *         Click to Enter
- *       </button>
- *     </div>
- *   );
- * }
- * ```
- *
- * When the button is clicked the component will shift to the `'entering'` state
- * and stay there for 500ms (the value of `timeout`) before it finally switches
- * to `'entered'`.
- *
- * When `in` is `false` the same thing happens except the state moves from
- * `'exiting'` to `'exited'`.
- */
-
-exports.EXITING = EXITING;
-
-var Transition = /*#__PURE__*/function (_React$Component) {
-  (0, _inheritsLoose2.default)(Transition, _React$Component);
-
-  function Transition(props, context) {
-    var _this;
-
-    _this = _React$Component.call(this, props, context) || this;
-    var parentGroup = context; // In the context of a TransitionGroup all enters are really appears
-
-    var appear = parentGroup && !parentGroup.isMounting ? props.enter : props.appear;
-    var initialStatus;
-    _this.appearStatus = null;
-
-    if (props.in) {
-      if (appear) {
-        initialStatus = EXITED;
-        _this.appearStatus = ENTERING;
-      } else {
-        initialStatus = ENTERED;
-      }
-    } else {
-      if (props.unmountOnExit || props.mountOnEnter) {
-        initialStatus = UNMOUNTED;
-      } else {
-        initialStatus = EXITED;
-      }
-    }
-
-    _this.state = {
-      status: initialStatus
-    };
-    _this.nextCallback = null;
-    return _this;
-  }
-
-  Transition.getDerivedStateFromProps = function getDerivedStateFromProps(_ref, prevState) {
-    var nextIn = _ref.in;
-
-    if (nextIn && prevState.status === UNMOUNTED) {
-      return {
-        status: EXITED
-      };
-    }
-
-    return null;
-  } // getSnapshotBeforeUpdate(prevProps) {
-  //   let nextStatus = null
-  //   if (prevProps !== this.props) {
-  //     const { status } = this.state
-  //     if (this.props.in) {
-  //       if (status !== ENTERING && status !== ENTERED) {
-  //         nextStatus = ENTERING
-  //       }
-  //     } else {
-  //       if (status === ENTERING || status === ENTERED) {
-  //         nextStatus = EXITING
-  //       }
-  //     }
-  //   }
-  //   return { nextStatus }
-  // }
-  ;
-
-  var _proto = Transition.prototype;
-
-  _proto.componentDidMount = function componentDidMount() {
-    this.updateStatus(true, this.appearStatus);
-  };
-
-  _proto.componentDidUpdate = function componentDidUpdate(prevProps) {
-    var nextStatus = null;
-
-    if (prevProps !== this.props) {
-      var status = this.state.status;
-
-      if (this.props.in) {
-        if (status !== ENTERING && status !== ENTERED) {
-          nextStatus = ENTERING;
-        }
-      } else {
-        if (status === ENTERING || status === ENTERED) {
-          nextStatus = EXITING;
-        }
-      }
-    }
-
-    this.updateStatus(false, nextStatus);
-  };
-
-  _proto.componentWillUnmount = function componentWillUnmount() {
-    this.cancelNextCallback();
-  };
-
-  _proto.getTimeouts = function getTimeouts() {
-    var timeout = this.props.timeout;
-    var exit, enter, appear;
-    exit = enter = appear = timeout;
-
-    if (timeout != null && typeof timeout !== 'number') {
-      exit = timeout.exit;
-      enter = timeout.enter; // TODO: remove fallback for next major
-
-      appear = timeout.appear !== undefined ? timeout.appear : enter;
-    }
-
-    return {
-      exit: exit,
-      enter: enter,
-      appear: appear
-    };
-  };
-
-  _proto.updateStatus = function updateStatus(mounting, nextStatus) {
-    if (mounting === void 0) {
-      mounting = false;
-    }
-
-    if (nextStatus !== null) {
-      // nextStatus will always be ENTERING or EXITING.
-      this.cancelNextCallback();
-
-      if (nextStatus === ENTERING) {
-        this.performEnter(mounting);
-      } else {
-        this.performExit();
-      }
-    } else if (this.props.unmountOnExit && this.state.status === EXITED) {
-      this.setState({
-        status: UNMOUNTED
-      });
-    }
-  };
-
-  _proto.performEnter = function performEnter(mounting) {
-    var _this2 = this;
-
-    var enter = this.props.enter;
-    var appearing = this.context ? this.context.isMounting : mounting;
-
-    var _ref2 = this.props.nodeRef ? [appearing] : [_reactDom.default.findDOMNode(this), appearing],
-        maybeNode = _ref2[0],
-        maybeAppearing = _ref2[1];
-
-    var timeouts = this.getTimeouts();
-    var enterTimeout = appearing ? timeouts.appear : timeouts.enter; // no enter animation skip right to ENTERED
-    // if we are mounting and running this it means appear _must_ be set
-
-    if (!mounting && !enter || _config.default.disabled) {
-      this.safeSetState({
-        status: ENTERED
-      }, function () {
-        _this2.props.onEntered(maybeNode);
-      });
-      return;
-    }
-
-    this.props.onEnter(maybeNode, maybeAppearing);
-    this.safeSetState({
-      status: ENTERING
-    }, function () {
-      _this2.props.onEntering(maybeNode, maybeAppearing);
-
-      _this2.onTransitionEnd(enterTimeout, function () {
-        _this2.safeSetState({
-          status: ENTERED
-        }, function () {
-          _this2.props.onEntered(maybeNode, maybeAppearing);
-        });
-      });
-    });
-  };
-
-  _proto.performExit = function performExit() {
-    var _this3 = this;
-
-    var exit = this.props.exit;
-    var timeouts = this.getTimeouts();
-    var maybeNode = this.props.nodeRef ? undefined : _reactDom.default.findDOMNode(this); // no exit animation skip right to EXITED
-
-    if (!exit || _config.default.disabled) {
-      this.safeSetState({
-        status: EXITED
-      }, function () {
-        _this3.props.onExited(maybeNode);
-      });
-      return;
-    }
-
-    this.props.onExit(maybeNode);
-    this.safeSetState({
-      status: EXITING
-    }, function () {
-      _this3.props.onExiting(maybeNode);
-
-      _this3.onTransitionEnd(timeouts.exit, function () {
-        _this3.safeSetState({
-          status: EXITED
-        }, function () {
-          _this3.props.onExited(maybeNode);
-        });
-      });
-    });
-  };
-
-  _proto.cancelNextCallback = function cancelNextCallback() {
-    if (this.nextCallback !== null) {
-      this.nextCallback.cancel();
-      this.nextCallback = null;
-    }
-  };
-
-  _proto.safeSetState = function safeSetState(nextState, callback) {
-    // This shouldn't be necessary, but there are weird race conditions with
-    // setState callbacks and unmounting in testing, so always make sure that
-    // we can cancel any pending setState callbacks after we unmount.
-    callback = this.setNextCallback(callback);
-    this.setState(nextState, callback);
-  };
-
-  _proto.setNextCallback = function setNextCallback(callback) {
-    var _this4 = this;
-
-    var active = true;
-
-    this.nextCallback = function (event) {
-      if (active) {
-        active = false;
-        _this4.nextCallback = null;
-        callback(event);
-      }
-    };
-
-    this.nextCallback.cancel = function () {
-      active = false;
-    };
-
-    return this.nextCallback;
-  };
-
-  _proto.onTransitionEnd = function onTransitionEnd(timeout, handler) {
-    this.setNextCallback(handler);
-    var node = this.props.nodeRef ? this.props.nodeRef.current : _reactDom.default.findDOMNode(this);
-    var doesNotHaveTimeoutOrListener = timeout == null && !this.props.addEndListener;
-
-    if (!node || doesNotHaveTimeoutOrListener) {
-      setTimeout(this.nextCallback, 0);
-      return;
-    }
-
-    if (this.props.addEndListener) {
-      var _ref3 = this.props.nodeRef ? [this.nextCallback] : [node, this.nextCallback],
-          maybeNode = _ref3[0],
-          maybeNextCallback = _ref3[1];
-
-      this.props.addEndListener(maybeNode, maybeNextCallback);
-    }
-
-    if (timeout != null) {
-      setTimeout(this.nextCallback, timeout);
-    }
-  };
-
-  _proto.render = function render() {
-    var status = this.state.status;
-
-    if (status === UNMOUNTED) {
-      return null;
-    }
-
-    var _this$props = this.props,
-        children = _this$props.children,
-        _in = _this$props.in,
-        _mountOnEnter = _this$props.mountOnEnter,
-        _unmountOnExit = _this$props.unmountOnExit,
-        _appear = _this$props.appear,
-        _enter = _this$props.enter,
-        _exit = _this$props.exit,
-        _timeout = _this$props.timeout,
-        _addEndListener = _this$props.addEndListener,
-        _onEnter = _this$props.onEnter,
-        _onEntering = _this$props.onEntering,
-        _onEntered = _this$props.onEntered,
-        _onExit = _this$props.onExit,
-        _onExiting = _this$props.onExiting,
-        _onExited = _this$props.onExited,
-        _nodeRef = _this$props.nodeRef,
-        childProps = (0, _objectWithoutPropertiesLoose2.default)(_this$props, ["children", "in", "mountOnEnter", "unmountOnExit", "appear", "enter", "exit", "timeout", "addEndListener", "onEnter", "onEntering", "onEntered", "onExit", "onExiting", "onExited", "nodeRef"]);
-    return (
-      /*#__PURE__*/
-      // allows for nested Transitions
-      _react.default.createElement(_TransitionGroupContext.default.Provider, {
-        value: null
-      }, typeof children === 'function' ? children(status, childProps) : _react.default.cloneElement(_react.default.Children.only(children), childProps))
-    );
-  };
-
-  return Transition;
-}(_react.default.Component);
-
-Transition.contextType = _TransitionGroupContext.default;
-Transition.propTypes = "development" !== "production" ? {
-  /**
-   * A React reference to DOM element that need to transition:
-   * https://stackoverflow.com/a/51127130/4671932
-   *
-   *   - When `nodeRef` prop is used, `node` is not passed to callback functions
-   *      (e.g. `onEnter`) because user already has direct access to the node.
-   *   - When changing `key` prop of `Transition` in a `TransitionGroup` a new
-   *     `nodeRef` need to be provided to `Transition` with changed `key` prop
-   *     (see
-   *     [test/CSSTransition-test.js](https://github.com/reactjs/react-transition-group/blob/13435f897b3ab71f6e19d724f145596f5910581c/test/CSSTransition-test.js#L362-L437)).
-   */
-  nodeRef: _propTypes.default.shape({
-    current: typeof Element === 'undefined' ? _propTypes.default.any : _propTypes.default.instanceOf(Element)
-  }),
-
-  /**
-   * A `function` child can be used instead of a React element. This function is
-   * called with the current transition status (`'entering'`, `'entered'`,
-   * `'exiting'`, `'exited'`), which can be used to apply context
-   * specific props to a component.
-   *
-   * ```jsx
-   * <Transition in={this.state.in} timeout={150}>
-   *   {state => (
-   *     <MyComponent className={`fade fade-${state}`} />
-   *   )}
-   * </Transition>
-   * ```
-   */
-  children: _propTypes.default.oneOfType([_propTypes.default.func.isRequired, _propTypes.default.element.isRequired]).isRequired,
-
-  /**
-   * Show the component; triggers the enter or exit states
-   */
-  in: _propTypes.default.bool,
-
-  /**
-   * By default the child component is mounted immediately along with
-   * the parent `Transition` component. If you want to "lazy mount" the component on the
-   * first `in={true}` you can set `mountOnEnter`. After the first enter transition the component will stay
-   * mounted, even on "exited", unless you also specify `unmountOnExit`.
-   */
-  mountOnEnter: _propTypes.default.bool,
-
-  /**
-   * By default the child component stays mounted after it reaches the `'exited'` state.
-   * Set `unmountOnExit` if you'd prefer to unmount the component after it finishes exiting.
-   */
-  unmountOnExit: _propTypes.default.bool,
-
-  /**
-   * By default the child component does not perform the enter transition when
-   * it first mounts, regardless of the value of `in`. If you want this
-   * behavior, set both `appear` and `in` to `true`.
-   *
-   * > **Note**: there are no special appear states like `appearing`/`appeared`, this prop
-   * > only adds an additional enter transition. However, in the
-   * > `<CSSTransition>` component that first enter transition does result in
-   * > additional `.appear-*` classes, that way you can choose to style it
-   * > differently.
-   */
-  appear: _propTypes.default.bool,
-
-  /**
-   * Enable or disable enter transitions.
-   */
-  enter: _propTypes.default.bool,
-
-  /**
-   * Enable or disable exit transitions.
-   */
-  exit: _propTypes.default.bool,
-
-  /**
-   * The duration of the transition, in milliseconds.
-   * Required unless `addEndListener` is provided.
-   *
-   * You may specify a single timeout for all transitions:
-   *
-   * ```jsx
-   * timeout={500}
-   * ```
-   *
-   * or individually:
-   *
-   * ```jsx
-   * timeout={{
-   *  appear: 500,
-   *  enter: 300,
-   *  exit: 500,
-   * }}
-   * ```
-   *
-   * - `appear` defaults to the value of `enter`
-   * - `enter` defaults to `0`
-   * - `exit` defaults to `0`
-   *
-   * @type {number | { enter?: number, exit?: number, appear?: number }}
-   */
-  timeout: function timeout(props) {
-    var pt = _PropTypes.timeoutsShape;
-    if (!props.addEndListener) pt = pt.isRequired;
-
-    for (var _len = arguments.length, args = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-      args[_key - 1] = arguments[_key];
-    }
-
-    return pt.apply(void 0, [props].concat(args));
-  },
-
-  /**
-   * Add a custom transition end trigger. Called with the transitioning
-   * DOM node and a `done` callback. Allows for more fine grained transition end
-   * logic. Timeouts are still used as a fallback if provided.
-   *
-   * **Note**: when `nodeRef` prop is passed, `node` is not passed.
-   *
-   * ```jsx
-   * addEndListener={(node, done) => {
-   *   // use the css transitionend event to mark the finish of a transition
-   *   node.addEventListener('transitionend', done, false);
-   * }}
-   * ```
-   */
-  addEndListener: _propTypes.default.func,
-
-  /**
-   * Callback fired before the "entering" status is applied. An extra parameter
-   * `isAppearing` is supplied to indicate if the enter stage is occurring on the initial mount
-   *
-   * **Note**: when `nodeRef` prop is passed, `node` is not passed.
-   *
-   * @type Function(node: HtmlElement, isAppearing: bool) -> void
-   */
-  onEnter: _propTypes.default.func,
-
-  /**
-   * Callback fired after the "entering" status is applied. An extra parameter
-   * `isAppearing` is supplied to indicate if the enter stage is occurring on the initial mount
-   *
-   * **Note**: when `nodeRef` prop is passed, `node` is not passed.
-   *
-   * @type Function(node: HtmlElement, isAppearing: bool)
-   */
-  onEntering: _propTypes.default.func,
-
-  /**
-   * Callback fired after the "entered" status is applied. An extra parameter
-   * `isAppearing` is supplied to indicate if the enter stage is occurring on the initial mount
-   *
-   * **Note**: when `nodeRef` prop is passed, `node` is not passed.
-   *
-   * @type Function(node: HtmlElement, isAppearing: bool) -> void
-   */
-  onEntered: _propTypes.default.func,
-
-  /**
-   * Callback fired before the "exiting" status is applied.
-   *
-   * **Note**: when `nodeRef` prop is passed, `node` is not passed.
-   *
-   * @type Function(node: HtmlElement) -> void
-   */
-  onExit: _propTypes.default.func,
-
-  /**
-   * Callback fired after the "exiting" status is applied.
-   *
-   * **Note**: when `nodeRef` prop is passed, `node` is not passed.
-   *
-   * @type Function(node: HtmlElement) -> void
-   */
-  onExiting: _propTypes.default.func,
-
-  /**
-   * Callback fired after the "exited" status is applied.
-   *
-   * **Note**: when `nodeRef` prop is passed, `node` is not passed
-   *
-   * @type Function(node: HtmlElement) -> void
-   */
-  onExited: _propTypes.default.func
-} : {}; // Name the function so it is clearer in the documentation
-
-function noop() {}
-
-Transition.defaultProps = {
-  in: false,
-  mountOnEnter: false,
-  unmountOnExit: false,
-  appear: false,
-  enter: true,
-  exit: true,
-  onEnter: noop,
-  onEntering: noop,
-  onEntered: noop,
-  onExit: noop,
-  onExiting: noop,
-  onExited: noop
-};
-Transition.UNMOUNTED = UNMOUNTED;
-Transition.EXITED = EXITED;
-Transition.ENTERING = ENTERING;
-Transition.ENTERED = ENTERED;
-Transition.EXITING = EXITING;
-var _default = Transition;
-exports.default = _default;
-},{"@babel/runtime/helpers/esm/objectWithoutPropertiesLoose":"../node_modules/@babel/runtime/helpers/esm/objectWithoutPropertiesLoose.js","@babel/runtime/helpers/esm/inheritsLoose":"../node_modules/@babel/runtime/helpers/esm/inheritsLoose.js","prop-types":"../node_modules/prop-types/index.js","react":"../node_modules/react/index.js","react-dom":"../node_modules/react-dom/index.js","./config":"../node_modules/react-transition-group/esm/config.js","./utils/PropTypes":"../node_modules/react-transition-group/esm/utils/PropTypes.js","./TransitionGroupContext":"../node_modules/react-transition-group/esm/TransitionGroupContext.js"}],"../node_modules/react-transition-group/esm/CSSTransition.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/esm/extends"));
-
-var _objectWithoutPropertiesLoose2 = _interopRequireDefault(require("@babel/runtime/helpers/esm/objectWithoutPropertiesLoose"));
-
-var _inheritsLoose2 = _interopRequireDefault(require("@babel/runtime/helpers/esm/inheritsLoose"));
-
-var _propTypes = _interopRequireDefault(require("prop-types"));
-
-var _addClass2 = _interopRequireDefault(require("dom-helpers/addClass"));
-
-var _removeClass = _interopRequireDefault(require("dom-helpers/removeClass"));
-
-var _react = _interopRequireDefault(require("react"));
-
-var _Transition = _interopRequireDefault(require("./Transition"));
-
-var _PropTypes = require("./utils/PropTypes");
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var _addClass = function addClass(node, classes) {
-  return node && classes && classes.split(' ').forEach(function (c) {
-    return (0, _addClass2.default)(node, c);
-  });
-};
-
-var removeClass = function removeClass(node, classes) {
-  return node && classes && classes.split(' ').forEach(function (c) {
-    return (0, _removeClass.default)(node, c);
-  });
-};
-/**
- * A transition component inspired by the excellent
- * [ng-animate](https://docs.angularjs.org/api/ngAnimate) library, you should
- * use it if you're using CSS transitions or animations. It's built upon the
- * [`Transition`](https://reactcommunity.org/react-transition-group/transition)
- * component, so it inherits all of its props.
- *
- * `CSSTransition` applies a pair of class names during the `appear`, `enter`,
- * and `exit` states of the transition. The first class is applied and then a
- * second `*-active` class in order to activate the CSS transition. After the
- * transition, matching `*-done` class names are applied to persist the
- * transition state.
- *
- * ```jsx
- * function App() {
- *   const [inProp, setInProp] = useState(false);
- *   return (
- *     <div>
- *       <CSSTransition in={inProp} timeout={200} classNames="my-node">
- *         <div>
- *           {"I'll receive my-node-* classes"}
- *         </div>
- *       </CSSTransition>
- *       <button type="button" onClick={() => setInProp(true)}>
- *         Click to Enter
- *       </button>
- *     </div>
- *   );
- * }
- * ```
- *
- * When the `in` prop is set to `true`, the child component will first receive
- * the class `example-enter`, then the `example-enter-active` will be added in
- * the next tick. `CSSTransition` [forces a
- * reflow](https://github.com/reactjs/react-transition-group/blob/5007303e729a74be66a21c3e2205e4916821524b/src/CSSTransition.js#L208-L215)
- * between before adding the `example-enter-active`. This is an important trick
- * because it allows us to transition between `example-enter` and
- * `example-enter-active` even though they were added immediately one after
- * another. Most notably, this is what makes it possible for us to animate
- * _appearance_.
- *
- * ```css
- * .my-node-enter {
- *   opacity: 0;
- * }
- * .my-node-enter-active {
- *   opacity: 1;
- *   transition: opacity 200ms;
- * }
- * .my-node-exit {
- *   opacity: 1;
- * }
- * .my-node-exit-active {
- *   opacity: 0;
- *   transition: opacity 200ms;
- * }
- * ```
- *
- * `*-active` classes represent which styles you want to animate **to**, so it's
- * important to add `transition` declaration only to them, otherwise transitions
- * might not behave as intended! This might not be obvious when the transitions
- * are symmetrical, i.e. when `*-enter-active` is the same as `*-exit`, like in
- * the example above (minus `transition`), but it becomes apparent in more
- * complex transitions.
- *
- * **Note**: If you're using the
- * [`appear`](http://reactcommunity.org/react-transition-group/transition#Transition-prop-appear)
- * prop, make sure to define styles for `.appear-*` classes as well.
- */
-
-
-var CSSTransition = /*#__PURE__*/function (_React$Component) {
-  (0, _inheritsLoose2.default)(CSSTransition, _React$Component);
-
-  function CSSTransition() {
-    var _this;
-
-    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
-      args[_key] = arguments[_key];
-    }
-
-    _this = _React$Component.call.apply(_React$Component, [this].concat(args)) || this;
-    _this.appliedClasses = {
-      appear: {},
-      enter: {},
-      exit: {}
-    };
-
-    _this.onEnter = function (maybeNode, maybeAppearing) {
-      var _this$resolveArgument = _this.resolveArguments(maybeNode, maybeAppearing),
-          node = _this$resolveArgument[0],
-          appearing = _this$resolveArgument[1];
-
-      _this.removeClasses(node, 'exit');
-
-      _this.addClass(node, appearing ? 'appear' : 'enter', 'base');
-
-      if (_this.props.onEnter) {
-        _this.props.onEnter(maybeNode, maybeAppearing);
-      }
-    };
-
-    _this.onEntering = function (maybeNode, maybeAppearing) {
-      var _this$resolveArgument2 = _this.resolveArguments(maybeNode, maybeAppearing),
-          node = _this$resolveArgument2[0],
-          appearing = _this$resolveArgument2[1];
-
-      var type = appearing ? 'appear' : 'enter';
-
-      _this.addClass(node, type, 'active');
-
-      if (_this.props.onEntering) {
-        _this.props.onEntering(maybeNode, maybeAppearing);
-      }
-    };
-
-    _this.onEntered = function (maybeNode, maybeAppearing) {
-      var _this$resolveArgument3 = _this.resolveArguments(maybeNode, maybeAppearing),
-          node = _this$resolveArgument3[0],
-          appearing = _this$resolveArgument3[1];
-
-      var type = appearing ? 'appear' : 'enter';
-
-      _this.removeClasses(node, type);
-
-      _this.addClass(node, type, 'done');
-
-      if (_this.props.onEntered) {
-        _this.props.onEntered(maybeNode, maybeAppearing);
-      }
-    };
-
-    _this.onExit = function (maybeNode) {
-      var _this$resolveArgument4 = _this.resolveArguments(maybeNode),
-          node = _this$resolveArgument4[0];
-
-      _this.removeClasses(node, 'appear');
-
-      _this.removeClasses(node, 'enter');
-
-      _this.addClass(node, 'exit', 'base');
-
-      if (_this.props.onExit) {
-        _this.props.onExit(maybeNode);
-      }
-    };
-
-    _this.onExiting = function (maybeNode) {
-      var _this$resolveArgument5 = _this.resolveArguments(maybeNode),
-          node = _this$resolveArgument5[0];
-
-      _this.addClass(node, 'exit', 'active');
-
-      if (_this.props.onExiting) {
-        _this.props.onExiting(maybeNode);
-      }
-    };
-
-    _this.onExited = function (maybeNode) {
-      var _this$resolveArgument6 = _this.resolveArguments(maybeNode),
-          node = _this$resolveArgument6[0];
-
-      _this.removeClasses(node, 'exit');
-
-      _this.addClass(node, 'exit', 'done');
-
-      if (_this.props.onExited) {
-        _this.props.onExited(maybeNode);
-      }
-    };
-
-    _this.resolveArguments = function (maybeNode, maybeAppearing) {
-      return _this.props.nodeRef ? [_this.props.nodeRef.current, maybeNode] // here `maybeNode` is actually `appearing`
-      : [maybeNode, maybeAppearing];
-    };
-
-    _this.getClassNames = function (type) {
-      var classNames = _this.props.classNames;
-      var isStringClassNames = typeof classNames === 'string';
-      var prefix = isStringClassNames && classNames ? classNames + "-" : '';
-      var baseClassName = isStringClassNames ? "" + prefix + type : classNames[type];
-      var activeClassName = isStringClassNames ? baseClassName + "-active" : classNames[type + "Active"];
-      var doneClassName = isStringClassNames ? baseClassName + "-done" : classNames[type + "Done"];
-      return {
-        baseClassName: baseClassName,
-        activeClassName: activeClassName,
-        doneClassName: doneClassName
-      };
-    };
-
-    return _this;
-  }
-
-  var _proto = CSSTransition.prototype;
-
-  _proto.addClass = function addClass(node, type, phase) {
-    var className = this.getClassNames(type)[phase + "ClassName"];
-
-    var _this$getClassNames = this.getClassNames('enter'),
-        doneClassName = _this$getClassNames.doneClassName;
-
-    if (type === 'appear' && phase === 'done' && doneClassName) {
-      className += " " + doneClassName;
-    } // This is for to force a repaint,
-    // which is necessary in order to transition styles when adding a class name.
-
-
-    if (phase === 'active') {
-      /* eslint-disable no-unused-expressions */
-      node && node.scrollTop;
-    }
-
-    if (className) {
-      this.appliedClasses[type][phase] = className;
-
-      _addClass(node, className);
-    }
-  };
-
-  _proto.removeClasses = function removeClasses(node, type) {
-    var _this$appliedClasses$ = this.appliedClasses[type],
-        baseClassName = _this$appliedClasses$.base,
-        activeClassName = _this$appliedClasses$.active,
-        doneClassName = _this$appliedClasses$.done;
-    this.appliedClasses[type] = {};
-
-    if (baseClassName) {
-      removeClass(node, baseClassName);
-    }
-
-    if (activeClassName) {
-      removeClass(node, activeClassName);
-    }
-
-    if (doneClassName) {
-      removeClass(node, doneClassName);
-    }
-  };
-
-  _proto.render = function render() {
-    var _this$props = this.props,
-        _ = _this$props.classNames,
-        props = (0, _objectWithoutPropertiesLoose2.default)(_this$props, ["classNames"]);
-    return /*#__PURE__*/_react.default.createElement(_Transition.default, (0, _extends2.default)({}, props, {
-      onEnter: this.onEnter,
-      onEntered: this.onEntered,
-      onEntering: this.onEntering,
-      onExit: this.onExit,
-      onExiting: this.onExiting,
-      onExited: this.onExited
-    }));
-  };
-
-  return CSSTransition;
-}(_react.default.Component);
-
-CSSTransition.defaultProps = {
-  classNames: ''
-};
-CSSTransition.propTypes = "development" !== "production" ? (0, _extends2.default)({}, _Transition.default.propTypes, {
-  /**
-   * The animation classNames applied to the component as it appears, enters,
-   * exits or has finished the transition. A single name can be provided, which
-   * will be suffixed for each stage, e.g. `classNames="fade"` applies:
-   *
-   * - `fade-appear`, `fade-appear-active`, `fade-appear-done`
-   * - `fade-enter`, `fade-enter-active`, `fade-enter-done`
-   * - `fade-exit`, `fade-exit-active`, `fade-exit-done`
-   *
-   * A few details to note about how these classes are applied:
-   *
-   * 1. They are _joined_ with the ones that are already defined on the child
-   *    component, so if you want to add some base styles, you can use
-   *    `className` without worrying that it will be overridden.
-   *
-   * 2. If the transition component mounts with `in={false}`, no classes are
-   *    applied yet. You might be expecting `*-exit-done`, but if you think
-   *    about it, a component cannot finish exiting if it hasn't entered yet.
-   *
-   * 2. `fade-appear-done` and `fade-enter-done` will _both_ be applied. This
-   *    allows you to define different behavior for when appearing is done and
-   *    when regular entering is done, using selectors like
-   *    `.fade-enter-done:not(.fade-appear-done)`. For example, you could apply
-   *    an epic entrance animation when element first appears in the DOM using
-   *    [Animate.css](https://daneden.github.io/animate.css/). Otherwise you can
-   *    simply use `fade-enter-done` for defining both cases.
-   *
-   * Each individual classNames can also be specified independently like:
-   *
-   * ```js
-   * classNames={{
-   *  appear: 'my-appear',
-   *  appearActive: 'my-active-appear',
-   *  appearDone: 'my-done-appear',
-   *  enter: 'my-enter',
-   *  enterActive: 'my-active-enter',
-   *  enterDone: 'my-done-enter',
-   *  exit: 'my-exit',
-   *  exitActive: 'my-active-exit',
-   *  exitDone: 'my-done-exit',
-   * }}
-   * ```
-   *
-   * If you want to set these classes using CSS Modules:
-   *
-   * ```js
-   * import styles from './styles.css';
-   * ```
-   *
-   * you might want to use camelCase in your CSS file, that way could simply
-   * spread them instead of listing them one by one:
-   *
-   * ```js
-   * classNames={{ ...styles }}
-   * ```
-   *
-   * @type {string | {
-   *  appear?: string,
-   *  appearActive?: string,
-   *  appearDone?: string,
-   *  enter?: string,
-   *  enterActive?: string,
-   *  enterDone?: string,
-   *  exit?: string,
-   *  exitActive?: string,
-   *  exitDone?: string,
-   * }}
-   */
-  classNames: _PropTypes.classNamesShape,
-
-  /**
-   * A `<Transition>` callback fired immediately after the 'enter' or 'appear' class is
-   * applied.
-   *
-   * **Note**: when `nodeRef` prop is passed, `node` is not passed.
-   *
-   * @type Function(node: HtmlElement, isAppearing: bool)
-   */
-  onEnter: _propTypes.default.func,
-
-  /**
-   * A `<Transition>` callback fired immediately after the 'enter-active' or
-   * 'appear-active' class is applied.
-   *
-   * **Note**: when `nodeRef` prop is passed, `node` is not passed.
-   *
-   * @type Function(node: HtmlElement, isAppearing: bool)
-   */
-  onEntering: _propTypes.default.func,
-
-  /**
-   * A `<Transition>` callback fired immediately after the 'enter' or
-   * 'appear' classes are **removed** and the `done` class is added to the DOM node.
-   *
-   * **Note**: when `nodeRef` prop is passed, `node` is not passed.
-   *
-   * @type Function(node: HtmlElement, isAppearing: bool)
-   */
-  onEntered: _propTypes.default.func,
-
-  /**
-   * A `<Transition>` callback fired immediately after the 'exit' class is
-   * applied.
-   *
-   * **Note**: when `nodeRef` prop is passed, `node` is not passed
-   *
-   * @type Function(node: HtmlElement)
-   */
-  onExit: _propTypes.default.func,
-
-  /**
-   * A `<Transition>` callback fired immediately after the 'exit-active' is applied.
-   *
-   * **Note**: when `nodeRef` prop is passed, `node` is not passed
-   *
-   * @type Function(node: HtmlElement)
-   */
-  onExiting: _propTypes.default.func,
-
-  /**
-   * A `<Transition>` callback fired immediately after the 'exit' classes
-   * are **removed** and the `exit-done` class is added to the DOM node.
-   *
-   * **Note**: when `nodeRef` prop is passed, `node` is not passed
-   *
-   * @type Function(node: HtmlElement)
-   */
-  onExited: _propTypes.default.func
-}) : {};
-var _default = CSSTransition;
-exports.default = _default;
-},{"@babel/runtime/helpers/esm/extends":"../node_modules/@babel/runtime/helpers/esm/extends.js","@babel/runtime/helpers/esm/objectWithoutPropertiesLoose":"../node_modules/@babel/runtime/helpers/esm/objectWithoutPropertiesLoose.js","@babel/runtime/helpers/esm/inheritsLoose":"../node_modules/@babel/runtime/helpers/esm/inheritsLoose.js","prop-types":"../node_modules/prop-types/index.js","dom-helpers/addClass":"../node_modules/dom-helpers/esm/addClass.js","dom-helpers/removeClass":"../node_modules/dom-helpers/esm/removeClass.js","react":"../node_modules/react/index.js","./Transition":"../node_modules/react-transition-group/esm/Transition.js","./utils/PropTypes":"../node_modules/react-transition-group/esm/utils/PropTypes.js"}],"../node_modules/@babel/runtime/helpers/esm/assertThisInitialized.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = _assertThisInitialized;
-
-function _assertThisInitialized(self) {
-  if (self === void 0) {
-    throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
-  }
-
-  return self;
-}
-},{}],"../node_modules/react-transition-group/esm/utils/ChildMapping.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.getChildMapping = getChildMapping;
-exports.mergeChildMappings = mergeChildMappings;
-exports.getInitialChildMapping = getInitialChildMapping;
-exports.getNextChildMapping = getNextChildMapping;
-
-var _react = require("react");
-
-/**
- * Given `this.props.children`, return an object mapping key to child.
- *
- * @param {*} children `this.props.children`
- * @return {object} Mapping of key to child
- */
-function getChildMapping(children, mapFn) {
-  var mapper = function mapper(child) {
-    return mapFn && (0, _react.isValidElement)(child) ? mapFn(child) : child;
-  };
-
-  var result = Object.create(null);
-  if (children) _react.Children.map(children, function (c) {
-    return c;
-  }).forEach(function (child) {
-    // run the map function here instead so that the key is the computed one
-    result[child.key] = mapper(child);
-  });
-  return result;
-}
-/**
- * When you're adding or removing children some may be added or removed in the
- * same render pass. We want to show *both* since we want to simultaneously
- * animate elements in and out. This function takes a previous set of keys
- * and a new set of keys and merges them with its best guess of the correct
- * ordering. In the future we may expose some of the utilities in
- * ReactMultiChild to make this easy, but for now React itself does not
- * directly have this concept of the union of prevChildren and nextChildren
- * so we implement it here.
- *
- * @param {object} prev prev children as returned from
- * `ReactTransitionChildMapping.getChildMapping()`.
- * @param {object} next next children as returned from
- * `ReactTransitionChildMapping.getChildMapping()`.
- * @return {object} a key set that contains all keys in `prev` and all keys
- * in `next` in a reasonable order.
- */
-
-
-function mergeChildMappings(prev, next) {
-  prev = prev || {};
-  next = next || {};
-
-  function getValueForKey(key) {
-    return key in next ? next[key] : prev[key];
-  } // For each key of `next`, the list of keys to insert before that key in
-  // the combined list
-
-
-  var nextKeysPending = Object.create(null);
-  var pendingKeys = [];
-
-  for (var prevKey in prev) {
-    if (prevKey in next) {
-      if (pendingKeys.length) {
-        nextKeysPending[prevKey] = pendingKeys;
-        pendingKeys = [];
-      }
-    } else {
-      pendingKeys.push(prevKey);
-    }
-  }
-
-  var i;
-  var childMapping = {};
-
-  for (var nextKey in next) {
-    if (nextKeysPending[nextKey]) {
-      for (i = 0; i < nextKeysPending[nextKey].length; i++) {
-        var pendingNextKey = nextKeysPending[nextKey][i];
-        childMapping[nextKeysPending[nextKey][i]] = getValueForKey(pendingNextKey);
-      }
-    }
-
-    childMapping[nextKey] = getValueForKey(nextKey);
-  } // Finally, add the keys which didn't appear before any key in `next`
-
-
-  for (i = 0; i < pendingKeys.length; i++) {
-    childMapping[pendingKeys[i]] = getValueForKey(pendingKeys[i]);
-  }
-
-  return childMapping;
-}
-
-function getProp(child, prop, props) {
-  return props[prop] != null ? props[prop] : child.props[prop];
-}
-
-function getInitialChildMapping(props, onExited) {
-  return getChildMapping(props.children, function (child) {
-    return (0, _react.cloneElement)(child, {
-      onExited: onExited.bind(null, child),
-      in: true,
-      appear: getProp(child, 'appear', props),
-      enter: getProp(child, 'enter', props),
-      exit: getProp(child, 'exit', props)
-    });
-  });
-}
-
-function getNextChildMapping(nextProps, prevChildMapping, onExited) {
-  var nextChildMapping = getChildMapping(nextProps.children);
-  var children = mergeChildMappings(prevChildMapping, nextChildMapping);
-  Object.keys(children).forEach(function (key) {
-    var child = children[key];
-    if (!(0, _react.isValidElement)(child)) return;
-    var hasPrev = (key in prevChildMapping);
-    var hasNext = (key in nextChildMapping);
-    var prevChild = prevChildMapping[key];
-    var isLeaving = (0, _react.isValidElement)(prevChild) && !prevChild.props.in; // item is new (entering)
-
-    if (hasNext && (!hasPrev || isLeaving)) {
-      // console.log('entering', key)
-      children[key] = (0, _react.cloneElement)(child, {
-        onExited: onExited.bind(null, child),
-        in: true,
-        exit: getProp(child, 'exit', nextProps),
-        enter: getProp(child, 'enter', nextProps)
-      });
-    } else if (!hasNext && hasPrev && !isLeaving) {
-      // item is old (exiting)
-      // console.log('leaving', key)
-      children[key] = (0, _react.cloneElement)(child, {
-        in: false
-      });
-    } else if (hasNext && hasPrev && (0, _react.isValidElement)(prevChild)) {
-      // item hasn't changed transition states
-      // copy over the last transition props;
-      // console.log('unchanged', key)
-      children[key] = (0, _react.cloneElement)(child, {
-        onExited: onExited.bind(null, child),
-        in: prevChild.props.in,
-        exit: getProp(child, 'exit', nextProps),
-        enter: getProp(child, 'enter', nextProps)
-      });
-    }
-  });
-  return children;
-}
-},{"react":"../node_modules/react/index.js"}],"../node_modules/react-transition-group/esm/TransitionGroup.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _objectWithoutPropertiesLoose2 = _interopRequireDefault(require("@babel/runtime/helpers/esm/objectWithoutPropertiesLoose"));
-
-var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/esm/extends"));
-
-var _assertThisInitialized2 = _interopRequireDefault(require("@babel/runtime/helpers/esm/assertThisInitialized"));
-
-var _inheritsLoose2 = _interopRequireDefault(require("@babel/runtime/helpers/esm/inheritsLoose"));
-
-var _propTypes = _interopRequireDefault(require("prop-types"));
-
-var _react = _interopRequireDefault(require("react"));
-
-var _TransitionGroupContext = _interopRequireDefault(require("./TransitionGroupContext"));
-
-var _ChildMapping = require("./utils/ChildMapping");
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var values = Object.values || function (obj) {
-  return Object.keys(obj).map(function (k) {
-    return obj[k];
-  });
-};
-
-var defaultProps = {
-  component: 'div',
-  childFactory: function childFactory(child) {
-    return child;
-  }
-};
-/**
- * The `<TransitionGroup>` component manages a set of transition components
- * (`<Transition>` and `<CSSTransition>`) in a list. Like with the transition
- * components, `<TransitionGroup>` is a state machine for managing the mounting
- * and unmounting of components over time.
- *
- * Consider the example below. As items are removed or added to the TodoList the
- * `in` prop is toggled automatically by the `<TransitionGroup>`.
- *
- * Note that `<TransitionGroup>`  does not define any animation behavior!
- * Exactly _how_ a list item animates is up to the individual transition
- * component. This means you can mix and match animations across different list
- * items.
- */
-
-var TransitionGroup = /*#__PURE__*/function (_React$Component) {
-  (0, _inheritsLoose2.default)(TransitionGroup, _React$Component);
-
-  function TransitionGroup(props, context) {
-    var _this;
-
-    _this = _React$Component.call(this, props, context) || this;
-
-    var handleExited = _this.handleExited.bind((0, _assertThisInitialized2.default)(_this)); // Initial children should all be entering, dependent on appear
-
-
-    _this.state = {
-      contextValue: {
-        isMounting: true
-      },
-      handleExited: handleExited,
-      firstRender: true
-    };
-    return _this;
-  }
-
-  var _proto = TransitionGroup.prototype;
-
-  _proto.componentDidMount = function componentDidMount() {
-    this.mounted = true;
-    this.setState({
-      contextValue: {
-        isMounting: false
-      }
-    });
-  };
-
-  _proto.componentWillUnmount = function componentWillUnmount() {
-    this.mounted = false;
-  };
-
-  TransitionGroup.getDerivedStateFromProps = function getDerivedStateFromProps(nextProps, _ref) {
-    var prevChildMapping = _ref.children,
-        handleExited = _ref.handleExited,
-        firstRender = _ref.firstRender;
-    return {
-      children: firstRender ? (0, _ChildMapping.getInitialChildMapping)(nextProps, handleExited) : (0, _ChildMapping.getNextChildMapping)(nextProps, prevChildMapping, handleExited),
-      firstRender: false
-    };
-  } // node is `undefined` when user provided `nodeRef` prop
-  ;
-
-  _proto.handleExited = function handleExited(child, node) {
-    var currentChildMapping = (0, _ChildMapping.getChildMapping)(this.props.children);
-    if (child.key in currentChildMapping) return;
-
-    if (child.props.onExited) {
-      child.props.onExited(node);
-    }
-
-    if (this.mounted) {
-      this.setState(function (state) {
-        var children = (0, _extends2.default)({}, state.children);
-        delete children[child.key];
-        return {
-          children: children
-        };
-      });
-    }
-  };
-
-  _proto.render = function render() {
-    var _this$props = this.props,
-        Component = _this$props.component,
-        childFactory = _this$props.childFactory,
-        props = (0, _objectWithoutPropertiesLoose2.default)(_this$props, ["component", "childFactory"]);
-    var contextValue = this.state.contextValue;
-    var children = values(this.state.children).map(childFactory);
-    delete props.appear;
-    delete props.enter;
-    delete props.exit;
-
-    if (Component === null) {
-      return /*#__PURE__*/_react.default.createElement(_TransitionGroupContext.default.Provider, {
-        value: contextValue
-      }, children);
-    }
-
-    return /*#__PURE__*/_react.default.createElement(_TransitionGroupContext.default.Provider, {
-      value: contextValue
-    }, /*#__PURE__*/_react.default.createElement(Component, props, children));
-  };
-
-  return TransitionGroup;
-}(_react.default.Component);
-
-TransitionGroup.propTypes = "development" !== "production" ? {
-  /**
-   * `<TransitionGroup>` renders a `<div>` by default. You can change this
-   * behavior by providing a `component` prop.
-   * If you use React v16+ and would like to avoid a wrapping `<div>` element
-   * you can pass in `component={null}`. This is useful if the wrapping div
-   * borks your css styles.
-   */
-  component: _propTypes.default.any,
-
-  /**
-   * A set of `<Transition>` components, that are toggled `in` and out as they
-   * leave. the `<TransitionGroup>` will inject specific transition props, so
-   * remember to spread them through if you are wrapping the `<Transition>` as
-   * with our `<Fade>` example.
-   *
-   * While this component is meant for multiple `Transition` or `CSSTransition`
-   * children, sometimes you may want to have a single transition child with
-   * content that you want to be transitioned out and in when you change it
-   * (e.g. routes, images etc.) In that case you can change the `key` prop of
-   * the transition child as you change its content, this will cause
-   * `TransitionGroup` to transition the child out and back in.
-   */
-  children: _propTypes.default.node,
-
-  /**
-   * A convenience prop that enables or disables appear animations
-   * for all children. Note that specifying this will override any defaults set
-   * on individual children Transitions.
-   */
-  appear: _propTypes.default.bool,
-
-  /**
-   * A convenience prop that enables or disables enter animations
-   * for all children. Note that specifying this will override any defaults set
-   * on individual children Transitions.
-   */
-  enter: _propTypes.default.bool,
-
-  /**
-   * A convenience prop that enables or disables exit animations
-   * for all children. Note that specifying this will override any defaults set
-   * on individual children Transitions.
-   */
-  exit: _propTypes.default.bool,
-
-  /**
-   * You may need to apply reactive updates to a child as it is exiting.
-   * This is generally done by using `cloneElement` however in the case of an exiting
-   * child the element has already been removed and not accessible to the consumer.
-   *
-   * If you do need to update a child as it leaves you can provide a `childFactory`
-   * to wrap every child, even the ones that are leaving.
-   *
-   * @type Function(child: ReactElement) -> ReactElement
-   */
-  childFactory: _propTypes.default.func
-} : {};
-TransitionGroup.defaultProps = defaultProps;
-var _default = TransitionGroup;
-exports.default = _default;
-},{"@babel/runtime/helpers/esm/objectWithoutPropertiesLoose":"../node_modules/@babel/runtime/helpers/esm/objectWithoutPropertiesLoose.js","@babel/runtime/helpers/esm/extends":"../node_modules/@babel/runtime/helpers/esm/extends.js","@babel/runtime/helpers/esm/assertThisInitialized":"../node_modules/@babel/runtime/helpers/esm/assertThisInitialized.js","@babel/runtime/helpers/esm/inheritsLoose":"../node_modules/@babel/runtime/helpers/esm/inheritsLoose.js","prop-types":"../node_modules/prop-types/index.js","react":"../node_modules/react/index.js","./TransitionGroupContext":"../node_modules/react-transition-group/esm/TransitionGroupContext.js","./utils/ChildMapping":"../node_modules/react-transition-group/esm/utils/ChildMapping.js"}],"../node_modules/react-transition-group/esm/ReplaceTransition.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _objectWithoutPropertiesLoose2 = _interopRequireDefault(require("@babel/runtime/helpers/esm/objectWithoutPropertiesLoose"));
-
-var _inheritsLoose2 = _interopRequireDefault(require("@babel/runtime/helpers/esm/inheritsLoose"));
-
-var _propTypes = _interopRequireDefault(require("prop-types"));
-
-var _react = _interopRequireDefault(require("react"));
-
-var _reactDom = _interopRequireDefault(require("react-dom"));
-
-var _TransitionGroup = _interopRequireDefault(require("./TransitionGroup"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-/**
- * The `<ReplaceTransition>` component is a specialized `Transition` component
- * that animates between two children.
- *
- * ```jsx
- * <ReplaceTransition in>
- *   <Fade><div>I appear first</div></Fade>
- *   <Fade><div>I replace the above</div></Fade>
- * </ReplaceTransition>
- * ```
- */
-var ReplaceTransition = /*#__PURE__*/function (_React$Component) {
-  (0, _inheritsLoose2.default)(ReplaceTransition, _React$Component);
-
-  function ReplaceTransition() {
-    var _this;
-
-    for (var _len = arguments.length, _args = new Array(_len), _key = 0; _key < _len; _key++) {
-      _args[_key] = arguments[_key];
-    }
-
-    _this = _React$Component.call.apply(_React$Component, [this].concat(_args)) || this;
-
-    _this.handleEnter = function () {
-      for (var _len2 = arguments.length, args = new Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
-        args[_key2] = arguments[_key2];
-      }
-
-      return _this.handleLifecycle('onEnter', 0, args);
-    };
-
-    _this.handleEntering = function () {
-      for (var _len3 = arguments.length, args = new Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
-        args[_key3] = arguments[_key3];
-      }
-
-      return _this.handleLifecycle('onEntering', 0, args);
-    };
-
-    _this.handleEntered = function () {
-      for (var _len4 = arguments.length, args = new Array(_len4), _key4 = 0; _key4 < _len4; _key4++) {
-        args[_key4] = arguments[_key4];
-      }
-
-      return _this.handleLifecycle('onEntered', 0, args);
-    };
-
-    _this.handleExit = function () {
-      for (var _len5 = arguments.length, args = new Array(_len5), _key5 = 0; _key5 < _len5; _key5++) {
-        args[_key5] = arguments[_key5];
-      }
-
-      return _this.handleLifecycle('onExit', 1, args);
-    };
-
-    _this.handleExiting = function () {
-      for (var _len6 = arguments.length, args = new Array(_len6), _key6 = 0; _key6 < _len6; _key6++) {
-        args[_key6] = arguments[_key6];
-      }
-
-      return _this.handleLifecycle('onExiting', 1, args);
-    };
-
-    _this.handleExited = function () {
-      for (var _len7 = arguments.length, args = new Array(_len7), _key7 = 0; _key7 < _len7; _key7++) {
-        args[_key7] = arguments[_key7];
-      }
-
-      return _this.handleLifecycle('onExited', 1, args);
-    };
-
-    return _this;
-  }
-
-  var _proto = ReplaceTransition.prototype;
-
-  _proto.handleLifecycle = function handleLifecycle(handler, idx, originalArgs) {
-    var _child$props;
-
-    var children = this.props.children;
-
-    var child = _react.default.Children.toArray(children)[idx];
-
-    if (child.props[handler]) (_child$props = child.props)[handler].apply(_child$props, originalArgs);
-
-    if (this.props[handler]) {
-      var maybeNode = child.props.nodeRef ? undefined : _reactDom.default.findDOMNode(this);
-      this.props[handler](maybeNode);
-    }
-  };
-
-  _proto.render = function render() {
-    var _this$props = this.props,
-        children = _this$props.children,
-        inProp = _this$props.in,
-        props = (0, _objectWithoutPropertiesLoose2.default)(_this$props, ["children", "in"]);
-
-    var _React$Children$toArr = _react.default.Children.toArray(children),
-        first = _React$Children$toArr[0],
-        second = _React$Children$toArr[1];
-
-    delete props.onEnter;
-    delete props.onEntering;
-    delete props.onEntered;
-    delete props.onExit;
-    delete props.onExiting;
-    delete props.onExited;
-    return /*#__PURE__*/_react.default.createElement(_TransitionGroup.default, props, inProp ? _react.default.cloneElement(first, {
-      key: 'first',
-      onEnter: this.handleEnter,
-      onEntering: this.handleEntering,
-      onEntered: this.handleEntered
-    }) : _react.default.cloneElement(second, {
-      key: 'second',
-      onEnter: this.handleExit,
-      onEntering: this.handleExiting,
-      onEntered: this.handleExited
-    }));
-  };
-
-  return ReplaceTransition;
-}(_react.default.Component);
-
-ReplaceTransition.propTypes = "development" !== "production" ? {
-  in: _propTypes.default.bool.isRequired,
-  children: function children(props, propName) {
-    if (_react.default.Children.count(props[propName]) !== 2) return new Error("\"" + propName + "\" must be exactly two transition components.");
-    return null;
-  }
-} : {};
-var _default = ReplaceTransition;
-exports.default = _default;
-},{"@babel/runtime/helpers/esm/objectWithoutPropertiesLoose":"../node_modules/@babel/runtime/helpers/esm/objectWithoutPropertiesLoose.js","@babel/runtime/helpers/esm/inheritsLoose":"../node_modules/@babel/runtime/helpers/esm/inheritsLoose.js","prop-types":"../node_modules/prop-types/index.js","react":"../node_modules/react/index.js","react-dom":"../node_modules/react-dom/index.js","./TransitionGroup":"../node_modules/react-transition-group/esm/TransitionGroup.js"}],"../node_modules/react-transition-group/esm/SwitchTransition.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = exports.modes = void 0;
-
-var _inheritsLoose2 = _interopRequireDefault(require("@babel/runtime/helpers/esm/inheritsLoose"));
-
-var _react = _interopRequireDefault(require("react"));
-
-var _propTypes = _interopRequireDefault(require("prop-types"));
-
-var _Transition = require("./Transition");
-
-var _TransitionGroupContext = _interopRequireDefault(require("./TransitionGroupContext"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var _leaveRenders, _enterRenders;
-
-function areChildrenDifferent(oldChildren, newChildren) {
-  if (oldChildren === newChildren) return false;
-
-  if (_react.default.isValidElement(oldChildren) && _react.default.isValidElement(newChildren) && oldChildren.key != null && oldChildren.key === newChildren.key) {
-    return false;
-  }
-
-  return true;
-}
-/**
- * Enum of modes for SwitchTransition component
- * @enum { string }
- */
-
-
-var modes = {
-  out: 'out-in',
-  in: 'in-out'
-};
-exports.modes = modes;
-
-var callHook = function callHook(element, name, cb) {
-  return function () {
-    var _element$props;
-
-    element.props[name] && (_element$props = element.props)[name].apply(_element$props, arguments);
-    cb();
-  };
-};
-
-var leaveRenders = (_leaveRenders = {}, _leaveRenders[modes.out] = function (_ref) {
-  var current = _ref.current,
-      changeState = _ref.changeState;
-  return _react.default.cloneElement(current, {
-    in: false,
-    onExited: callHook(current, 'onExited', function () {
-      changeState(_Transition.ENTERING, null);
-    })
-  });
-}, _leaveRenders[modes.in] = function (_ref2) {
-  var current = _ref2.current,
-      changeState = _ref2.changeState,
-      children = _ref2.children;
-  return [current, _react.default.cloneElement(children, {
-    in: true,
-    onEntered: callHook(children, 'onEntered', function () {
-      changeState(_Transition.ENTERING);
-    })
-  })];
-}, _leaveRenders);
-var enterRenders = (_enterRenders = {}, _enterRenders[modes.out] = function (_ref3) {
-  var children = _ref3.children,
-      changeState = _ref3.changeState;
-  return _react.default.cloneElement(children, {
-    in: true,
-    onEntered: callHook(children, 'onEntered', function () {
-      changeState(_Transition.ENTERED, _react.default.cloneElement(children, {
-        in: true
-      }));
-    })
-  });
-}, _enterRenders[modes.in] = function (_ref4) {
-  var current = _ref4.current,
-      children = _ref4.children,
-      changeState = _ref4.changeState;
-  return [_react.default.cloneElement(current, {
-    in: false,
-    onExited: callHook(current, 'onExited', function () {
-      changeState(_Transition.ENTERED, _react.default.cloneElement(children, {
-        in: true
-      }));
-    })
-  }), _react.default.cloneElement(children, {
-    in: true
-  })];
-}, _enterRenders);
-/**
- * A transition component inspired by the [vue transition modes](https://vuejs.org/v2/guide/transitions.html#Transition-Modes).
- * You can use it when you want to control the render between state transitions.
- * Based on the selected mode and the child's key which is the `Transition` or `CSSTransition` component, the `SwitchTransition` makes a consistent transition between them.
- *
- * If the `out-in` mode is selected, the `SwitchTransition` waits until the old child leaves and then inserts a new child.
- * If the `in-out` mode is selected, the `SwitchTransition` inserts a new child first, waits for the new child to enter and then removes the old child.
- *
- * **Note**: If you want the animation to happen simultaneously
- * (that is, to have the old child removed and a new child inserted **at the same time**),
- * you should use
- * [`TransitionGroup`](https://reactcommunity.org/react-transition-group/transition-group)
- * instead.
- *
- * ```jsx
- * function App() {
- *  const [state, setState] = useState(false);
- *  return (
- *    <SwitchTransition>
- *      <CSSTransition
- *        key={state ? "Goodbye, world!" : "Hello, world!"}
- *        addEndListener={(node, done) => node.addEventListener("transitionend", done, false)}
- *        classNames='fade'
- *      >
- *        <button onClick={() => setState(state => !state)}>
- *          {state ? "Goodbye, world!" : "Hello, world!"}
- *        </button>
- *      </CSSTransition>
- *    </SwitchTransition>
- *  );
- * }
- * ```
- *
- * ```css
- * .fade-enter{
- *    opacity: 0;
- * }
- * .fade-exit{
- *    opacity: 1;
- * }
- * .fade-enter-active{
- *    opacity: 1;
- * }
- * .fade-exit-active{
- *    opacity: 0;
- * }
- * .fade-enter-active,
- * .fade-exit-active{
- *    transition: opacity 500ms;
- * }
- * ```
- */
-
-var SwitchTransition = /*#__PURE__*/function (_React$Component) {
-  (0, _inheritsLoose2.default)(SwitchTransition, _React$Component);
-
-  function SwitchTransition() {
-    var _this;
-
-    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
-      args[_key] = arguments[_key];
-    }
-
-    _this = _React$Component.call.apply(_React$Component, [this].concat(args)) || this;
-    _this.state = {
-      status: _Transition.ENTERED,
-      current: null
-    };
-    _this.appeared = false;
-
-    _this.changeState = function (status, current) {
-      if (current === void 0) {
-        current = _this.state.current;
-      }
-
-      _this.setState({
-        status: status,
-        current: current
-      });
-    };
-
-    return _this;
-  }
-
-  var _proto = SwitchTransition.prototype;
-
-  _proto.componentDidMount = function componentDidMount() {
-    this.appeared = true;
-  };
-
-  SwitchTransition.getDerivedStateFromProps = function getDerivedStateFromProps(props, state) {
-    if (props.children == null) {
-      return {
-        current: null
-      };
-    }
-
-    if (state.status === _Transition.ENTERING && props.mode === modes.in) {
-      return {
-        status: _Transition.ENTERING
-      };
-    }
-
-    if (state.current && areChildrenDifferent(state.current, props.children)) {
-      return {
-        status: _Transition.EXITING
-      };
-    }
-
-    return {
-      current: _react.default.cloneElement(props.children, {
-        in: true
-      })
-    };
-  };
-
-  _proto.render = function render() {
-    var _this$props = this.props,
-        children = _this$props.children,
-        mode = _this$props.mode,
-        _this$state = this.state,
-        status = _this$state.status,
-        current = _this$state.current;
-    var data = {
-      children: children,
-      current: current,
-      changeState: this.changeState,
-      status: status
-    };
-    var component;
-
-    switch (status) {
-      case _Transition.ENTERING:
-        component = enterRenders[mode](data);
-        break;
-
-      case _Transition.EXITING:
-        component = leaveRenders[mode](data);
-        break;
-
-      case _Transition.ENTERED:
-        component = current;
-    }
-
-    return /*#__PURE__*/_react.default.createElement(_TransitionGroupContext.default.Provider, {
-      value: {
-        isMounting: !this.appeared
-      }
-    }, component);
-  };
-
-  return SwitchTransition;
-}(_react.default.Component);
-
-SwitchTransition.propTypes = "development" !== "production" ? {
-  /**
-   * Transition modes.
-   * `out-in`: Current element transitions out first, then when complete, the new element transitions in.
-   * `in-out`: New element transitions in first, then when complete, the current element transitions out.
-   *
-   * @type {'out-in'|'in-out'}
-   */
-  mode: _propTypes.default.oneOf([modes.in, modes.out]),
-
-  /**
-   * Any `Transition` or `CSSTransition` component.
-   */
-  children: _propTypes.default.oneOfType([_propTypes.default.element.isRequired])
-} : {};
-SwitchTransition.defaultProps = {
-  mode: modes.out
-};
-var _default = SwitchTransition;
-exports.default = _default;
-},{"@babel/runtime/helpers/esm/inheritsLoose":"../node_modules/@babel/runtime/helpers/esm/inheritsLoose.js","react":"../node_modules/react/index.js","prop-types":"../node_modules/prop-types/index.js","./Transition":"../node_modules/react-transition-group/esm/Transition.js","./TransitionGroupContext":"../node_modules/react-transition-group/esm/TransitionGroupContext.js"}],"../node_modules/react-transition-group/esm/index.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-Object.defineProperty(exports, "CSSTransition", {
-  enumerable: true,
-  get: function () {
-    return _CSSTransition.default;
-  }
-});
-Object.defineProperty(exports, "ReplaceTransition", {
-  enumerable: true,
-  get: function () {
-    return _ReplaceTransition.default;
-  }
-});
-Object.defineProperty(exports, "SwitchTransition", {
-  enumerable: true,
-  get: function () {
-    return _SwitchTransition.default;
-  }
-});
-Object.defineProperty(exports, "TransitionGroup", {
-  enumerable: true,
-  get: function () {
-    return _TransitionGroup.default;
-  }
-});
-Object.defineProperty(exports, "Transition", {
-  enumerable: true,
-  get: function () {
-    return _Transition.default;
-  }
-});
-Object.defineProperty(exports, "config", {
-  enumerable: true,
-  get: function () {
-    return _config.default;
-  }
-});
-
-var _CSSTransition = _interopRequireDefault(require("./CSSTransition"));
-
-var _ReplaceTransition = _interopRequireDefault(require("./ReplaceTransition"));
-
-var _SwitchTransition = _interopRequireDefault(require("./SwitchTransition"));
-
-var _TransitionGroup = _interopRequireDefault(require("./TransitionGroup"));
-
-var _Transition = _interopRequireDefault(require("./Transition"));
-
-var _config = _interopRequireDefault(require("./config"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-},{"./CSSTransition":"../node_modules/react-transition-group/esm/CSSTransition.js","./ReplaceTransition":"../node_modules/react-transition-group/esm/ReplaceTransition.js","./SwitchTransition":"../node_modules/react-transition-group/esm/SwitchTransition.js","./TransitionGroup":"../node_modules/react-transition-group/esm/TransitionGroup.js","./Transition":"../node_modules/react-transition-group/esm/Transition.js","./config":"../node_modules/react-transition-group/esm/config.js"}],"../node_modules/@material-ui/styles/esm/ThemeProvider/nested.js":[function(require,module,exports) {
+},{"@material-ui/utils":"../node_modules/@material-ui/utils/esm/index.js","./createMuiTheme":"../node_modules/@material-ui/core/esm/styles/createMuiTheme.js"}],"../node_modules/@material-ui/styles/esm/ThemeProvider/nested.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -35190,6 +33117,34 @@ function _createClass(Constructor, protoProps, staticProps) {
   if (protoProps) _defineProperties(Constructor.prototype, protoProps);
   if (staticProps) _defineProperties(Constructor, staticProps);
   return Constructor;
+}
+},{}],"../node_modules/@babel/runtime/helpers/esm/inheritsLoose.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = _inheritsLoose;
+
+function _inheritsLoose(subClass, superClass) {
+  subClass.prototype = Object.create(superClass.prototype);
+  subClass.prototype.constructor = subClass;
+  subClass.__proto__ = superClass;
+}
+},{}],"../node_modules/@babel/runtime/helpers/esm/assertThisInitialized.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = _assertThisInitialized;
+
+function _assertThisInitialized(self) {
+  if (self === void 0) {
+    throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+  }
+
+  return self;
 }
 },{}],"../node_modules/jss/dist/jss.esm.js":[function(require,module,exports) {
 "use strict";
@@ -39717,7 +37672,62 @@ Object.defineProperty(exports, "default", {
 var _ServerStyleSheets = _interopRequireDefault(require("./ServerStyleSheets"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-},{"./ServerStyleSheets":"../node_modules/@material-ui/styles/esm/ServerStyleSheets/ServerStyleSheets.js"}],"../node_modules/hoist-non-react-statics/dist/hoist-non-react-statics.cjs.js":[function(require,module,exports) {
+},{"./ServerStyleSheets":"../node_modules/@material-ui/styles/esm/ServerStyleSheets/ServerStyleSheets.js"}],"../node_modules/clsx/dist/clsx.m.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = _default;
+
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function (obj) { return typeof obj; }; } else { _typeof = function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function toVal(mix) {
+  var k,
+      y,
+      str = '';
+
+  if (mix) {
+    if (_typeof(mix) === 'object') {
+      if (Array.isArray(mix)) {
+        for (k = 0; k < mix.length; k++) {
+          if (mix[k] && (y = toVal(mix[k]))) {
+            str && (str += ' ');
+            str += y;
+          }
+        }
+      } else {
+        for (k in mix) {
+          if (mix[k] && (y = toVal(k))) {
+            str && (str += ' ');
+            str += y;
+          }
+        }
+      }
+    } else if (typeof mix !== 'boolean' && !mix.call) {
+      str && (str += ' ');
+      str += mix;
+    }
+  }
+
+  return str;
+}
+
+function _default() {
+  var i = 0,
+      x,
+      str = '';
+
+  while (i < arguments.length) {
+    if (x = toVal(arguments[i++])) {
+      str && (str += ' ');
+      str += x;
+    }
+  }
+
+  return str;
+}
+},{}],"../node_modules/hoist-non-react-statics/dist/hoist-non-react-statics.cjs.js":[function(require,module,exports) {
 'use strict';
 
 var reactIs = require('react-is');
@@ -40662,7 +38672,7 @@ function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return 
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
-/** @license Material-UI v4.9.13
+/** @license Material-UI v4.9.14
  *
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
@@ -40680,7 +38690,30 @@ if ("development" !== 'production' && "development" !== 'test' && typeof window 
 
   _utils.ponyfillGlobal['__@material-ui/styles-init__'] += 1;
 }
-},{"@material-ui/utils":"../node_modules/@material-ui/utils/esm/index.js","./createGenerateClassName":"../node_modules/@material-ui/styles/esm/createGenerateClassName/index.js","./createStyles":"../node_modules/@material-ui/styles/esm/createStyles/index.js","./getThemeProps":"../node_modules/@material-ui/styles/esm/getThemeProps/index.js","./jssPreset":"../node_modules/@material-ui/styles/esm/jssPreset/index.js","./makeStyles":"../node_modules/@material-ui/styles/esm/makeStyles/index.js","./mergeClasses":"../node_modules/@material-ui/styles/esm/mergeClasses/index.js","./ServerStyleSheets":"../node_modules/@material-ui/styles/esm/ServerStyleSheets/index.js","./styled":"../node_modules/@material-ui/styles/esm/styled/index.js","./StylesProvider":"../node_modules/@material-ui/styles/esm/StylesProvider/index.js","./ThemeProvider":"../node_modules/@material-ui/styles/esm/ThemeProvider/index.js","./useTheme":"../node_modules/@material-ui/styles/esm/useTheme/index.js","./withStyles":"../node_modules/@material-ui/styles/esm/withStyles/index.js","./withTheme":"../node_modules/@material-ui/styles/esm/withTheme/index.js"}],"../node_modules/@material-ui/core/esm/styles/defaultTheme.js":[function(require,module,exports) {
+},{"@material-ui/utils":"../node_modules/@material-ui/utils/esm/index.js","./createGenerateClassName":"../node_modules/@material-ui/styles/esm/createGenerateClassName/index.js","./createStyles":"../node_modules/@material-ui/styles/esm/createStyles/index.js","./getThemeProps":"../node_modules/@material-ui/styles/esm/getThemeProps/index.js","./jssPreset":"../node_modules/@material-ui/styles/esm/jssPreset/index.js","./makeStyles":"../node_modules/@material-ui/styles/esm/makeStyles/index.js","./mergeClasses":"../node_modules/@material-ui/styles/esm/mergeClasses/index.js","./ServerStyleSheets":"../node_modules/@material-ui/styles/esm/ServerStyleSheets/index.js","./styled":"../node_modules/@material-ui/styles/esm/styled/index.js","./StylesProvider":"../node_modules/@material-ui/styles/esm/StylesProvider/index.js","./ThemeProvider":"../node_modules/@material-ui/styles/esm/ThemeProvider/index.js","./useTheme":"../node_modules/@material-ui/styles/esm/useTheme/index.js","./withStyles":"../node_modules/@material-ui/styles/esm/withStyles/index.js","./withTheme":"../node_modules/@material-ui/styles/esm/withTheme/index.js"}],"../node_modules/@material-ui/core/esm/styles/createStyles.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = createStyles;
+
+var _styles = require("@material-ui/styles");
+
+// let warnOnce = false;
+// To remove in v5
+function createStyles(styles) {
+  // warning(
+  //   warnOnce,
+  //   [
+  //     'Material-UI: createStyles from @material-ui/core/styles is deprecated.',
+  //     'Please use @material-ui/styles/createStyles',
+  //   ].join('\n'),
+  // );
+  // warnOnce = true;
+  return (0, _styles.createStyles)(styles);
+}
+},{"@material-ui/styles":"../node_modules/@material-ui/styles/esm/index.js"}],"../node_modules/@material-ui/core/esm/styles/defaultTheme.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -40695,7 +38728,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var defaultTheme = (0, _createMuiTheme.default)();
 var _default = defaultTheme;
 exports.default = _default;
-},{"./createMuiTheme":"../node_modules/@material-ui/core/esm/styles/createMuiTheme.js"}],"../node_modules/@material-ui/core/esm/styles/withStyles.js":[function(require,module,exports) {
+},{"./createMuiTheme":"../node_modules/@material-ui/core/esm/styles/createMuiTheme.js"}],"../node_modules/@material-ui/core/esm/styles/makeStyles.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -40711,39 +38744,270 @@ var _defaultTheme = _interopRequireDefault(require("./defaultTheme"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function withStyles(stylesOrCreator, options) {
-  return (0, _styles.withStyles)(stylesOrCreator, (0, _extends2.default)({
+function makeStyles(stylesOrCreator) {
+  var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+  return (0, _styles.makeStyles)(stylesOrCreator, (0, _extends2.default)({
     defaultTheme: _defaultTheme.default
   }, options));
 }
 
-var _default = withStyles;
+var _default = makeStyles;
 exports.default = _default;
-},{"@babel/runtime/helpers/esm/extends":"../node_modules/@babel/runtime/helpers/esm/extends.js","@material-ui/styles":"../node_modules/@material-ui/styles/esm/index.js","./defaultTheme":"../node_modules/@material-ui/core/esm/styles/defaultTheme.js"}],"../node_modules/@material-ui/core/esm/transitions/utils.js":[function(require,module,exports) {
+},{"@babel/runtime/helpers/esm/extends":"../node_modules/@babel/runtime/helpers/esm/extends.js","@material-ui/styles":"../node_modules/@material-ui/styles/esm/index.js","./defaultTheme":"../node_modules/@material-ui/core/esm/styles/defaultTheme.js"}],"../node_modules/@material-ui/core/esm/styles/cssUtils.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.getTransitionProps = getTransitionProps;
-exports.reflow = void 0;
+exports.isUnitless = isUnitless;
+exports.getUnit = getUnit;
+exports.toUnitless = toUnitless;
+exports.convertLength = convertLength;
+exports.alignProperty = alignProperty;
+exports.fontGrid = fontGrid;
+exports.responsiveProperty = responsiveProperty;
 
-var reflow = function reflow(node) {
-  return node.scrollTop;
-};
+var _defineProperty2 = _interopRequireDefault(require("@babel/runtime/helpers/esm/defineProperty"));
 
-exports.reflow = reflow;
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function getTransitionProps(props, options) {
-  var timeout = props.timeout,
-      _props$style = props.style,
-      style = _props$style === void 0 ? {} : _props$style;
-  return {
-    duration: style.transitionDuration || typeof timeout === 'number' ? timeout : timeout[options.mode] || 0,
-    delay: style.transitionDelay
+function isUnitless(value) {
+  return String(parseFloat(value)).length === String(value).length;
+} // Ported from Compass
+// https://github.com/Compass/compass/blob/master/core/stylesheets/compass/typography/_units.scss
+// Emulate the sass function "unit"
+
+
+function getUnit(input) {
+  return String(input).match(/[\d.\-+]*\s*(.*)/)[1] || '';
+} // Emulate the sass function "unitless"
+
+
+function toUnitless(length) {
+  return parseFloat(length);
+} // Convert any CSS <length> or <percentage> value to any another.
+// From https://github.com/KyleAMathews/convert-css-length
+
+
+function convertLength(baseFontSize) {
+  return function (length, toUnit) {
+    var fromUnit = getUnit(length); // Optimize for cases where `from` and `to` units are accidentally the same.
+
+    if (fromUnit === toUnit) {
+      return length;
+    } // Convert input length to pixels.
+
+
+    var pxLength = toUnitless(length);
+
+    if (fromUnit !== 'px') {
+      if (fromUnit === 'em') {
+        pxLength = toUnitless(length) * toUnitless(baseFontSize);
+      } else if (fromUnit === 'rem') {
+        pxLength = toUnitless(length) * toUnitless(baseFontSize);
+        return length;
+      }
+    } // Convert length in pixels to the output unit
+
+
+    var outputLength = pxLength;
+
+    if (toUnit !== 'px') {
+      if (toUnit === 'em') {
+        outputLength = pxLength / toUnitless(baseFontSize);
+      } else if (toUnit === 'rem') {
+        outputLength = pxLength / toUnitless(baseFontSize);
+      } else {
+        return length;
+      }
+    }
+
+    return parseFloat(outputLength.toFixed(5)) + toUnit;
   };
 }
-},{}],"../node_modules/@material-ui/core/esm/styles/useTheme.js":[function(require,module,exports) {
+
+function alignProperty(_ref) {
+  var size = _ref.size,
+      grid = _ref.grid;
+  var sizeBelow = size - size % grid;
+  var sizeAbove = sizeBelow + grid;
+  return size - sizeBelow < sizeAbove - size ? sizeBelow : sizeAbove;
+} // fontGrid finds a minimal grid (in rem) for the fontSize values so that the
+// lineHeight falls under a x pixels grid, 4px in the case of Material Design,
+// without changing the relative line height
+
+
+function fontGrid(_ref2) {
+  var lineHeight = _ref2.lineHeight,
+      pixels = _ref2.pixels,
+      htmlFontSize = _ref2.htmlFontSize;
+  return pixels / (lineHeight * htmlFontSize);
+}
+/**
+ * generate a responsive version of a given CSS property
+ * @example
+ * responsiveProperty({
+ *   cssProperty: 'fontSize',
+ *   min: 15,
+ *   max: 20,
+ *   unit: 'px',
+ *   breakpoints: [300, 600],
+ * })
+ *
+ * // this returns
+ *
+ * {
+ *   fontSize: '15px',
+ *   '@media (min-width:300px)': {
+ *     fontSize: '17.5px',
+ *   },
+ *   '@media (min-width:600px)': {
+ *     fontSize: '20px',
+ *   },
+ * }
+ *
+ * @param {Object} params
+ * @param {string} params.cssProperty - The CSS property to be made responsive
+ * @param {number} params.min - The smallest value of the CSS property
+ * @param {number} params.max - The largest value of the CSS property
+ * @param {string} [params.unit] - The unit to be used for the CSS property
+ * @param {Array.number} [params.breakpoints]  - An array of breakpoints
+ * @param {number} [params.alignStep] - Round scaled value to fall under this grid
+ * @returns {Object} responsive styles for {params.cssProperty}
+ */
+
+
+function responsiveProperty(_ref3) {
+  var cssProperty = _ref3.cssProperty,
+      min = _ref3.min,
+      max = _ref3.max,
+      _ref3$unit = _ref3.unit,
+      unit = _ref3$unit === void 0 ? 'rem' : _ref3$unit,
+      _ref3$breakpoints = _ref3.breakpoints,
+      breakpoints = _ref3$breakpoints === void 0 ? [600, 960, 1280] : _ref3$breakpoints,
+      _ref3$transform = _ref3.transform,
+      transform = _ref3$transform === void 0 ? null : _ref3$transform;
+  var output = (0, _defineProperty2.default)({}, cssProperty, "".concat(min).concat(unit));
+  var factor = (max - min) / breakpoints[breakpoints.length - 1];
+  breakpoints.forEach(function (breakpoint) {
+    var value = min + factor * breakpoint;
+
+    if (transform !== null) {
+      value = transform(value);
+    }
+
+    output["@media (min-width:".concat(breakpoint, "px)")] = (0, _defineProperty2.default)({}, cssProperty, "".concat(Math.round(value * 10000) / 10000).concat(unit));
+  });
+  return output;
+}
+},{"@babel/runtime/helpers/esm/defineProperty":"../node_modules/@babel/runtime/helpers/esm/defineProperty.js"}],"../node_modules/@material-ui/core/esm/styles/responsiveFontSizes.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = responsiveFontSizes;
+
+var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/esm/extends"));
+
+var _cssUtils = require("./cssUtils");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function responsiveFontSizes(themeInput) {
+  var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+  var _options$breakpoints = options.breakpoints,
+      breakpoints = _options$breakpoints === void 0 ? ['sm', 'md', 'lg'] : _options$breakpoints,
+      _options$disableAlign = options.disableAlign,
+      disableAlign = _options$disableAlign === void 0 ? false : _options$disableAlign,
+      _options$factor = options.factor,
+      factor = _options$factor === void 0 ? 2 : _options$factor,
+      _options$variants = options.variants,
+      variants = _options$variants === void 0 ? ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'subtitle1', 'subtitle2', 'body1', 'body2', 'caption', 'button', 'overline'] : _options$variants;
+  var theme = (0, _extends2.default)({}, themeInput);
+  theme.typography = (0, _extends2.default)({}, theme.typography);
+  var typography = theme.typography; // Convert between css lengths e.g. em->px or px->rem
+  // Set the baseFontSize for your project. Defaults to 16px (also the browser default).
+
+  var convert = (0, _cssUtils.convertLength)(typography.htmlFontSize);
+  var breakpointValues = breakpoints.map(function (x) {
+    return theme.breakpoints.values[x];
+  });
+  variants.forEach(function (variant) {
+    var style = typography[variant];
+    var remFontSize = parseFloat(convert(style.fontSize, 'rem'));
+
+    if (remFontSize <= 1) {
+      return;
+    }
+
+    var maxFontSize = remFontSize;
+    var minFontSize = 1 + (maxFontSize - 1) / factor;
+    var lineHeight = style.lineHeight;
+
+    if (!(0, _cssUtils.isUnitless)(lineHeight) && !disableAlign) {
+      throw new Error(['Material-UI: Unsupported non-unitless line height with grid alignment.', 'Use unitless line heights instead.'].join('\n'));
+    }
+
+    if (!(0, _cssUtils.isUnitless)(lineHeight)) {
+      // make it unitless
+      lineHeight = parseFloat(convert(lineHeight, 'rem')) / parseFloat(remFontSize);
+    }
+
+    var transform = null;
+
+    if (!disableAlign) {
+      transform = function transform(value) {
+        return (0, _cssUtils.alignProperty)({
+          size: value,
+          grid: (0, _cssUtils.fontGrid)({
+            pixels: 4,
+            lineHeight: lineHeight,
+            htmlFontSize: typography.htmlFontSize
+          })
+        });
+      };
+    }
+
+    typography[variant] = (0, _extends2.default)((0, _extends2.default)({}, style), (0, _cssUtils.responsiveProperty)({
+      cssProperty: 'fontSize',
+      min: minFontSize,
+      max: maxFontSize,
+      unit: 'rem',
+      breakpoints: breakpointValues,
+      transform: transform
+    }));
+  });
+  return theme;
+}
+},{"@babel/runtime/helpers/esm/extends":"../node_modules/@babel/runtime/helpers/esm/extends.js","./cssUtils":"../node_modules/@material-ui/core/esm/styles/cssUtils.js"}],"../node_modules/@material-ui/core/esm/styles/styled.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/esm/extends"));
+
+var _styles = require("@material-ui/styles");
+
+var _defaultTheme = _interopRequireDefault(require("./defaultTheme"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var styled = function styled(Component) {
+  var componentCreator = (0, _styles.styled)(Component);
+  return function (style, options) {
+    return componentCreator(style, (0, _extends2.default)({
+      defaultTheme: _defaultTheme.default
+    }, options));
+  };
+};
+
+var _default = styled;
+exports.default = _default;
+},{"@babel/runtime/helpers/esm/extends":"../node_modules/@babel/runtime/helpers/esm/extends.js","@material-ui/styles":"../node_modules/@material-ui/styles/esm/index.js","./defaultTheme":"../node_modules/@material-ui/core/esm/styles/defaultTheme.js"}],"../node_modules/@material-ui/core/esm/styles/useTheme.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -40769,984 +39033,7 @@ function useTheme() {
 
   return theme;
 }
-},{"@material-ui/styles":"../node_modules/@material-ui/styles/esm/index.js","react":"../node_modules/react/index.js","./defaultTheme":"../node_modules/@material-ui/core/esm/styles/defaultTheme.js"}],"../node_modules/@material-ui/core/esm/Collapse/Collapse.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = exports.styles = void 0;
-
-var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/esm/extends"));
-
-var _objectWithoutProperties2 = _interopRequireDefault(require("@babel/runtime/helpers/esm/objectWithoutProperties"));
-
-var React = _interopRequireWildcard(require("react"));
-
-var _clsx = _interopRequireDefault(require("clsx"));
-
-var _propTypes = _interopRequireDefault(require("prop-types"));
-
-var _reactTransitionGroup = require("react-transition-group");
-
-var _withStyles = _interopRequireDefault(require("../styles/withStyles"));
-
-var _transitions = require("../styles/transitions");
-
-var _utils = require("../transitions/utils");
-
-var _useTheme = _interopRequireDefault(require("../styles/useTheme"));
-
-function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var styles = function styles(theme) {
-  return {
-    /* Styles applied to the container element. */
-    container: {
-      height: 0,
-      overflow: 'hidden',
-      transition: theme.transitions.create('height')
-    },
-
-    /* Styles applied to the container element when the transition has entered. */
-    entered: {
-      height: 'auto',
-      overflow: 'visible'
-    },
-
-    /* Styles applied to the container element when the transition has exited and `collapsedHeight` != 0px. */
-    hidden: {
-      visibility: 'hidden'
-    },
-
-    /* Styles applied to the outer wrapper element. */
-    wrapper: {
-      // Hack to get children with a negative margin to not falsify the height computation.
-      display: 'flex'
-    },
-
-    /* Styles applied to the inner wrapper element. */
-    wrapperInner: {
-      width: '100%'
-    }
-  };
-};
-/**
- * The Collapse transition is used by the
- * [Vertical Stepper](/components/steppers/#vertical-stepper) StepContent component.
- * It uses [react-transition-group](https://github.com/reactjs/react-transition-group) internally.
- */
-
-
-exports.styles = styles;
-var Collapse = React.forwardRef(function Collapse(props, ref) {
-  var children = props.children,
-      classes = props.classes,
-      className = props.className,
-      _props$collapsedHeigh = props.collapsedHeight,
-      collapsedHeightProp = _props$collapsedHeigh === void 0 ? '0px' : _props$collapsedHeigh,
-      _props$component = props.component,
-      Component = _props$component === void 0 ? 'div' : _props$component,
-      inProp = props.in,
-      onEnter = props.onEnter,
-      onEntered = props.onEntered,
-      onEntering = props.onEntering,
-      onExit = props.onExit,
-      onExiting = props.onExiting,
-      style = props.style,
-      _props$timeout = props.timeout,
-      timeout = _props$timeout === void 0 ? _transitions.duration.standard : _props$timeout,
-      _props$TransitionComp = props.TransitionComponent,
-      TransitionComponent = _props$TransitionComp === void 0 ? _reactTransitionGroup.Transition : _props$TransitionComp,
-      other = (0, _objectWithoutProperties2.default)(props, ["children", "classes", "className", "collapsedHeight", "component", "in", "onEnter", "onEntered", "onEntering", "onExit", "onExiting", "style", "timeout", "TransitionComponent"]);
-  var theme = (0, _useTheme.default)();
-  var timer = React.useRef();
-  var wrapperRef = React.useRef(null);
-  var autoTransitionDuration = React.useRef();
-  var collapsedHeight = typeof collapsedHeightProp === 'number' ? "".concat(collapsedHeightProp, "px") : collapsedHeightProp;
-  React.useEffect(function () {
-    return function () {
-      clearTimeout(timer.current);
-    };
-  }, []);
-
-  var handleEnter = function handleEnter(node, isAppearing) {
-    node.style.height = collapsedHeight;
-
-    if (onEnter) {
-      onEnter(node, isAppearing);
-    }
-  };
-
-  var handleEntering = function handleEntering(node, isAppearing) {
-    var wrapperHeight = wrapperRef.current ? wrapperRef.current.clientHeight : 0;
-
-    var _getTransitionProps = (0, _utils.getTransitionProps)({
-      style: style,
-      timeout: timeout
-    }, {
-      mode: 'enter'
-    }),
-        transitionDuration = _getTransitionProps.duration;
-
-    if (timeout === 'auto') {
-      var duration2 = theme.transitions.getAutoHeightDuration(wrapperHeight);
-      node.style.transitionDuration = "".concat(duration2, "ms");
-      autoTransitionDuration.current = duration2;
-    } else {
-      node.style.transitionDuration = typeof transitionDuration === 'string' ? transitionDuration : "".concat(transitionDuration, "ms");
-    }
-
-    node.style.height = "".concat(wrapperHeight, "px");
-
-    if (onEntering) {
-      onEntering(node, isAppearing);
-    }
-  };
-
-  var handleEntered = function handleEntered(node, isAppearing) {
-    node.style.height = 'auto';
-
-    if (onEntered) {
-      onEntered(node, isAppearing);
-    }
-  };
-
-  var handleExit = function handleExit(node) {
-    var wrapperHeight = wrapperRef.current ? wrapperRef.current.clientHeight : 0;
-    node.style.height = "".concat(wrapperHeight, "px");
-
-    if (onExit) {
-      onExit(node);
-    }
-  };
-
-  var handleExiting = function handleExiting(node) {
-    var wrapperHeight = wrapperRef.current ? wrapperRef.current.clientHeight : 0;
-
-    var _getTransitionProps2 = (0, _utils.getTransitionProps)({
-      style: style,
-      timeout: timeout
-    }, {
-      mode: 'exit'
-    }),
-        transitionDuration = _getTransitionProps2.duration;
-
-    if (timeout === 'auto') {
-      var duration2 = theme.transitions.getAutoHeightDuration(wrapperHeight);
-      node.style.transitionDuration = "".concat(duration2, "ms");
-      autoTransitionDuration.current = duration2;
-    } else {
-      node.style.transitionDuration = typeof transitionDuration === 'string' ? transitionDuration : "".concat(transitionDuration, "ms");
-    }
-
-    node.style.height = collapsedHeight;
-
-    if (onExiting) {
-      onExiting(node);
-    }
-  };
-
-  var addEndListener = function addEndListener(_, next) {
-    if (timeout === 'auto') {
-      timer.current = setTimeout(next, autoTransitionDuration.current || 0);
-    }
-  };
-
-  return /*#__PURE__*/React.createElement(TransitionComponent, (0, _extends2.default)({
-    in: inProp,
-    onEnter: handleEnter,
-    onEntered: handleEntered,
-    onEntering: handleEntering,
-    onExit: handleExit,
-    onExiting: handleExiting,
-    addEndListener: addEndListener,
-    timeout: timeout === 'auto' ? null : timeout
-  }, other), function (state, childProps) {
-    return /*#__PURE__*/React.createElement(Component, (0, _extends2.default)({
-      className: (0, _clsx.default)(classes.container, className, {
-        'entered': classes.entered,
-        'exited': !inProp && collapsedHeight === '0px' && classes.hidden
-      }[state]),
-      style: (0, _extends2.default)({
-        minHeight: collapsedHeight
-      }, style),
-      ref: ref
-    }, childProps), /*#__PURE__*/React.createElement("div", {
-      className: classes.wrapper,
-      ref: wrapperRef
-    }, /*#__PURE__*/React.createElement("div", {
-      className: classes.wrapperInner
-    }, children)));
-  });
-});
-"development" !== "production" ? Collapse.propTypes = {
-  // ----------------------------- Warning --------------------------------
-  // | These PropTypes are generated from the TypeScript type definitions |
-  // |     To update them edit the d.ts file and run "yarn proptypes"     |
-  // ----------------------------------------------------------------------
-
-  /**
-   * The content node to be collapsed.
-   */
-  children: _propTypes.default.node,
-
-  /**
-   * Override or extend the styles applied to the component.
-   * See [CSS API](#css) below for more details.
-   */
-  classes: _propTypes.default.object,
-
-  /**
-   * @ignore
-   */
-  className: _propTypes.default.string,
-
-  /**
-   * The height of the container when collapsed.
-   */
-  collapsedHeight: _propTypes.default.oneOfType([_propTypes.default.number, _propTypes.default.string]),
-
-  /**
-   * The component used for the root node.
-   * Either a string to use a HTML element or a component.
-   */
-  component: _propTypes.default.elementType,
-
-  /**
-   * If `true`, the component will transition in.
-   */
-  in: _propTypes.default.bool,
-
-  /**
-   * @ignore
-   */
-  onEnter: _propTypes.default.func,
-
-  /**
-   * @ignore
-   */
-  onEntered: _propTypes.default.func,
-
-  /**
-   * @ignore
-   */
-  onEntering: _propTypes.default.func,
-
-  /**
-   * @ignore
-   */
-  onExit: _propTypes.default.func,
-
-  /**
-   * @ignore
-   */
-  onExiting: _propTypes.default.func,
-
-  /**
-   * @ignore
-   */
-  style: _propTypes.default.object,
-
-  /**
-   * The duration for the transition, in milliseconds.
-   * You may specify a single timeout for all transitions, or individually with an object.
-   *
-   * Set to 'auto' to automatically calculate transition time based on height.
-   */
-  timeout: _propTypes.default.oneOfType([_propTypes.default.oneOf(['auto']), _propTypes.default.number, _propTypes.default.shape({
-    appear: _propTypes.default.number,
-    enter: _propTypes.default.number,
-    exit: _propTypes.default.number
-  })])
-} : void 0;
-Collapse.muiSupportAuto = true;
-
-var _default = (0, _withStyles.default)(styles, {
-  name: 'MuiCollapse'
-})(Collapse);
-
-exports.default = _default;
-},{"@babel/runtime/helpers/esm/extends":"../node_modules/@babel/runtime/helpers/esm/extends.js","@babel/runtime/helpers/esm/objectWithoutProperties":"../node_modules/@babel/runtime/helpers/esm/objectWithoutProperties.js","react":"../node_modules/react/index.js","clsx":"../node_modules/clsx/dist/clsx.m.js","prop-types":"../node_modules/prop-types/index.js","react-transition-group":"../node_modules/react-transition-group/esm/index.js","../styles/withStyles":"../node_modules/@material-ui/core/esm/styles/withStyles.js","../styles/transitions":"../node_modules/@material-ui/core/esm/styles/transitions.js","../transitions/utils":"../node_modules/@material-ui/core/esm/transitions/utils.js","../styles/useTheme":"../node_modules/@material-ui/core/esm/styles/useTheme.js"}],"../node_modules/@material-ui/react-transition-group/lib/esm/config.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-var _default = {
-  disabled: false
-};
-exports.default = _default;
-},{}],"../node_modules/@material-ui/react-transition-group/lib/esm/utils/PropTypes.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.classNamesShape = exports.timeoutsShape = void 0;
-
-var _propTypes = _interopRequireDefault(require("prop-types"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var timeoutsShape = "development" !== 'production' ? _propTypes.default.oneOfType([_propTypes.default.number, _propTypes.default.shape({
-  enter: _propTypes.default.number,
-  exit: _propTypes.default.number,
-  appear: _propTypes.default.number
-}).isRequired]) : null;
-exports.timeoutsShape = timeoutsShape;
-var classNamesShape = "development" !== 'production' ? _propTypes.default.oneOfType([_propTypes.default.string, _propTypes.default.shape({
-  enter: _propTypes.default.string,
-  exit: _propTypes.default.string,
-  active: _propTypes.default.string
-}), _propTypes.default.shape({
-  enter: _propTypes.default.string,
-  enterDone: _propTypes.default.string,
-  enterActive: _propTypes.default.string,
-  exit: _propTypes.default.string,
-  exitDone: _propTypes.default.string,
-  exitActive: _propTypes.default.string
-})]) : null;
-exports.classNamesShape = classNamesShape;
-},{"prop-types":"../node_modules/prop-types/index.js"}],"../node_modules/@material-ui/react-transition-group/lib/esm/TransitionGroupContext.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _react = _interopRequireDefault(require("react"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var _default = _react.default.createContext(null);
-
-exports.default = _default;
-},{"react":"../node_modules/react/index.js"}],"../node_modules/@material-ui/react-transition-group/lib/esm/Transition.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = exports.EXITING = exports.ENTERED = exports.ENTERING = exports.EXITED = exports.UNMOUNTED = void 0;
-
-var _objectWithoutPropertiesLoose2 = _interopRequireDefault(require("@babel/runtime/helpers/esm/objectWithoutPropertiesLoose"));
-
-var _inheritsLoose2 = _interopRequireDefault(require("@babel/runtime/helpers/esm/inheritsLoose"));
-
-var _propTypes = _interopRequireDefault(require("prop-types"));
-
-var _react = _interopRequireDefault(require("react"));
-
-var _reactDom = _interopRequireDefault(require("react-dom"));
-
-var _config = _interopRequireDefault(require("./config"));
-
-var _PropTypes = require("./utils/PropTypes");
-
-var _TransitionGroupContext = _interopRequireDefault(require("./TransitionGroupContext"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var UNMOUNTED = 'unmounted';
-exports.UNMOUNTED = UNMOUNTED;
-var EXITED = 'exited';
-exports.EXITED = EXITED;
-var ENTERING = 'entering';
-exports.ENTERING = ENTERING;
-var ENTERED = 'entered';
-exports.ENTERED = ENTERED;
-var EXITING = 'exiting';
-/**
- * The Transition component lets you describe a transition from one component
- * state to another _over time_ with a simple declarative API. Most commonly
- * it's used to animate the mounting and unmounting of a component, but can also
- * be used to describe in-place transition states as well.
- *
- * ---
- *
- * **Note**: `Transition` is a platform-agnostic base component. If you're using
- * transitions in CSS, you'll probably want to use
- * [`CSSTransition`](https://reactcommunity.org/react-transition-group/css-transition)
- * instead. It inherits all the features of `Transition`, but contains
- * additional features necessary to play nice with CSS transitions (hence the
- * name of the component).
- *
- * ---
- *
- * By default the `Transition` component does not alter the behavior of the
- * component it renders, it only tracks "enter" and "exit" states for the
- * components. It's up to you to give meaning and effect to those states. For
- * example we can add styles to a component when it enters or exits:
- *
- * ```jsx
- * import { Transition } from 'react-transition-group';
- *
- * const duration = 300;
- *
- * const defaultStyle = {
- *   transition: `opacity ${duration}ms ease-in-out`,
- *   opacity: 0,
- * }
- *
- * const transitionStyles = {
- *   entering: { opacity: 1 },
- *   entered:  { opacity: 1 },
- *   exiting:  { opacity: 0 },
- *   exited:  { opacity: 0 },
- * };
- *
- * const Fade = ({ in: inProp }) => (
- *   <Transition in={inProp} timeout={duration}>
- *     {state => (
- *       <div style={{
- *         ...defaultStyle,
- *         ...transitionStyles[state]
- *       }}>
- *         I'm a fade Transition!
- *       </div>
- *     )}
- *   </Transition>
- * );
- * ```
- *
- * There are 4 main states a Transition can be in:
- *  - `'entering'`
- *  - `'entered'`
- *  - `'exiting'`
- *  - `'exited'`
- *
- * Transition state is toggled via the `in` prop. When `true` the component
- * begins the "Enter" stage. During this stage, the component will shift from
- * its current transition state, to `'entering'` for the duration of the
- * transition and then to the `'entered'` stage once it's complete. Let's take
- * the following example (we'll use the
- * [useState](https://reactjs.org/docs/hooks-reference.html#usestate) hook):
- *
- * ```jsx
- * function App() {
- *   const [inProp, setInProp] = useState(false);
- *   return (
- *     <div>
- *       <Transition in={inProp} timeout={500}>
- *         {state => (
- *           // ...
- *         )}
- *       </Transition>
- *       <button onClick={() => setInProp(true)}>
- *         Click to Enter
- *       </button>
- *     </div>
- *   );
- * }
- * ```
- *
- * When the button is clicked the component will shift to the `'entering'` state
- * and stay there for 500ms (the value of `timeout`) before it finally switches
- * to `'entered'`.
- *
- * When `in` is `false` the same thing happens except the state moves from
- * `'exiting'` to `'exited'`.
- */
-
-exports.EXITING = EXITING;
-
-var Transition = /*#__PURE__*/function (_React$Component) {
-  (0, _inheritsLoose2.default)(Transition, _React$Component);
-
-  function Transition(props, context) {
-    var _this;
-
-    _this = _React$Component.call(this, props, context) || this;
-    var parentGroup = context; // In the context of a TransitionGroup all enters are really appears
-
-    var appear = parentGroup && !parentGroup.isMounting ? props.enter : props.appear;
-    var initialStatus;
-    _this.appearStatus = null;
-
-    if (props.in) {
-      if (appear) {
-        initialStatus = EXITED;
-        _this.appearStatus = ENTERING;
-      } else {
-        initialStatus = ENTERED;
-      }
-    } else {
-      if (props.unmountOnExit || props.mountOnEnter) {
-        initialStatus = UNMOUNTED;
-      } else {
-        initialStatus = EXITED;
-      }
-    }
-
-    _this.state = {
-      status: initialStatus
-    };
-    _this.nextCallback = null;
-    return _this;
-  }
-
-  Transition.getDerivedStateFromProps = function getDerivedStateFromProps(_ref, prevState) {
-    var nextIn = _ref.in;
-
-    if (nextIn && prevState.status === UNMOUNTED) {
-      return {
-        status: EXITED
-      };
-    }
-
-    return null;
-  } // getSnapshotBeforeUpdate(prevProps) {
-  //   let nextStatus = null
-  //   if (prevProps !== this.props) {
-  //     const { status } = this.state
-  //     if (this.props.in) {
-  //       if (status !== ENTERING && status !== ENTERED) {
-  //         nextStatus = ENTERING
-  //       }
-  //     } else {
-  //       if (status === ENTERING || status === ENTERED) {
-  //         nextStatus = EXITING
-  //       }
-  //     }
-  //   }
-  //   return { nextStatus }
-  // }
-  ;
-
-  var _proto = Transition.prototype;
-
-  _proto.componentDidMount = function componentDidMount() {
-    this.updateStatus(true, this.appearStatus);
-  };
-
-  _proto.componentDidUpdate = function componentDidUpdate(prevProps) {
-    var nextStatus = null;
-
-    if (prevProps !== this.props) {
-      var status = this.state.status;
-
-      if (this.props.in) {
-        if (status !== ENTERING && status !== ENTERED) {
-          nextStatus = ENTERING;
-        }
-      } else {
-        if (status === ENTERING || status === ENTERED) {
-          nextStatus = EXITING;
-        }
-      }
-    }
-
-    this.updateStatus(false, nextStatus);
-  };
-
-  _proto.componentWillUnmount = function componentWillUnmount() {
-    this.cancelNextCallback();
-  };
-
-  _proto.getTimeouts = function getTimeouts() {
-    var timeout = this.props.timeout;
-    var exit, enter, appear;
-    exit = enter = appear = timeout;
-
-    if (timeout != null && typeof timeout !== 'number') {
-      exit = timeout.exit;
-      enter = timeout.enter; // TODO: remove fallback for next major
-
-      appear = timeout.appear !== undefined ? timeout.appear : enter;
-    }
-
-    return {
-      exit: exit,
-      enter: enter,
-      appear: appear
-    };
-  };
-
-  _proto.updateStatus = function updateStatus(mounting, nextStatus) {
-    if (mounting === void 0) {
-      mounting = false;
-    }
-
-    if (nextStatus !== null) {
-      // nextStatus will always be ENTERING or EXITING.
-      this.cancelNextCallback();
-      var node = this.props.findDOMNode(this);
-
-      if (nextStatus === ENTERING) {
-        this.performEnter(node, mounting);
-      } else {
-        this.performExit(node);
-      }
-    } else if (this.props.unmountOnExit && this.state.status === EXITED) {
-      this.setState({
-        status: UNMOUNTED
-      });
-    }
-  };
-
-  _proto.performEnter = function performEnter(node, mounting) {
-    var _this2 = this;
-
-    var enter = this.props.enter;
-    var appearing = this.context ? this.context.isMounting : mounting;
-    var timeouts = this.getTimeouts();
-    var enterTimeout = appearing ? timeouts.appear : timeouts.enter; // no enter animation skip right to ENTERED
-    // if we are mounting and running this it means appear _must_ be set
-
-    if (!mounting && !enter || _config.default.disabled) {
-      this.safeSetState({
-        status: ENTERED
-      }, function () {
-        _this2.props.onEntered(node);
-      });
-      return;
-    }
-
-    this.props.onEnter(node, appearing);
-    this.safeSetState({
-      status: ENTERING
-    }, function () {
-      _this2.props.onEntering(node, appearing);
-
-      _this2.onTransitionEnd(node, enterTimeout, function () {
-        _this2.safeSetState({
-          status: ENTERED
-        }, function () {
-          _this2.props.onEntered(node, appearing);
-        });
-      });
-    });
-  };
-
-  _proto.performExit = function performExit(node) {
-    var _this3 = this;
-
-    var exit = this.props.exit;
-    var timeouts = this.getTimeouts(); // no exit animation skip right to EXITED
-
-    if (!exit || _config.default.disabled) {
-      this.safeSetState({
-        status: EXITED
-      }, function () {
-        _this3.props.onExited(node);
-      });
-      return;
-    }
-
-    this.props.onExit(node);
-    this.safeSetState({
-      status: EXITING
-    }, function () {
-      _this3.props.onExiting(node);
-
-      _this3.onTransitionEnd(node, timeouts.exit, function () {
-        _this3.safeSetState({
-          status: EXITED
-        }, function () {
-          _this3.props.onExited(node);
-        });
-      });
-    });
-  };
-
-  _proto.cancelNextCallback = function cancelNextCallback() {
-    if (this.nextCallback !== null) {
-      this.nextCallback.cancel();
-      this.nextCallback = null;
-    }
-  };
-
-  _proto.safeSetState = function safeSetState(nextState, callback) {
-    // This shouldn't be necessary, but there are weird race conditions with
-    // setState callbacks and unmounting in testing, so always make sure that
-    // we can cancel any pending setState callbacks after we unmount.
-    callback = this.setNextCallback(callback);
-    this.setState(nextState, callback);
-  };
-
-  _proto.setNextCallback = function setNextCallback(callback) {
-    var _this4 = this;
-
-    var active = true;
-
-    this.nextCallback = function (event) {
-      if (active) {
-        active = false;
-        _this4.nextCallback = null;
-        callback(event);
-      }
-    };
-
-    this.nextCallback.cancel = function () {
-      active = false;
-    };
-
-    return this.nextCallback;
-  };
-
-  _proto.onTransitionEnd = function onTransitionEnd(node, timeout, handler) {
-    this.setNextCallback(handler);
-    var doesNotHaveTimeoutOrListener = timeout == null && !this.props.addEndListener;
-
-    if (!node || doesNotHaveTimeoutOrListener) {
-      setTimeout(this.nextCallback, 0);
-      return;
-    }
-
-    if (this.props.addEndListener) {
-      this.props.addEndListener(node, this.nextCallback);
-    }
-
-    if (timeout != null) {
-      setTimeout(this.nextCallback, timeout);
-    }
-  };
-
-  _proto.render = function render() {
-    var status = this.state.status;
-
-    if (status === UNMOUNTED) {
-      return null;
-    }
-
-    var _this$props = this.props,
-        children = _this$props.children,
-        childProps = (0, _objectWithoutPropertiesLoose2.default)(_this$props, ["children"]); // filter props for Transtition
-
-    delete childProps.in;
-    delete childProps.mountOnEnter;
-    delete childProps.unmountOnExit;
-    delete childProps.appear;
-    delete childProps.enter;
-    delete childProps.exit;
-    delete childProps.findDOMNode;
-    delete childProps.timeout;
-    delete childProps.addEndListener;
-    delete childProps.onEnter;
-    delete childProps.onEntering;
-    delete childProps.onEntered;
-    delete childProps.onExit;
-    delete childProps.onExiting;
-    delete childProps.onExited;
-
-    if (typeof children === 'function') {
-      // allows for nested Transitions
-      return /*#__PURE__*/_react.default.createElement(_TransitionGroupContext.default.Provider, {
-        value: null
-      }, children(status, childProps));
-    }
-
-    var child = _react.default.Children.only(children);
-
-    return (
-      /*#__PURE__*/
-      // allows for nested Transitions
-      _react.default.createElement(_TransitionGroupContext.default.Provider, {
-        value: null
-      }, _react.default.cloneElement(child, childProps))
-    );
-  };
-
-  return Transition;
-}(_react.default.Component);
-
-Transition.contextType = _TransitionGroupContext.default;
-Transition.propTypes = "development" !== "production" ? {
-  /**
-   * A `function` child can be used instead of a React element. This function is
-   * called with the current transition status (`'entering'`, `'entered'`,
-   * `'exiting'`, `'exited'`), which can be used to apply context
-   * specific props to a component.
-   *
-   * ```jsx
-   * <Transition in={this.state.in} timeout={150}>
-   *   {state => (
-   *     <MyComponent className={`fade fade-${state}`} />
-   *   )}
-   * </Transition>
-   * ```
-   */
-  children: _propTypes.default.oneOfType([_propTypes.default.func.isRequired, _propTypes.default.element.isRequired]).isRequired,
-
-  /**
-   * Show the component; triggers the enter or exit states
-   */
-  in: _propTypes.default.bool,
-
-  /**
-   * By default the child component is mounted immediately along with
-   * the parent `Transition` component. If you want to "lazy mount" the component on the
-   * first `in={true}` you can set `mountOnEnter`. After the first enter transition the component will stay
-   * mounted, even on "exited", unless you also specify `unmountOnExit`.
-   */
-  mountOnEnter: _propTypes.default.bool,
-
-  /**
-   * By default the child component stays mounted after it reaches the `'exited'` state.
-   * Set `unmountOnExit` if you'd prefer to unmount the component after it finishes exiting.
-   */
-  unmountOnExit: _propTypes.default.bool,
-
-  /**
-   * By default the child component does not perform the enter transition when
-   * it first mounts, regardless of the value of `in`. If you want this
-   * behavior, set both `appear` and `in` to `true`.
-   *
-   * > **Note**: there are no special appear states like `appearing`/`appeared`, this prop
-   * > only adds an additional enter transition. However, in the
-   * > `<CSSTransition>` component that first enter transition does result in
-   * > additional `.appear-*` classes, that way you can choose to style it
-   * > differently.
-   */
-  appear: _propTypes.default.bool,
-
-  /**
-   * Enable or disable enter transitions.
-   */
-  enter: _propTypes.default.bool,
-
-  /**
-   * Enable or disable exit transitions.
-   */
-  exit: _propTypes.default.bool,
-
-  /**
-   * The function to find the rendered DOM node that is passed to the transition callbacks.
-   *
-   * By default ReactDOM.findDOMNode is used. For `React.StrictMode` compatiblity
-   * another function must be provided.
-   */
-  findDOMNode: _propTypes.default.func,
-
-  /**
-   * The duration of the transition, in milliseconds.
-   * Required unless `addEndListener` is provided.
-   *
-   * You may specify a single timeout for all transitions:
-   *
-   * ```jsx
-   * timeout={500}
-   * ```
-   *
-   * or individually:
-   *
-   * ```jsx
-   * timeout={{
-   *  appear: 500,
-   *  enter: 300,
-   *  exit: 500,
-   * }}
-   * ```
-   *
-   * - `appear` defaults to the value of `enter`
-   * - `enter` defaults to `0`
-   * - `exit` defaults to `0`
-   *
-   * @type {number | { enter?: number, exit?: number, appear?: number }}
-   */
-  timeout: function timeout(props) {
-    var pt = _PropTypes.timeoutsShape;
-    if (!props.addEndListener) pt = pt.isRequired;
-
-    for (var _len = arguments.length, args = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-      args[_key - 1] = arguments[_key];
-    }
-
-    return pt.apply(void 0, [props].concat(args));
-  },
-
-  /**
-   * Add a custom transition end trigger. Called with the transitioning
-   * DOM node and a `done` callback. Allows for more fine grained transition end
-   * logic. **Note:** Timeouts are still used as a fallback if provided.
-   *
-   * ```jsx
-   * addEndListener={(node, done) => {
-   *   // use the css transitionend event to mark the finish of a transition
-   *   node.addEventListener('transitionend', done, false);
-   * }}
-   * ```
-   */
-  addEndListener: _propTypes.default.func,
-
-  /**
-   * Callback fired before the "entering" status is applied. An extra parameter
-   * `isAppearing` is supplied to indicate if the enter stage is occurring on the initial mount
-   *
-   * @type Function(node: HtmlElement, isAppearing: bool) -> void
-   */
-  onEnter: _propTypes.default.func,
-
-  /**
-   * Callback fired after the "entering" status is applied. An extra parameter
-   * `isAppearing` is supplied to indicate if the enter stage is occurring on the initial mount
-   *
-   * @type Function(node: HtmlElement, isAppearing: bool)
-   */
-  onEntering: _propTypes.default.func,
-
-  /**
-   * Callback fired after the "entered" status is applied. An extra parameter
-   * `isAppearing` is supplied to indicate if the enter stage is occurring on the initial mount
-   *
-   * @type Function(node: HtmlElement, isAppearing: bool) -> void
-   */
-  onEntered: _propTypes.default.func,
-
-  /**
-   * Callback fired before the "exiting" status is applied.
-   *
-   * @type Function(node: HtmlElement) -> void
-   */
-  onExit: _propTypes.default.func,
-
-  /**
-   * Callback fired after the "exiting" status is applied.
-   *
-   * @type Function(node: HtmlElement) -> void
-   */
-  onExiting: _propTypes.default.func,
-
-  /**
-   * Callback fired after the "exited" status is applied.
-   *
-   * @type Function(node: HtmlElement) -> void
-   */
-  onExited: _propTypes.default.func
-} : {}; // Name the function so it is clearer in the documentation
-
-function noop() {}
-
-Transition.defaultProps = {
-  in: false,
-  mountOnEnter: false,
-  unmountOnExit: false,
-  appear: false,
-  enter: true,
-  exit: true,
-  findDOMNode: _reactDom.default.findDOMNode,
-  onEnter: noop,
-  onEntering: noop,
-  onEntered: noop,
-  onExit: noop,
-  onExiting: noop,
-  onExited: noop
-};
-Transition.UNMOUNTED = UNMOUNTED;
-Transition.EXITED = EXITED;
-Transition.ENTERING = ENTERING;
-Transition.ENTERED = ENTERED;
-Transition.EXITING = EXITING;
-var _default = Transition;
-exports.default = _default;
-},{"@babel/runtime/helpers/esm/objectWithoutPropertiesLoose":"../node_modules/@babel/runtime/helpers/esm/objectWithoutPropertiesLoose.js","@babel/runtime/helpers/esm/inheritsLoose":"../node_modules/@babel/runtime/helpers/esm/inheritsLoose.js","prop-types":"../node_modules/prop-types/index.js","react":"../node_modules/react/index.js","react-dom":"../node_modules/react-dom/index.js","./config":"../node_modules/@material-ui/react-transition-group/lib/esm/config.js","./utils/PropTypes":"../node_modules/@material-ui/react-transition-group/lib/esm/utils/PropTypes.js","./TransitionGroupContext":"../node_modules/@material-ui/react-transition-group/lib/esm/TransitionGroupContext.js"}],"../node_modules/@material-ui/react-transition-group/lib/esm/CSSTransition.js":[function(require,module,exports) {
+},{"@material-ui/styles":"../node_modules/@material-ui/styles/esm/index.js","react":"../node_modules/react/index.js","./defaultTheme":"../node_modules/@material-ui/core/esm/styles/defaultTheme.js"}],"../node_modules/@material-ui/core/esm/styles/withStyles.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -41756,537 +39043,21 @@ exports.default = void 0;
 
 var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/esm/extends"));
 
-var _objectWithoutPropertiesLoose2 = _interopRequireDefault(require("@babel/runtime/helpers/esm/objectWithoutPropertiesLoose"));
+var _styles = require("@material-ui/styles");
 
-var _inheritsLoose2 = _interopRequireDefault(require("@babel/runtime/helpers/esm/inheritsLoose"));
-
-var _propTypes = _interopRequireDefault(require("prop-types"));
-
-var _addClass2 = _interopRequireDefault(require("dom-helpers/addClass"));
-
-var _removeClass = _interopRequireDefault(require("dom-helpers/removeClass"));
-
-var _react = _interopRequireDefault(require("react"));
-
-var _Transition = _interopRequireDefault(require("./Transition"));
-
-var _PropTypes = require("./utils/PropTypes");
+var _defaultTheme = _interopRequireDefault(require("./defaultTheme"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var _addClass = function addClass(node, classes) {
-  return node && classes && classes.split(' ').forEach(function (c) {
-    return (0, _addClass2.default)(node, c);
-  });
-};
+function withStyles(stylesOrCreator, options) {
+  return (0, _styles.withStyles)(stylesOrCreator, (0, _extends2.default)({
+    defaultTheme: _defaultTheme.default
+  }, options));
+}
 
-var removeClass = function removeClass(node, classes) {
-  return node && classes && classes.split(' ').forEach(function (c) {
-    return (0, _removeClass.default)(node, c);
-  });
-};
-/**
- * A transition component inspired by the excellent
- * [ng-animate](https://docs.angularjs.org/api/ngAnimate) library, you should
- * use it if you're using CSS transitions or animations. It's built upon the
- * [`Transition`](https://reactcommunity.org/react-transition-group/transition)
- * component, so it inherits all of its props.
- *
- * `CSSTransition` applies a pair of class names during the `appear`, `enter`,
- * and `exit` states of the transition. The first class is applied and then a
- * second `*-active` class in order to activate the CSS transition. After the
- * transition, matching `*-done` class names are applied to persist the
- * transition state.
- *
- * ```jsx
- * function App() {
- *   const [inProp, setInProp] = useState(false);
- *   return (
- *     <div>
- *       <CSSTransition in={inProp} timeout={200} classNames="my-node">
- *         <div>
- *           {"I'll receive my-node-* classes"}
- *         </div>
- *       </CSSTransition>
- *       <button type="button" onClick={() => setInProp(true)}>
- *         Click to Enter
- *       </button>
- *     </div>
- *   );
- * }
- * ```
- *
- * When the `in` prop is set to `true`, the child component will first receive
- * the class `example-enter`, then the `example-enter-active` will be added in
- * the next tick. `CSSTransition` [forces a
- * reflow](https://github.com/reactjs/react-transition-group/blob/5007303e729a74be66a21c3e2205e4916821524b/src/CSSTransition.js#L208-L215)
- * between before adding the `example-enter-active`. This is an important trick
- * because it allows us to transition between `example-enter` and
- * `example-enter-active` even though they were added immediately one after
- * another. Most notably, this is what makes it possible for us to animate
- * _appearance_.
- *
- * ```css
- * .my-node-enter {
- *   opacity: 0;
- * }
- * .my-node-enter-active {
- *   opacity: 1;
- *   transition: opacity 200ms;
- * }
- * .my-node-exit {
- *   opacity: 1;
- * }
- * .my-node-exit-active {
- *   opacity: 0;
- *   transition: opacity 200ms;
- * }
- * ```
- *
- * `*-active` classes represent which styles you want to animate **to**, so it's
- * important to add `transition` declaration only to them, otherwise transitions
- * might not behave as intended! This might not be obvious when the transitions
- * are symmetrical, i.e. when `*-enter-active` is the same as `*-exit`, like in
- * the example above (minus `transition`), but it becomes apparent in more
- * complex transitions.
- *
- * **Note**: If you're using the
- * [`appear`](http://reactcommunity.org/react-transition-group/transition#Transition-prop-appear)
- * prop, make sure to define styles for `.appear-*` classes as well.
- */
-
-
-var CSSTransition = /*#__PURE__*/function (_React$Component) {
-  (0, _inheritsLoose2.default)(CSSTransition, _React$Component);
-
-  function CSSTransition() {
-    var _this;
-
-    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
-      args[_key] = arguments[_key];
-    }
-
-    _this = _React$Component.call.apply(_React$Component, [this].concat(args)) || this;
-    _this.appliedClasses = {
-      appear: {},
-      enter: {},
-      exit: {}
-    };
-
-    _this.onEnter = function (node, appearing) {
-      _this.removeClasses(node, 'exit');
-
-      _this.addClass(node, appearing ? 'appear' : 'enter', 'base');
-
-      if (_this.props.onEnter) {
-        _this.props.onEnter(node, appearing);
-      }
-    };
-
-    _this.onEntering = function (node, appearing) {
-      var type = appearing ? 'appear' : 'enter';
-
-      _this.addClass(node, type, 'active');
-
-      if (_this.props.onEntering) {
-        _this.props.onEntering(node, appearing);
-      }
-    };
-
-    _this.onEntered = function (node, appearing) {
-      var type = appearing ? 'appear' : 'enter';
-
-      _this.removeClasses(node, type);
-
-      _this.addClass(node, type, 'done');
-
-      if (_this.props.onEntered) {
-        _this.props.onEntered(node, appearing);
-      }
-    };
-
-    _this.onExit = function (node) {
-      _this.removeClasses(node, 'appear');
-
-      _this.removeClasses(node, 'enter');
-
-      _this.addClass(node, 'exit', 'base');
-
-      if (_this.props.onExit) {
-        _this.props.onExit(node);
-      }
-    };
-
-    _this.onExiting = function (node) {
-      _this.addClass(node, 'exit', 'active');
-
-      if (_this.props.onExiting) {
-        _this.props.onExiting(node);
-      }
-    };
-
-    _this.onExited = function (node) {
-      _this.removeClasses(node, 'exit');
-
-      _this.addClass(node, 'exit', 'done');
-
-      if (_this.props.onExited) {
-        _this.props.onExited(node);
-      }
-    };
-
-    _this.getClassNames = function (type) {
-      var classNames = _this.props.classNames;
-      var isStringClassNames = typeof classNames === 'string';
-      var prefix = isStringClassNames && classNames ? classNames + "-" : '';
-      var baseClassName = isStringClassNames ? "" + prefix + type : classNames[type];
-      var activeClassName = isStringClassNames ? baseClassName + "-active" : classNames[type + "Active"];
-      var doneClassName = isStringClassNames ? baseClassName + "-done" : classNames[type + "Done"];
-      return {
-        baseClassName: baseClassName,
-        activeClassName: activeClassName,
-        doneClassName: doneClassName
-      };
-    };
-
-    return _this;
-  }
-
-  var _proto = CSSTransition.prototype;
-
-  _proto.addClass = function addClass(node, type, phase) {
-    var className = this.getClassNames(type)[phase + "ClassName"];
-
-    if (type === 'appear' && phase === 'done') {
-      className += " " + this.getClassNames('enter').doneClassName;
-    } // This is for to force a repaint,
-    // which is necessary in order to transition styles when adding a class name.
-
-
-    if (phase === 'active') {
-      /* eslint-disable no-unused-expressions */
-      node && node.scrollTop;
-    }
-
-    this.appliedClasses[type][phase] = className;
-
-    _addClass(node, className);
-  };
-
-  _proto.removeClasses = function removeClasses(node, type) {
-    var _this$appliedClasses$ = this.appliedClasses[type],
-        baseClassName = _this$appliedClasses$.base,
-        activeClassName = _this$appliedClasses$.active,
-        doneClassName = _this$appliedClasses$.done;
-    this.appliedClasses[type] = {};
-
-    if (baseClassName) {
-      removeClass(node, baseClassName);
-    }
-
-    if (activeClassName) {
-      removeClass(node, activeClassName);
-    }
-
-    if (doneClassName) {
-      removeClass(node, doneClassName);
-    }
-  };
-
-  _proto.render = function render() {
-    var _this$props = this.props,
-        _ = _this$props.classNames,
-        props = (0, _objectWithoutPropertiesLoose2.default)(_this$props, ["classNames"]);
-    return /*#__PURE__*/_react.default.createElement(_Transition.default, (0, _extends2.default)({}, props, {
-      onEnter: this.onEnter,
-      onEntered: this.onEntered,
-      onEntering: this.onEntering,
-      onExit: this.onExit,
-      onExiting: this.onExiting,
-      onExited: this.onExited
-    }));
-  };
-
-  return CSSTransition;
-}(_react.default.Component);
-
-CSSTransition.defaultProps = {
-  classNames: ''
-};
-CSSTransition.propTypes = "development" !== "production" ? (0, _extends2.default)({}, _Transition.default.propTypes, {
-  /**
-   * The animation classNames applied to the component as it appears, enters,
-   * exits or has finished the transition. A single name can be provided, which
-   * will be suffixed for each stage, e.g. `classNames="fade"` applies:
-   *
-   * - `fade-appear`, `fade-appear-active`, `fade-appear-done`
-   * - `fade-enter`, `fade-enter-active`, `fade-enter-done`
-   * - `fade-exit`, `fade-exit-active`, `fade-exit-done`
-   *
-   * A few details to note about how these classes are applied:
-   *
-   * 1. They are _joined_ with the ones that are already defined on the child
-   *    component, so if you want to add some base styles, you can use
-   *    `className` without worrying that it will be overridden.
-   *
-   * 2. If the transition component mounts with `in={false}`, no classes are
-   *    applied yet. You might be expecting `*-exit-done`, but if you think
-   *    about it, a component cannot finish exiting if it hasn't entered yet.
-   *
-   * 2. `fade-appear-done` and `fade-enter-done` will _both_ be applied. This
-   *    allows you to define different behavior for when appearing is done and
-   *    when regular entering is done, using selectors like
-   *    `.fade-enter-done:not(.fade-appear-done)`. For example, you could apply
-   *    an epic entrance animation when element first appears in the DOM using
-   *    [Animate.css](https://daneden.github.io/animate.css/). Otherwise you can
-   *    simply use `fade-enter-done` for defining both cases.
-   *
-   * Each individual classNames can also be specified independently like:
-   *
-   * ```js
-   * classNames={{
-   *  appear: 'my-appear',
-   *  appearActive: 'my-active-appear',
-   *  appearDone: 'my-done-appear',
-   *  enter: 'my-enter',
-   *  enterActive: 'my-active-enter',
-   *  enterDone: 'my-done-enter',
-   *  exit: 'my-exit',
-   *  exitActive: 'my-active-exit',
-   *  exitDone: 'my-done-exit',
-   * }}
-   * ```
-   *
-   * If you want to set these classes using CSS Modules:
-   *
-   * ```js
-   * import styles from './styles.css';
-   * ```
-   *
-   * you might want to use camelCase in your CSS file, that way could simply
-   * spread them instead of listing them one by one:
-   *
-   * ```js
-   * classNames={{ ...styles }}
-   * ```
-   *
-   * @type {string | {
-   *  appear?: string,
-   *  appearActive?: string,
-   *  appearDone?: string,
-   *  enter?: string,
-   *  enterActive?: string,
-   *  enterDone?: string,
-   *  exit?: string,
-   *  exitActive?: string,
-   *  exitDone?: string,
-   * }}
-   */
-  classNames: _PropTypes.classNamesShape,
-
-  /**
-   * A `<Transition>` callback fired immediately after the 'enter' or 'appear' class is
-   * applied.
-   *
-   * @type Function(node: HtmlElement, isAppearing: bool)
-   */
-  onEnter: _propTypes.default.func,
-
-  /**
-   * A `<Transition>` callback fired immediately after the 'enter-active' or
-   * 'appear-active' class is applied.
-   *
-   * @type Function(node: HtmlElement, isAppearing: bool)
-   */
-  onEntering: _propTypes.default.func,
-
-  /**
-   * A `<Transition>` callback fired immediately after the 'enter' or
-   * 'appear' classes are **removed** and the `done` class is added to the DOM node.
-   *
-   * @type Function(node: HtmlElement, isAppearing: bool)
-   */
-  onEntered: _propTypes.default.func,
-
-  /**
-   * A `<Transition>` callback fired immediately after the 'exit' class is
-   * applied.
-   *
-   * @type Function(node: HtmlElement)
-   */
-  onExit: _propTypes.default.func,
-
-  /**
-   * A `<Transition>` callback fired immediately after the 'exit-active' is applied.
-   *
-   * @type Function(node: HtmlElement)
-   */
-  onExiting: _propTypes.default.func,
-
-  /**
-   * A `<Transition>` callback fired immediately after the 'exit' classes
-   * are **removed** and the `exit-done` class is added to the DOM node.
-   *
-   * @type Function(node: HtmlElement)
-   */
-  onExited: _propTypes.default.func
-}) : {};
-var _default = CSSTransition;
+var _default = withStyles;
 exports.default = _default;
-},{"@babel/runtime/helpers/esm/extends":"../node_modules/@babel/runtime/helpers/esm/extends.js","@babel/runtime/helpers/esm/objectWithoutPropertiesLoose":"../node_modules/@babel/runtime/helpers/esm/objectWithoutPropertiesLoose.js","@babel/runtime/helpers/esm/inheritsLoose":"../node_modules/@babel/runtime/helpers/esm/inheritsLoose.js","prop-types":"../node_modules/prop-types/index.js","dom-helpers/addClass":"../node_modules/dom-helpers/esm/addClass.js","dom-helpers/removeClass":"../node_modules/dom-helpers/esm/removeClass.js","react":"../node_modules/react/index.js","./Transition":"../node_modules/@material-ui/react-transition-group/lib/esm/Transition.js","./utils/PropTypes":"../node_modules/@material-ui/react-transition-group/lib/esm/utils/PropTypes.js"}],"../node_modules/@material-ui/react-transition-group/lib/esm/utils/ChildMapping.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.getChildMapping = getChildMapping;
-exports.mergeChildMappings = mergeChildMappings;
-exports.getInitialChildMapping = getInitialChildMapping;
-exports.getNextChildMapping = getNextChildMapping;
-
-var _react = require("react");
-
-/**
- * Given `this.props.children`, return an object mapping key to child.
- *
- * @param {*} children `this.props.children`
- * @return {object} Mapping of key to child
- */
-function getChildMapping(children, mapFn) {
-  var mapper = function mapper(child) {
-    return mapFn && (0, _react.isValidElement)(child) ? mapFn(child) : child;
-  };
-
-  var result = Object.create(null);
-  if (children) _react.Children.map(children, function (c) {
-    return c;
-  }).forEach(function (child) {
-    // run the map function here instead so that the key is the computed one
-    result[child.key] = mapper(child);
-  });
-  return result;
-}
-/**
- * When you're adding or removing children some may be added or removed in the
- * same render pass. We want to show *both* since we want to simultaneously
- * animate elements in and out. This function takes a previous set of keys
- * and a new set of keys and merges them with its best guess of the correct
- * ordering. In the future we may expose some of the utilities in
- * ReactMultiChild to make this easy, but for now React itself does not
- * directly have this concept of the union of prevChildren and nextChildren
- * so we implement it here.
- *
- * @param {object} prev prev children as returned from
- * `ReactTransitionChildMapping.getChildMapping()`.
- * @param {object} next next children as returned from
- * `ReactTransitionChildMapping.getChildMapping()`.
- * @return {object} a key set that contains all keys in `prev` and all keys
- * in `next` in a reasonable order.
- */
-
-
-function mergeChildMappings(prev, next) {
-  prev = prev || {};
-  next = next || {};
-
-  function getValueForKey(key) {
-    return key in next ? next[key] : prev[key];
-  } // For each key of `next`, the list of keys to insert before that key in
-  // the combined list
-
-
-  var nextKeysPending = Object.create(null);
-  var pendingKeys = [];
-
-  for (var prevKey in prev) {
-    if (prevKey in next) {
-      if (pendingKeys.length) {
-        nextKeysPending[prevKey] = pendingKeys;
-        pendingKeys = [];
-      }
-    } else {
-      pendingKeys.push(prevKey);
-    }
-  }
-
-  var i;
-  var childMapping = {};
-
-  for (var nextKey in next) {
-    if (nextKeysPending[nextKey]) {
-      for (i = 0; i < nextKeysPending[nextKey].length; i++) {
-        var pendingNextKey = nextKeysPending[nextKey][i];
-        childMapping[nextKeysPending[nextKey][i]] = getValueForKey(pendingNextKey);
-      }
-    }
-
-    childMapping[nextKey] = getValueForKey(nextKey);
-  } // Finally, add the keys which didn't appear before any key in `next`
-
-
-  for (i = 0; i < pendingKeys.length; i++) {
-    childMapping[pendingKeys[i]] = getValueForKey(pendingKeys[i]);
-  }
-
-  return childMapping;
-}
-
-function getProp(child, prop, props) {
-  return props[prop] != null ? props[prop] : child.props[prop];
-}
-
-function getInitialChildMapping(props, onExited) {
-  return getChildMapping(props.children, function (child) {
-    return (0, _react.cloneElement)(child, {
-      onExited: onExited.bind(null, child),
-      in: true,
-      appear: getProp(child, 'appear', props),
-      enter: getProp(child, 'enter', props),
-      exit: getProp(child, 'exit', props)
-    });
-  });
-}
-
-function getNextChildMapping(nextProps, prevChildMapping, onExited) {
-  var nextChildMapping = getChildMapping(nextProps.children);
-  var children = mergeChildMappings(prevChildMapping, nextChildMapping);
-  Object.keys(children).forEach(function (key) {
-    var child = children[key];
-    if (!(0, _react.isValidElement)(child)) return;
-    var hasPrev = (key in prevChildMapping);
-    var hasNext = (key in nextChildMapping);
-    var prevChild = prevChildMapping[key];
-    var isLeaving = (0, _react.isValidElement)(prevChild) && !prevChild.props.in; // item is new (entering)
-
-    if (hasNext && (!hasPrev || isLeaving)) {
-      // console.log('entering', key)
-      children[key] = (0, _react.cloneElement)(child, {
-        onExited: onExited.bind(null, child),
-        in: true,
-        exit: getProp(child, 'exit', nextProps),
-        enter: getProp(child, 'enter', nextProps)
-      });
-    } else if (!hasNext && hasPrev && !isLeaving) {
-      // item is old (exiting)
-      // console.log('leaving', key)
-      children[key] = (0, _react.cloneElement)(child, {
-        in: false
-      });
-    } else if (hasNext && hasPrev && (0, _react.isValidElement)(prevChild)) {
-      // item hasn't changed transition states
-      // copy over the last transition props;
-      // console.log('unchanged', key)
-      children[key] = (0, _react.cloneElement)(child, {
-        onExited: onExited.bind(null, child),
-        in: prevChild.props.in,
-        exit: getProp(child, 'exit', nextProps),
-        enter: getProp(child, 'enter', nextProps)
-      });
-    }
-  });
-  return children;
-}
-},{"react":"../node_modules/react/index.js"}],"../node_modules/@material-ui/react-transition-group/lib/esm/TransitionGroup.js":[function(require,module,exports) {
+},{"@babel/runtime/helpers/esm/extends":"../node_modules/@babel/runtime/helpers/esm/extends.js","@material-ui/styles":"../node_modules/@material-ui/styles/esm/index.js","./defaultTheme":"../node_modules/@material-ui/core/esm/styles/defaultTheme.js"}],"../node_modules/@material-ui/core/esm/styles/withTheme.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -42294,686 +39065,179 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _objectWithoutPropertiesLoose2 = _interopRequireDefault(require("@babel/runtime/helpers/esm/objectWithoutPropertiesLoose"));
+var _styles = require("@material-ui/styles");
 
-var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/esm/extends"));
-
-var _assertThisInitialized2 = _interopRequireDefault(require("@babel/runtime/helpers/esm/assertThisInitialized"));
-
-var _inheritsLoose2 = _interopRequireDefault(require("@babel/runtime/helpers/esm/inheritsLoose"));
-
-var _propTypes = _interopRequireDefault(require("prop-types"));
-
-var _react = _interopRequireDefault(require("react"));
-
-var _TransitionGroupContext = _interopRequireDefault(require("./TransitionGroupContext"));
-
-var _ChildMapping = require("./utils/ChildMapping");
+var _defaultTheme = _interopRequireDefault(require("./defaultTheme"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var values = Object.values || function (obj) {
-  return Object.keys(obj).map(function (k) {
-    return obj[k];
-  });
-};
-
-var defaultProps = {
-  component: 'div',
-  childFactory: function childFactory(child) {
-    return child;
-  }
-};
-/**
- * The `<TransitionGroup>` component manages a set of transition components
- * (`<Transition>` and `<CSSTransition>`) in a list. Like with the transition
- * components, `<TransitionGroup>` is a state machine for managing the mounting
- * and unmounting of components over time.
- *
- * Consider the example below. As items are removed or added to the TodoList the
- * `in` prop is toggled automatically by the `<TransitionGroup>`.
- *
- * Note that `<TransitionGroup>`  does not define any animation behavior!
- * Exactly _how_ a list item animates is up to the individual transition
- * component. This means you can mix and match animations across different list
- * items.
- */
-
-var TransitionGroup = /*#__PURE__*/function (_React$Component) {
-  (0, _inheritsLoose2.default)(TransitionGroup, _React$Component);
-
-  function TransitionGroup(props, context) {
-    var _this;
-
-    _this = _React$Component.call(this, props, context) || this;
-
-    var handleExited = _this.handleExited.bind((0, _assertThisInitialized2.default)(_this)); // Initial children should all be entering, dependent on appear
-
-
-    _this.state = {
-      contextValue: {
-        isMounting: true
-      },
-      handleExited: handleExited,
-      firstRender: true
-    };
-    return _this;
-  }
-
-  var _proto = TransitionGroup.prototype;
-
-  _proto.componentDidMount = function componentDidMount() {
-    this.mounted = true;
-    this.setState({
-      contextValue: {
-        isMounting: false
-      }
-    });
-  };
-
-  _proto.componentWillUnmount = function componentWillUnmount() {
-    this.mounted = false;
-  };
-
-  TransitionGroup.getDerivedStateFromProps = function getDerivedStateFromProps(nextProps, _ref) {
-    var prevChildMapping = _ref.children,
-        handleExited = _ref.handleExited,
-        firstRender = _ref.firstRender;
-    return {
-      children: firstRender ? (0, _ChildMapping.getInitialChildMapping)(nextProps, handleExited) : (0, _ChildMapping.getNextChildMapping)(nextProps, prevChildMapping, handleExited),
-      firstRender: false
-    };
-  };
-
-  _proto.handleExited = function handleExited(child, node) {
-    var currentChildMapping = (0, _ChildMapping.getChildMapping)(this.props.children);
-    if (child.key in currentChildMapping) return;
-
-    if (child.props.onExited) {
-      child.props.onExited(node);
-    }
-
-    if (this.mounted) {
-      this.setState(function (state) {
-        var children = (0, _extends2.default)({}, state.children);
-        delete children[child.key];
-        return {
-          children: children
-        };
-      });
-    }
-  };
-
-  _proto.render = function render() {
-    var _this$props = this.props,
-        Component = _this$props.component,
-        childFactory = _this$props.childFactory,
-        props = (0, _objectWithoutPropertiesLoose2.default)(_this$props, ["component", "childFactory"]);
-    var contextValue = this.state.contextValue;
-    var children = values(this.state.children).map(childFactory);
-    delete props.appear;
-    delete props.enter;
-    delete props.exit;
-
-    if (Component === null) {
-      return /*#__PURE__*/_react.default.createElement(_TransitionGroupContext.default.Provider, {
-        value: contextValue
-      }, children);
-    }
-
-    return /*#__PURE__*/_react.default.createElement(_TransitionGroupContext.default.Provider, {
-      value: contextValue
-    }, /*#__PURE__*/_react.default.createElement(Component, props, children));
-  };
-
-  return TransitionGroup;
-}(_react.default.Component);
-
-TransitionGroup.propTypes = "development" !== "production" ? {
-  /**
-   * `<TransitionGroup>` renders a `<div>` by default. You can change this
-   * behavior by providing a `component` prop.
-   * If you use React v16+ and would like to avoid a wrapping `<div>` element
-   * you can pass in `component={null}`. This is useful if the wrapping div
-   * borks your css styles.
-   */
-  component: _propTypes.default.any,
-
-  /**
-   * A set of `<Transition>` components, that are toggled `in` and out as they
-   * leave. the `<TransitionGroup>` will inject specific transition props, so
-   * remember to spread them through if you are wrapping the `<Transition>` as
-   * with our `<Fade>` example.
-   *
-   * While this component is meant for multiple `Transition` or `CSSTransition`
-   * children, sometimes you may want to have a single transition child with
-   * content that you want to be transitioned out and in when you change it
-   * (e.g. routes, images etc.) In that case you can change the `key` prop of
-   * the transition child as you change its content, this will cause
-   * `TransitionGroup` to transition the child out and back in.
-   */
-  children: _propTypes.default.node,
-
-  /**
-   * A convenience prop that enables or disables appear animations
-   * for all children. Note that specifying this will override any defaults set
-   * on individual children Transitions.
-   */
-  appear: _propTypes.default.bool,
-
-  /**
-   * A convenience prop that enables or disables enter animations
-   * for all children. Note that specifying this will override any defaults set
-   * on individual children Transitions.
-   */
-  enter: _propTypes.default.bool,
-
-  /**
-   * A convenience prop that enables or disables exit animations
-   * for all children. Note that specifying this will override any defaults set
-   * on individual children Transitions.
-   */
-  exit: _propTypes.default.bool,
-
-  /**
-   * You may need to apply reactive updates to a child as it is exiting.
-   * This is generally done by using `cloneElement` however in the case of an exiting
-   * child the element has already been removed and not accessible to the consumer.
-   *
-   * If you do need to update a child as it leaves you can provide a `childFactory`
-   * to wrap every child, even the ones that are leaving.
-   *
-   * @type Function(child: ReactElement) -> ReactElement
-   */
-  childFactory: _propTypes.default.func
-} : {};
-TransitionGroup.defaultProps = defaultProps;
-var _default = TransitionGroup;
+var withTheme = (0, _styles.withThemeCreator)({
+  defaultTheme: _defaultTheme.default
+});
+var _default = withTheme;
 exports.default = _default;
-},{"@babel/runtime/helpers/esm/objectWithoutPropertiesLoose":"../node_modules/@babel/runtime/helpers/esm/objectWithoutPropertiesLoose.js","@babel/runtime/helpers/esm/extends":"../node_modules/@babel/runtime/helpers/esm/extends.js","@babel/runtime/helpers/esm/assertThisInitialized":"../node_modules/@babel/runtime/helpers/esm/assertThisInitialized.js","@babel/runtime/helpers/esm/inheritsLoose":"../node_modules/@babel/runtime/helpers/esm/inheritsLoose.js","prop-types":"../node_modules/prop-types/index.js","react":"../node_modules/react/index.js","./TransitionGroupContext":"../node_modules/@material-ui/react-transition-group/lib/esm/TransitionGroupContext.js","./utils/ChildMapping":"../node_modules/@material-ui/react-transition-group/lib/esm/utils/ChildMapping.js"}],"../node_modules/@material-ui/react-transition-group/lib/esm/ReplaceTransition.js":[function(require,module,exports) {
+},{"@material-ui/styles":"../node_modules/@material-ui/styles/esm/index.js","./defaultTheme":"../node_modules/@material-ui/core/esm/styles/defaultTheme.js"}],"../node_modules/@material-ui/core/esm/styles/index.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
-
-var _objectWithoutPropertiesLoose2 = _interopRequireDefault(require("@babel/runtime/helpers/esm/objectWithoutPropertiesLoose"));
-
-var _inheritsLoose2 = _interopRequireDefault(require("@babel/runtime/helpers/esm/inheritsLoose"));
-
-var _propTypes = _interopRequireDefault(require("prop-types"));
-
-var _react = _interopRequireDefault(require("react"));
-
-var _reactDom = _interopRequireDefault(require("react-dom"));
-
-var _TransitionGroup = _interopRequireDefault(require("./TransitionGroup"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-/**
- * The `<ReplaceTransition>` component is a specialized `Transition` component
- * that animates between two children.
- *
- * ```jsx
- * <ReplaceTransition in>
- *   <Fade><div>I appear first</div></Fade>
- *   <Fade><div>I replace the above</div></Fade>
- * </ReplaceTransition>
- * ```
- */
-var ReplaceTransition = /*#__PURE__*/function (_React$Component) {
-  (0, _inheritsLoose2.default)(ReplaceTransition, _React$Component);
-
-  function ReplaceTransition() {
-    var _this;
-
-    for (var _len = arguments.length, _args = new Array(_len), _key = 0; _key < _len; _key++) {
-      _args[_key] = arguments[_key];
-    }
-
-    _this = _React$Component.call.apply(_React$Component, [this].concat(_args)) || this;
-
-    _this.handleEnter = function () {
-      for (var _len2 = arguments.length, args = new Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
-        args[_key2] = arguments[_key2];
-      }
-
-      return _this.handleLifecycle('onEnter', 0, args);
-    };
-
-    _this.handleEntering = function () {
-      for (var _len3 = arguments.length, args = new Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
-        args[_key3] = arguments[_key3];
-      }
-
-      return _this.handleLifecycle('onEntering', 0, args);
-    };
-
-    _this.handleEntered = function () {
-      for (var _len4 = arguments.length, args = new Array(_len4), _key4 = 0; _key4 < _len4; _key4++) {
-        args[_key4] = arguments[_key4];
-      }
-
-      return _this.handleLifecycle('onEntered', 0, args);
-    };
-
-    _this.handleExit = function () {
-      for (var _len5 = arguments.length, args = new Array(_len5), _key5 = 0; _key5 < _len5; _key5++) {
-        args[_key5] = arguments[_key5];
-      }
-
-      return _this.handleLifecycle('onExit', 1, args);
-    };
-
-    _this.handleExiting = function () {
-      for (var _len6 = arguments.length, args = new Array(_len6), _key6 = 0; _key6 < _len6; _key6++) {
-        args[_key6] = arguments[_key6];
-      }
-
-      return _this.handleLifecycle('onExiting', 1, args);
-    };
-
-    _this.handleExited = function () {
-      for (var _len7 = arguments.length, args = new Array(_len7), _key7 = 0; _key7 < _len7; _key7++) {
-        args[_key7] = arguments[_key7];
-      }
-
-      return _this.handleLifecycle('onExited', 1, args);
-    };
-
-    return _this;
-  }
-
-  var _proto = ReplaceTransition.prototype;
-
-  _proto.handleLifecycle = function handleLifecycle(handler, idx, originalArgs) {
-    var _child$props;
-
-    var children = this.props.children;
-
-    var child = _react.default.Children.toArray(children)[idx];
-
-    if (child.props[handler]) (_child$props = child.props)[handler].apply(_child$props, originalArgs);
-    if (this.props[handler]) this.props[handler](this.props.findDOMNode(this));
-  };
-
-  _proto.render = function render() {
-    var _this$props = this.props,
-        children = _this$props.children,
-        inProp = _this$props.in,
-        props = (0, _objectWithoutPropertiesLoose2.default)(_this$props, ["children", "in"]);
-
-    var _React$Children$toArr = _react.default.Children.toArray(children),
-        first = _React$Children$toArr[0],
-        second = _React$Children$toArr[1];
-
-    delete props.findDOMNode;
-    delete props.onEnter;
-    delete props.onEntering;
-    delete props.onEntered;
-    delete props.onExit;
-    delete props.onExiting;
-    delete props.onExited;
-    return /*#__PURE__*/_react.default.createElement(_TransitionGroup.default, props, inProp ? _react.default.cloneElement(first, {
-      key: 'first',
-      onEnter: this.handleEnter,
-      onEntering: this.handleEntering,
-      onEntered: this.handleEntered
-    }) : _react.default.cloneElement(second, {
-      key: 'second',
-      onEnter: this.handleExit,
-      onEntering: this.handleExiting,
-      onEntered: this.handleExited
-    }));
-  };
-
-  return ReplaceTransition;
-}(_react.default.Component);
-
-ReplaceTransition.propTypes = "development" !== "production" ? {
-  in: _propTypes.default.bool.isRequired,
-  children: function children(props, propName) {
-    if (_react.default.Children.count(props[propName]) !== 2) return new Error("\"" + propName + "\" must be exactly two transition components.");
-    return null;
-  },
-  findDOMNode: _propTypes.default.func
-} : {};
-ReplaceTransition.defaultProps = {
-  findDOMNode: _reactDom.default.findDOMNode
+var _exportNames = {
+  createMuiTheme: true,
+  unstable_createMuiStrictModeTheme: true,
+  createStyles: true,
+  makeStyles: true,
+  responsiveFontSizes: true,
+  styled: true,
+  useTheme: true,
+  withStyles: true,
+  withTheme: true,
+  createGenerateClassName: true,
+  jssPreset: true,
+  ServerStyleSheets: true,
+  StylesProvider: true,
+  MuiThemeProvider: true,
+  ThemeProvider: true
 };
-var _default = ReplaceTransition;
-exports.default = _default;
-},{"@babel/runtime/helpers/esm/objectWithoutPropertiesLoose":"../node_modules/@babel/runtime/helpers/esm/objectWithoutPropertiesLoose.js","@babel/runtime/helpers/esm/inheritsLoose":"../node_modules/@babel/runtime/helpers/esm/inheritsLoose.js","prop-types":"../node_modules/prop-types/index.js","react":"../node_modules/react/index.js","react-dom":"../node_modules/react-dom/index.js","./TransitionGroup":"../node_modules/@material-ui/react-transition-group/lib/esm/TransitionGroup.js"}],"../node_modules/@material-ui/react-transition-group/lib/esm/SwitchTransition.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
+Object.defineProperty(exports, "createMuiTheme", {
+  enumerable: true,
+  get: function () {
+    return _createMuiTheme.default;
+  }
 });
-exports.default = exports.modes = void 0;
-
-var _inheritsLoose2 = _interopRequireDefault(require("@babel/runtime/helpers/esm/inheritsLoose"));
-
-var _react = _interopRequireDefault(require("react"));
-
-var _propTypes = _interopRequireDefault(require("prop-types"));
-
-var _Transition = require("./Transition");
-
-var _TransitionGroupContext = _interopRequireDefault(require("./TransitionGroupContext"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var _leaveRenders, _enterRenders;
-
-function areChildrenDifferent(oldChildren, newChildren) {
-  if (oldChildren === newChildren) return false;
-
-  if (_react.default.isValidElement(oldChildren) && _react.default.isValidElement(newChildren) && oldChildren.key != null && oldChildren.key === newChildren.key) {
-    return false;
+Object.defineProperty(exports, "unstable_createMuiStrictModeTheme", {
+  enumerable: true,
+  get: function () {
+    return _createMuiStrictModeTheme.default;
   }
+});
+Object.defineProperty(exports, "createStyles", {
+  enumerable: true,
+  get: function () {
+    return _createStyles.default;
+  }
+});
+Object.defineProperty(exports, "makeStyles", {
+  enumerable: true,
+  get: function () {
+    return _makeStyles.default;
+  }
+});
+Object.defineProperty(exports, "responsiveFontSizes", {
+  enumerable: true,
+  get: function () {
+    return _responsiveFontSizes.default;
+  }
+});
+Object.defineProperty(exports, "styled", {
+  enumerable: true,
+  get: function () {
+    return _styled.default;
+  }
+});
+Object.defineProperty(exports, "useTheme", {
+  enumerable: true,
+  get: function () {
+    return _useTheme.default;
+  }
+});
+Object.defineProperty(exports, "withStyles", {
+  enumerable: true,
+  get: function () {
+    return _withStyles.default;
+  }
+});
+Object.defineProperty(exports, "withTheme", {
+  enumerable: true,
+  get: function () {
+    return _withTheme.default;
+  }
+});
+Object.defineProperty(exports, "createGenerateClassName", {
+  enumerable: true,
+  get: function () {
+    return _styles.createGenerateClassName;
+  }
+});
+Object.defineProperty(exports, "jssPreset", {
+  enumerable: true,
+  get: function () {
+    return _styles.jssPreset;
+  }
+});
+Object.defineProperty(exports, "ServerStyleSheets", {
+  enumerable: true,
+  get: function () {
+    return _styles.ServerStyleSheets;
+  }
+});
+Object.defineProperty(exports, "StylesProvider", {
+  enumerable: true,
+  get: function () {
+    return _styles.StylesProvider;
+  }
+});
+Object.defineProperty(exports, "MuiThemeProvider", {
+  enumerable: true,
+  get: function () {
+    return _styles.ThemeProvider;
+  }
+});
+Object.defineProperty(exports, "ThemeProvider", {
+  enumerable: true,
+  get: function () {
+    return _styles.ThemeProvider;
+  }
+});
 
-  return true;
-}
-/**
- * Enum of modes for SwitchTransition component
- * @enum { string }
- */
+var _colorManipulator = require("./colorManipulator");
 
-
-var modes = {
-  out: 'out-in',
-  in: 'in-out'
-};
-exports.modes = modes;
-
-var callHook = function callHook(element, name, cb) {
-  return function () {
-    var _element$props;
-
-    element.props[name] && (_element$props = element.props)[name].apply(_element$props, arguments);
-    cb();
-  };
-};
-
-var leaveRenders = (_leaveRenders = {}, _leaveRenders[modes.out] = function (_ref) {
-  var current = _ref.current,
-      changeState = _ref.changeState;
-  return _react.default.cloneElement(current, {
-    in: false,
-    onExited: callHook(current, 'onExited', function () {
-      changeState(_Transition.ENTERING, null);
-    })
+Object.keys(_colorManipulator).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  if (Object.prototype.hasOwnProperty.call(_exportNames, key)) return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function () {
+      return _colorManipulator[key];
+    }
   });
-}, _leaveRenders[modes.in] = function (_ref2) {
-  var current = _ref2.current,
-      changeState = _ref2.changeState,
-      children = _ref2.children;
-  return [current, _react.default.cloneElement(children, {
-    in: true,
-    onEntered: callHook(children, 'onEntered', function () {
-      changeState(_Transition.ENTERING);
-    })
-  })];
-}, _leaveRenders);
-var enterRenders = (_enterRenders = {}, _enterRenders[modes.out] = function (_ref3) {
-  var children = _ref3.children,
-      changeState = _ref3.changeState;
-  return _react.default.cloneElement(children, {
-    in: true,
-    onEntered: callHook(children, 'onEntered', function () {
-      changeState(_Transition.ENTERED, _react.default.cloneElement(children, {
-        in: true
-      }));
-    })
+});
+
+var _createMuiTheme = _interopRequireDefault(require("./createMuiTheme"));
+
+var _createMuiStrictModeTheme = _interopRequireDefault(require("./createMuiStrictModeTheme"));
+
+var _createStyles = _interopRequireDefault(require("./createStyles"));
+
+var _makeStyles = _interopRequireDefault(require("./makeStyles"));
+
+var _responsiveFontSizes = _interopRequireDefault(require("./responsiveFontSizes"));
+
+var _styled = _interopRequireDefault(require("./styled"));
+
+var _transitions = require("./transitions");
+
+Object.keys(_transitions).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  if (Object.prototype.hasOwnProperty.call(_exportNames, key)) return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function () {
+      return _transitions[key];
+    }
   });
-}, _enterRenders[modes.in] = function (_ref4) {
-  var current = _ref4.current,
-      children = _ref4.children,
-      changeState = _ref4.changeState;
-  return [_react.default.cloneElement(current, {
-    in: false,
-    onExited: callHook(current, 'onExited', function () {
-      changeState(_Transition.ENTERED, _react.default.cloneElement(children, {
-        in: true
-      }));
-    })
-  }), _react.default.cloneElement(children, {
-    in: true
-  })];
-}, _enterRenders);
-/**
- * A transition component inspired by the [vue transition modes](https://vuejs.org/v2/guide/transitions.html#Transition-Modes).
- * You can use it when you want to control the render between state transitions.
- * Based on the selected mode and the child's key which is the `Transition` or `CSSTransition` component, the `SwitchTransition` makes a consistent transition between them.
- *
- * If the `out-in` mode is selected, the `SwitchTransition` waits until the old child leaves and then inserts a new child.
- * If the `in-out` mode is selected, the `SwitchTransition` inserts a new child first, waits for the new child to enter and then removes the old child.
- *
- * **Note**: If you want the animation to happen simultaneously
- * (that is, to have the old child removed and a new child inserted **at the same time**),
- * you should use
- * [`TransitionGroup`](https://reactcommunity.org/react-transition-group/transition-group)
- * instead.
- *
- * ```jsx
- * function App() {
- *  const [state, setState] = useState(false);
- *  return (
- *    <SwitchTransition>
- *      <CSSTransition
- *        key={state ? "Goodbye, world!" : "Hello, world!"}
- *        addEndListener={(node, done) => node.addEventListener("transitionend", done, false)}
- *        classNames='fade'
- *      >
- *        <button onClick={() => setState(state => !state)}>
- *          {state ? "Goodbye, world!" : "Hello, world!"}
- *        </button>
- *      </CSSTransition>
- *    </SwitchTransition>
- *  );
- * }
- * ```
- *
- * ```css
- * .fade-enter{
- *    opacity: 0;
- * }
- * .fade-exit{
- *    opacity: 1;
- * }
- * .fade-enter-active{
- *    opacity: 1;
- * }
- * .fade-exit-active{
- *    opacity: 0;
- * }
- * .fade-enter-active,
- * .fade-exit-active{
- *    transition: opacity 500ms;
- * }
- * ```
- */
-
-var SwitchTransition = /*#__PURE__*/function (_React$Component) {
-  (0, _inheritsLoose2.default)(SwitchTransition, _React$Component);
-
-  function SwitchTransition() {
-    var _this;
-
-    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
-      args[_key] = arguments[_key];
-    }
-
-    _this = _React$Component.call.apply(_React$Component, [this].concat(args)) || this;
-    _this.state = {
-      status: _Transition.ENTERED,
-      current: null
-    };
-    _this.appeared = false;
-
-    _this.changeState = function (status, current) {
-      if (current === void 0) {
-        current = _this.state.current;
-      }
-
-      _this.setState({
-        status: status,
-        current: current
-      });
-    };
-
-    return _this;
-  }
-
-  var _proto = SwitchTransition.prototype;
-
-  _proto.componentDidMount = function componentDidMount() {
-    this.appeared = true;
-  };
-
-  SwitchTransition.getDerivedStateFromProps = function getDerivedStateFromProps(props, state) {
-    if (props.children == null) {
-      return {
-        current: null
-      };
-    }
-
-    if (state.status === _Transition.ENTERING && props.mode === modes.in) {
-      return {
-        status: _Transition.ENTERING
-      };
-    }
-
-    if (state.current && areChildrenDifferent(state.current, props.children)) {
-      return {
-        status: _Transition.EXITING
-      };
-    }
-
-    return {
-      current: _react.default.cloneElement(props.children, {
-        in: true
-      })
-    };
-  };
-
-  _proto.render = function render() {
-    var _this$props = this.props,
-        children = _this$props.children,
-        mode = _this$props.mode,
-        _this$state = this.state,
-        status = _this$state.status,
-        current = _this$state.current;
-    var data = {
-      children: children,
-      current: current,
-      changeState: this.changeState,
-      status: status
-    };
-    var component;
-
-    switch (status) {
-      case _Transition.ENTERING:
-        component = enterRenders[mode](data);
-        break;
-
-      case _Transition.EXITING:
-        component = leaveRenders[mode](data);
-        break;
-
-      case _Transition.ENTERED:
-        component = current;
-    }
-
-    return /*#__PURE__*/_react.default.createElement(_TransitionGroupContext.default.Provider, {
-      value: {
-        isMounting: !this.appeared
-      }
-    }, component);
-  };
-
-  return SwitchTransition;
-}(_react.default.Component);
-
-SwitchTransition.propTypes = "development" !== "production" ? {
-  /**
-   * Transition modes.
-   * `out-in`: Current element transitions out first, then when complete, the new element transitions in.
-   * `in-out`: New element transitions in first, then when complete, the current element transitions out.
-   *
-   * @type {'out-in'|'in-out'}
-   */
-  mode: _propTypes.default.oneOf([modes.in, modes.out]),
-
-  /**
-   * Any `Transition` or `CSSTransition` component.
-   */
-  children: _propTypes.default.oneOfType([_propTypes.default.element.isRequired])
-} : {};
-SwitchTransition.defaultProps = {
-  mode: modes.out
-};
-var _default = SwitchTransition;
-exports.default = _default;
-},{"@babel/runtime/helpers/esm/inheritsLoose":"../node_modules/@babel/runtime/helpers/esm/inheritsLoose.js","react":"../node_modules/react/index.js","prop-types":"../node_modules/prop-types/index.js","./Transition":"../node_modules/@material-ui/react-transition-group/lib/esm/Transition.js","./TransitionGroupContext":"../node_modules/@material-ui/react-transition-group/lib/esm/TransitionGroupContext.js"}],"../node_modules/@material-ui/react-transition-group/lib/esm/index.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-Object.defineProperty(exports, "CSSTransition", {
-  enumerable: true,
-  get: function () {
-    return _CSSTransition.default;
-  }
-});
-Object.defineProperty(exports, "ReplaceTransition", {
-  enumerable: true,
-  get: function () {
-    return _ReplaceTransition.default;
-  }
-});
-Object.defineProperty(exports, "SwitchTransition", {
-  enumerable: true,
-  get: function () {
-    return _SwitchTransition.default;
-  }
-});
-Object.defineProperty(exports, "TransitionGroup", {
-  enumerable: true,
-  get: function () {
-    return _TransitionGroup.default;
-  }
-});
-Object.defineProperty(exports, "Transition", {
-  enumerable: true,
-  get: function () {
-    return _Transition.default;
-  }
-});
-Object.defineProperty(exports, "config", {
-  enumerable: true,
-  get: function () {
-    return _config.default;
-  }
 });
 
-var _CSSTransition = _interopRequireDefault(require("./CSSTransition"));
+var _useTheme = _interopRequireDefault(require("./useTheme"));
 
-var _ReplaceTransition = _interopRequireDefault(require("./ReplaceTransition"));
+var _withStyles = _interopRequireDefault(require("./withStyles"));
 
-var _SwitchTransition = _interopRequireDefault(require("./SwitchTransition"));
+var _withTheme = _interopRequireDefault(require("./withTheme"));
 
-var _TransitionGroup = _interopRequireDefault(require("./TransitionGroup"));
-
-var _Transition = _interopRequireDefault(require("./Transition"));
-
-var _config = _interopRequireDefault(require("./config"));
+var _styles = require("@material-ui/styles");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-},{"./CSSTransition":"../node_modules/@material-ui/react-transition-group/lib/esm/CSSTransition.js","./ReplaceTransition":"../node_modules/@material-ui/react-transition-group/lib/esm/ReplaceTransition.js","./SwitchTransition":"../node_modules/@material-ui/react-transition-group/lib/esm/SwitchTransition.js","./TransitionGroup":"../node_modules/@material-ui/react-transition-group/lib/esm/TransitionGroup.js","./Transition":"../node_modules/@material-ui/react-transition-group/lib/esm/Transition.js","./config":"../node_modules/@material-ui/react-transition-group/lib/esm/config.js"}],"../node_modules/@material-ui/core/esm/utils/capitalize.js":[function(require,module,exports) {
+},{"./colorManipulator":"../node_modules/@material-ui/core/esm/styles/colorManipulator.js","./createMuiTheme":"../node_modules/@material-ui/core/esm/styles/createMuiTheme.js","./createMuiStrictModeTheme":"../node_modules/@material-ui/core/esm/styles/createMuiStrictModeTheme.js","./createStyles":"../node_modules/@material-ui/core/esm/styles/createStyles.js","./makeStyles":"../node_modules/@material-ui/core/esm/styles/makeStyles.js","./responsiveFontSizes":"../node_modules/@material-ui/core/esm/styles/responsiveFontSizes.js","./styled":"../node_modules/@material-ui/core/esm/styles/styled.js","./transitions":"../node_modules/@material-ui/core/esm/styles/transitions.js","./useTheme":"../node_modules/@material-ui/core/esm/styles/useTheme.js","./withStyles":"../node_modules/@material-ui/core/esm/styles/withStyles.js","./withTheme":"../node_modules/@material-ui/core/esm/styles/withTheme.js","@material-ui/styles":"../node_modules/@material-ui/styles/esm/index.js"}],"../node_modules/@material-ui/core/esm/utils/capitalize.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -43858,1681 +40122,7 @@ var _unstable_useId = _interopRequireDefault(require("./unstable_useId"));
 var _useIsFocusVisible = _interopRequireDefault(require("./useIsFocusVisible"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-},{"./capitalize":"../node_modules/@material-ui/core/esm/utils/capitalize.js","./deprecatedPropType":"../node_modules/@material-ui/core/esm/utils/deprecatedPropType.js","./createSvgIcon":"../node_modules/@material-ui/core/esm/utils/createSvgIcon.js","./debounce":"../node_modules/@material-ui/core/esm/utils/debounce.js","./isMuiElement":"../node_modules/@material-ui/core/esm/utils/isMuiElement.js","./ownerDocument":"../node_modules/@material-ui/core/esm/utils/ownerDocument.js","./ownerWindow":"../node_modules/@material-ui/core/esm/utils/ownerWindow.js","./requirePropFactory":"../node_modules/@material-ui/core/esm/utils/requirePropFactory.js","./setRef":"../node_modules/@material-ui/core/esm/utils/setRef.js","./unsupportedProp":"../node_modules/@material-ui/core/esm/utils/unsupportedProp.js","./useControlled":"../node_modules/@material-ui/core/esm/utils/useControlled.js","./useEventCallback":"../node_modules/@material-ui/core/esm/utils/useEventCallback.js","./useForkRef":"../node_modules/@material-ui/core/esm/utils/useForkRef.js","./unstable_useId":"../node_modules/@material-ui/core/esm/utils/unstable_useId.js","./useIsFocusVisible":"../node_modules/@material-ui/core/esm/utils/useIsFocusVisible.js"}],"../node_modules/@material-ui/core/esm/Collapse/StrictModeCollapse.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/esm/extends"));
-
-var React = _interopRequireWildcard(require("react"));
-
-var _reactTransitionGroup = require("@material-ui/react-transition-group");
-
-var _utils = require("../utils");
-
-var _Collapse = _interopRequireDefault(require("./Collapse"));
-
-function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-/**
- * @ignore - internal component.
- */
-var StrictModeCollapse = React.forwardRef(function StrictModeCollapse(props, forwardedRef) {
-  var domRef = React.useRef(null);
-  var ref = (0, _utils.useForkRef)(domRef, forwardedRef);
-  return /*#__PURE__*/React.createElement(_Collapse.default, (0, _extends2.default)({}, props, {
-    findDOMNode: function findDOMNode() {
-      return domRef.current;
-    },
-    ref: ref,
-    TransitionComponent: _reactTransitionGroup.Transition
-  }));
-});
-var _default = StrictModeCollapse;
-exports.default = _default;
-},{"@babel/runtime/helpers/esm/extends":"../node_modules/@babel/runtime/helpers/esm/extends.js","react":"../node_modules/react/index.js","@material-ui/react-transition-group":"../node_modules/@material-ui/react-transition-group/lib/esm/index.js","../utils":"../node_modules/@material-ui/core/esm/utils/index.js","./Collapse":"../node_modules/@material-ui/core/esm/Collapse/Collapse.js"}],"../node_modules/@material-ui/core/esm/Collapse/index.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-Object.defineProperty(exports, "default", {
-  enumerable: true,
-  get: function () {
-    return _Collapse.default;
-  }
-});
-Object.defineProperty(exports, "unstable_StrictModeCollapse", {
-  enumerable: true,
-  get: function () {
-    return _StrictModeCollapse.default;
-  }
-});
-
-var _Collapse = _interopRequireDefault(require("./Collapse"));
-
-var _StrictModeCollapse = _interopRequireDefault(require("./StrictModeCollapse"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-},{"./Collapse":"../node_modules/@material-ui/core/esm/Collapse/Collapse.js","./StrictModeCollapse":"../node_modules/@material-ui/core/esm/Collapse/StrictModeCollapse.js"}],"../node_modules/@material-ui/core/esm/Fade/Fade.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/esm/extends"));
-
-var _objectWithoutProperties2 = _interopRequireDefault(require("@babel/runtime/helpers/esm/objectWithoutProperties"));
-
-var React = _interopRequireWildcard(require("react"));
-
-var _propTypes = _interopRequireDefault(require("prop-types"));
-
-var _reactTransitionGroup = require("react-transition-group");
-
-var _transitions = require("../styles/transitions");
-
-var _useTheme = _interopRequireDefault(require("../styles/useTheme"));
-
-var _utils = require("../transitions/utils");
-
-var _useForkRef = _interopRequireDefault(require("../utils/useForkRef"));
-
-function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var styles = {
-  entering: {
-    opacity: 1
-  },
-  entered: {
-    opacity: 1
-  }
-};
-var defaultTimeout = {
-  enter: _transitions.duration.enteringScreen,
-  exit: _transitions.duration.leavingScreen
-};
-/**
- * The Fade transition is used by the [Modal](/components/modal/) component.
- * It uses [react-transition-group](https://github.com/reactjs/react-transition-group) internally.
- */
-
-var Fade = React.forwardRef(function Fade(props, ref) {
-  var children = props.children,
-      inProp = props.in,
-      onEnter = props.onEnter,
-      onExit = props.onExit,
-      style = props.style,
-      _props$TransitionComp = props.TransitionComponent,
-      TransitionComponent = _props$TransitionComp === void 0 ? _reactTransitionGroup.Transition : _props$TransitionComp,
-      _props$timeout = props.timeout,
-      timeout = _props$timeout === void 0 ? defaultTimeout : _props$timeout,
-      other = (0, _objectWithoutProperties2.default)(props, ["children", "in", "onEnter", "onExit", "style", "TransitionComponent", "timeout"]);
-  var theme = (0, _useTheme.default)();
-  var handleRef = (0, _useForkRef.default)(children.ref, ref);
-
-  var handleEnter = function handleEnter(node, isAppearing) {
-    (0, _utils.reflow)(node); // So the animation always start from the start.
-
-    var transitionProps = (0, _utils.getTransitionProps)({
-      style: style,
-      timeout: timeout
-    }, {
-      mode: 'enter'
-    });
-    node.style.webkitTransition = theme.transitions.create('opacity', transitionProps);
-    node.style.transition = theme.transitions.create('opacity', transitionProps);
-
-    if (onEnter) {
-      onEnter(node, isAppearing);
-    }
-  };
-
-  var handleExit = function handleExit(node) {
-    var transitionProps = (0, _utils.getTransitionProps)({
-      style: style,
-      timeout: timeout
-    }, {
-      mode: 'exit'
-    });
-    node.style.webkitTransition = theme.transitions.create('opacity', transitionProps);
-    node.style.transition = theme.transitions.create('opacity', transitionProps);
-
-    if (onExit) {
-      onExit(node);
-    }
-  };
-
-  return /*#__PURE__*/React.createElement(TransitionComponent, (0, _extends2.default)({
-    appear: true,
-    in: inProp,
-    onEnter: handleEnter,
-    onExit: handleExit,
-    timeout: timeout
-  }, other), function (state, childProps) {
-    return React.cloneElement(children, (0, _extends2.default)({
-      style: (0, _extends2.default)((0, _extends2.default)((0, _extends2.default)({
-        opacity: 0,
-        visibility: state === 'exited' && !inProp ? 'hidden' : undefined
-      }, styles[state]), style), children.props.style),
-      ref: handleRef
-    }, childProps));
-  });
-});
-"development" !== "production" ? Fade.propTypes = {
-  // ----------------------------- Warning --------------------------------
-  // | These PropTypes are generated from the TypeScript type definitions |
-  // |     To update them edit the d.ts file and run "yarn proptypes"     |
-  // ----------------------------------------------------------------------
-
-  /**
-   * A single child content element.
-   */
-  children: _propTypes.default.element,
-
-  /**
-   * If `true`, the component will transition in.
-   */
-  in: _propTypes.default.bool,
-
-  /**
-   * @ignore
-   */
-  onEnter: _propTypes.default.func,
-
-  /**
-   * @ignore
-   */
-  onExit: _propTypes.default.func,
-
-  /**
-   * @ignore
-   */
-  style: _propTypes.default.object,
-
-  /**
-   * The duration for the transition, in milliseconds.
-   * You may specify a single timeout for all transitions, or individually with an object.
-   */
-  timeout: _propTypes.default.oneOfType([_propTypes.default.number, _propTypes.default.shape({
-    appear: _propTypes.default.number,
-    enter: _propTypes.default.number,
-    exit: _propTypes.default.number
-  })])
-} : void 0;
-var _default = Fade;
-exports.default = _default;
-},{"@babel/runtime/helpers/esm/extends":"../node_modules/@babel/runtime/helpers/esm/extends.js","@babel/runtime/helpers/esm/objectWithoutProperties":"../node_modules/@babel/runtime/helpers/esm/objectWithoutProperties.js","react":"../node_modules/react/index.js","prop-types":"../node_modules/prop-types/index.js","react-transition-group":"../node_modules/react-transition-group/esm/index.js","../styles/transitions":"../node_modules/@material-ui/core/esm/styles/transitions.js","../styles/useTheme":"../node_modules/@material-ui/core/esm/styles/useTheme.js","../transitions/utils":"../node_modules/@material-ui/core/esm/transitions/utils.js","../utils/useForkRef":"../node_modules/@material-ui/core/esm/utils/useForkRef.js"}],"../node_modules/@material-ui/core/esm/Fade/StrictModeFade.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/esm/extends"));
-
-var React = _interopRequireWildcard(require("react"));
-
-var _reactTransitionGroup = require("@material-ui/react-transition-group");
-
-var _utils = require("../utils");
-
-var _Fade = _interopRequireDefault(require("./Fade"));
-
-function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-/**
- * @ignore - internal component.
- */
-var StrictModeFade = React.forwardRef(function StrictModeFade(props, forwardedRef) {
-  var domRef = React.useRef(null);
-  var ref = (0, _utils.useForkRef)(domRef, forwardedRef);
-  return /*#__PURE__*/React.createElement(_Fade.default, (0, _extends2.default)({}, props, {
-    findDOMNode: function findDOMNode() {
-      return domRef.current;
-    },
-    ref: ref,
-    TransitionComponent: _reactTransitionGroup.Transition
-  }));
-});
-var _default = StrictModeFade;
-exports.default = _default;
-},{"@babel/runtime/helpers/esm/extends":"../node_modules/@babel/runtime/helpers/esm/extends.js","react":"../node_modules/react/index.js","@material-ui/react-transition-group":"../node_modules/@material-ui/react-transition-group/lib/esm/index.js","../utils":"../node_modules/@material-ui/core/esm/utils/index.js","./Fade":"../node_modules/@material-ui/core/esm/Fade/Fade.js"}],"../node_modules/@material-ui/core/esm/Fade/index.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-Object.defineProperty(exports, "default", {
-  enumerable: true,
-  get: function () {
-    return _Fade.default;
-  }
-});
-Object.defineProperty(exports, "unstable_StrictModeFade", {
-  enumerable: true,
-  get: function () {
-    return _StrictModeFade.default;
-  }
-});
-
-var _Fade = _interopRequireDefault(require("./Fade"));
-
-var _StrictModeFade = _interopRequireDefault(require("./StrictModeFade"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-},{"./Fade":"../node_modules/@material-ui/core/esm/Fade/Fade.js","./StrictModeFade":"../node_modules/@material-ui/core/esm/Fade/StrictModeFade.js"}],"../node_modules/@material-ui/core/esm/Grow/Grow.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/esm/extends"));
-
-var _objectWithoutProperties2 = _interopRequireDefault(require("@babel/runtime/helpers/esm/objectWithoutProperties"));
-
-var React = _interopRequireWildcard(require("react"));
-
-var _propTypes = _interopRequireDefault(require("prop-types"));
-
-var _reactTransitionGroup = require("react-transition-group");
-
-var _useTheme = _interopRequireDefault(require("../styles/useTheme"));
-
-var _utils = require("../transitions/utils");
-
-var _useForkRef = _interopRequireDefault(require("../utils/useForkRef"));
-
-function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function getScale(value) {
-  return "scale(".concat(value, ", ").concat(Math.pow(value, 2), ")");
-}
-
-var styles = {
-  entering: {
-    opacity: 1,
-    transform: getScale(1)
-  },
-  entered: {
-    opacity: 1,
-    transform: 'none'
-  }
-};
-/**
- * The Grow transition is used by the [Tooltip](/components/tooltips/) and
- * [Popover](/components/popover/) components.
- * It uses [react-transition-group](https://github.com/reactjs/react-transition-group) internally.
- */
-
-var Grow = React.forwardRef(function Grow(props, ref) {
-  var children = props.children,
-      inProp = props.in,
-      onEnter = props.onEnter,
-      onExit = props.onExit,
-      style = props.style,
-      _props$timeout = props.timeout,
-      timeout = _props$timeout === void 0 ? 'auto' : _props$timeout,
-      _props$TransitionComp = props.TransitionComponent,
-      TransitionComponent = _props$TransitionComp === void 0 ? _reactTransitionGroup.Transition : _props$TransitionComp,
-      other = (0, _objectWithoutProperties2.default)(props, ["children", "in", "onEnter", "onExit", "style", "timeout", "TransitionComponent"]);
-  var timer = React.useRef();
-  var autoTimeout = React.useRef();
-  var handleRef = (0, _useForkRef.default)(children.ref, ref);
-  var theme = (0, _useTheme.default)();
-
-  var handleEnter = function handleEnter(node, isAppearing) {
-    (0, _utils.reflow)(node); // So the animation always start from the start.
-
-    var _getTransitionProps = (0, _utils.getTransitionProps)({
-      style: style,
-      timeout: timeout
-    }, {
-      mode: 'enter'
-    }),
-        transitionDuration = _getTransitionProps.duration,
-        delay = _getTransitionProps.delay;
-
-    var duration;
-
-    if (timeout === 'auto') {
-      duration = theme.transitions.getAutoHeightDuration(node.clientHeight);
-      autoTimeout.current = duration;
-    } else {
-      duration = transitionDuration;
-    }
-
-    node.style.transition = [theme.transitions.create('opacity', {
-      duration: duration,
-      delay: delay
-    }), theme.transitions.create('transform', {
-      duration: duration * 0.666,
-      delay: delay
-    })].join(',');
-
-    if (onEnter) {
-      onEnter(node, isAppearing);
-    }
-  };
-
-  var handleExit = function handleExit(node) {
-    var _getTransitionProps2 = (0, _utils.getTransitionProps)({
-      style: style,
-      timeout: timeout
-    }, {
-      mode: 'exit'
-    }),
-        transitionDuration = _getTransitionProps2.duration,
-        delay = _getTransitionProps2.delay;
-
-    var duration;
-
-    if (timeout === 'auto') {
-      duration = theme.transitions.getAutoHeightDuration(node.clientHeight);
-      autoTimeout.current = duration;
-    } else {
-      duration = transitionDuration;
-    }
-
-    node.style.transition = [theme.transitions.create('opacity', {
-      duration: duration,
-      delay: delay
-    }), theme.transitions.create('transform', {
-      duration: duration * 0.666,
-      delay: delay || duration * 0.333
-    })].join(',');
-    node.style.opacity = '0';
-    node.style.transform = getScale(0.75);
-
-    if (onExit) {
-      onExit(node);
-    }
-  };
-
-  var addEndListener = function addEndListener(_, next) {
-    if (timeout === 'auto') {
-      timer.current = setTimeout(next, autoTimeout.current || 0);
-    }
-  };
-
-  React.useEffect(function () {
-    return function () {
-      clearTimeout(timer.current);
-    };
-  }, []);
-  return /*#__PURE__*/React.createElement(TransitionComponent, (0, _extends2.default)({
-    appear: true,
-    in: inProp,
-    onEnter: handleEnter,
-    onExit: handleExit,
-    addEndListener: addEndListener,
-    timeout: timeout === 'auto' ? null : timeout
-  }, other), function (state, childProps) {
-    return React.cloneElement(children, (0, _extends2.default)({
-      style: (0, _extends2.default)((0, _extends2.default)((0, _extends2.default)({
-        opacity: 0,
-        transform: getScale(0.75),
-        visibility: state === 'exited' && !inProp ? 'hidden' : undefined
-      }, styles[state]), style), children.props.style),
-      ref: handleRef
-    }, childProps));
-  });
-});
-"development" !== "production" ? Grow.propTypes = {
-  // ----------------------------- Warning --------------------------------
-  // | These PropTypes are generated from the TypeScript type definitions |
-  // |     To update them edit the d.ts file and run "yarn proptypes"     |
-  // ----------------------------------------------------------------------
-
-  /**
-   * A single child content element.
-   */
-  children: _propTypes.default.element,
-
-  /**
-   * If `true`, show the component; triggers the enter or exit animation.
-   */
-  in: _propTypes.default.bool,
-
-  /**
-   * @ignore
-   */
-  onEnter: _propTypes.default.func,
-
-  /**
-   * @ignore
-   */
-  onExit: _propTypes.default.func,
-
-  /**
-   * @ignore
-   */
-  style: _propTypes.default.object,
-
-  /**
-   * The duration for the transition, in milliseconds.
-   * You may specify a single timeout for all transitions, or individually with an object.
-   *
-   * Set to 'auto' to automatically calculate transition time based on height.
-   */
-  timeout: _propTypes.default.oneOfType([_propTypes.default.oneOf(['auto']), _propTypes.default.number, _propTypes.default.shape({
-    appear: _propTypes.default.number,
-    enter: _propTypes.default.number,
-    exit: _propTypes.default.number
-  })])
-} : void 0;
-Grow.muiSupportAuto = true;
-var _default = Grow;
-exports.default = _default;
-},{"@babel/runtime/helpers/esm/extends":"../node_modules/@babel/runtime/helpers/esm/extends.js","@babel/runtime/helpers/esm/objectWithoutProperties":"../node_modules/@babel/runtime/helpers/esm/objectWithoutProperties.js","react":"../node_modules/react/index.js","prop-types":"../node_modules/prop-types/index.js","react-transition-group":"../node_modules/react-transition-group/esm/index.js","../styles/useTheme":"../node_modules/@material-ui/core/esm/styles/useTheme.js","../transitions/utils":"../node_modules/@material-ui/core/esm/transitions/utils.js","../utils/useForkRef":"../node_modules/@material-ui/core/esm/utils/useForkRef.js"}],"../node_modules/@material-ui/core/esm/Grow/StrictModeGrow.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/esm/extends"));
-
-var React = _interopRequireWildcard(require("react"));
-
-var _reactTransitionGroup = require("@material-ui/react-transition-group");
-
-var _utils = require("../utils");
-
-var _Grow = _interopRequireDefault(require("./Grow"));
-
-function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-/**
- * @ignore - internal component.
- */
-var StrictModeGrow = React.forwardRef(function StrictModeGrow(props, forwardedRef) {
-  var domRef = React.useRef(null);
-  var ref = (0, _utils.useForkRef)(domRef, forwardedRef);
-  return /*#__PURE__*/React.createElement(_Grow.default, (0, _extends2.default)({}, props, {
-    findDOMNode: function findDOMNode() {
-      return domRef.current;
-    },
-    ref: ref,
-    TransitionComponent: _reactTransitionGroup.Transition
-  }));
-});
-var _default = StrictModeGrow;
-exports.default = _default;
-},{"@babel/runtime/helpers/esm/extends":"../node_modules/@babel/runtime/helpers/esm/extends.js","react":"../node_modules/react/index.js","@material-ui/react-transition-group":"../node_modules/@material-ui/react-transition-group/lib/esm/index.js","../utils":"../node_modules/@material-ui/core/esm/utils/index.js","./Grow":"../node_modules/@material-ui/core/esm/Grow/Grow.js"}],"../node_modules/@material-ui/core/esm/Grow/index.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-Object.defineProperty(exports, "default", {
-  enumerable: true,
-  get: function () {
-    return _Grow.default;
-  }
-});
-Object.defineProperty(exports, "unstable_StrictModeGrow", {
-  enumerable: true,
-  get: function () {
-    return _StrictModeGrow.default;
-  }
-});
-
-var _Grow = _interopRequireDefault(require("./Grow"));
-
-var _StrictModeGrow = _interopRequireDefault(require("./StrictModeGrow"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-},{"./Grow":"../node_modules/@material-ui/core/esm/Grow/Grow.js","./StrictModeGrow":"../node_modules/@material-ui/core/esm/Grow/StrictModeGrow.js"}],"../node_modules/@material-ui/core/esm/Slide/Slide.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.setTranslateValue = setTranslateValue;
-exports.default = void 0;
-
-var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/esm/extends"));
-
-var _objectWithoutProperties2 = _interopRequireDefault(require("@babel/runtime/helpers/esm/objectWithoutProperties"));
-
-var React = _interopRequireWildcard(require("react"));
-
-var _propTypes = _interopRequireDefault(require("prop-types"));
-
-var ReactDOM = _interopRequireWildcard(require("react-dom"));
-
-var _debounce = _interopRequireDefault(require("../utils/debounce"));
-
-var _reactTransitionGroup = require("react-transition-group");
-
-var _utils = require("@material-ui/utils");
-
-var _useForkRef = _interopRequireDefault(require("../utils/useForkRef"));
-
-var _useTheme = _interopRequireDefault(require("../styles/useTheme"));
-
-var _transitions = require("../styles/transitions");
-
-var _utils2 = require("../transitions/utils");
-
-function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-// Translate the node so he can't be seen on the screen.
-// Later, we gonna translate back the node to his original location
-// with `none`.`
-function getTranslateValue(direction, node) {
-  var rect = node.getBoundingClientRect();
-  var transform;
-
-  if (node.fakeTransform) {
-    transform = node.fakeTransform;
-  } else {
-    var computedStyle = window.getComputedStyle(node);
-    transform = computedStyle.getPropertyValue('-webkit-transform') || computedStyle.getPropertyValue('transform');
-  }
-
-  var offsetX = 0;
-  var offsetY = 0;
-
-  if (transform && transform !== 'none' && typeof transform === 'string') {
-    var transformValues = transform.split('(')[1].split(')')[0].split(',');
-    offsetX = parseInt(transformValues[4], 10);
-    offsetY = parseInt(transformValues[5], 10);
-  }
-
-  if (direction === 'left') {
-    return "translateX(".concat(window.innerWidth, "px) translateX(-").concat(rect.left - offsetX, "px)");
-  }
-
-  if (direction === 'right') {
-    return "translateX(-".concat(rect.left + rect.width - offsetX, "px)");
-  }
-
-  if (direction === 'up') {
-    return "translateY(".concat(window.innerHeight, "px) translateY(-").concat(rect.top - offsetY, "px)");
-  } // direction === 'down'
-
-
-  return "translateY(-".concat(rect.top + rect.height - offsetY, "px)");
-}
-
-function setTranslateValue(direction, node) {
-  var transform = getTranslateValue(direction, node);
-
-  if (transform) {
-    node.style.webkitTransform = transform;
-    node.style.transform = transform;
-  }
-}
-
-var defaultTimeout = {
-  enter: _transitions.duration.enteringScreen,
-  exit: _transitions.duration.leavingScreen
-};
-/**
- * The Slide transition is used by the [Drawer](/components/drawers/) component.
- * It uses [react-transition-group](https://github.com/reactjs/react-transition-group) internally.
- */
-
-var Slide = React.forwardRef(function Slide(props, ref) {
-  var children = props.children,
-      _props$direction = props.direction,
-      direction = _props$direction === void 0 ? 'down' : _props$direction,
-      inProp = props.in,
-      onEnter = props.onEnter,
-      onEntering = props.onEntering,
-      onExit = props.onExit,
-      onExited = props.onExited,
-      style = props.style,
-      _props$timeout = props.timeout,
-      timeout = _props$timeout === void 0 ? defaultTimeout : _props$timeout,
-      _props$TransitionComp = props.TransitionComponent,
-      TransitionComponent = _props$TransitionComp === void 0 ? _reactTransitionGroup.Transition : _props$TransitionComp,
-      other = (0, _objectWithoutProperties2.default)(props, ["children", "direction", "in", "onEnter", "onEntering", "onExit", "onExited", "style", "timeout", "TransitionComponent"]);
-  var theme = (0, _useTheme.default)();
-  var childrenRef = React.useRef(null);
-  /**
-   * used in cloneElement(children, { ref: handleRef })
-   */
-
-  var handleOwnRef = React.useCallback(function (instance) {
-    // #StrictMode ready
-    childrenRef.current = ReactDOM.findDOMNode(instance);
-  }, []);
-  var handleRefIntermediary = (0, _useForkRef.default)(children.ref, handleOwnRef);
-  var handleRef = (0, _useForkRef.default)(handleRefIntermediary, ref);
-
-  var handleEnter = function handleEnter(_, isAppearing) {
-    var node = childrenRef.current;
-    setTranslateValue(direction, node);
-    (0, _utils2.reflow)(node);
-
-    if (onEnter) {
-      onEnter(node, isAppearing);
-    }
-  };
-
-  var handleEntering = function handleEntering(_, isAppearing) {
-    var node = childrenRef.current;
-    var transitionProps = (0, _utils2.getTransitionProps)({
-      timeout: timeout,
-      style: style
-    }, {
-      mode: 'enter'
-    });
-    node.style.webkitTransition = theme.transitions.create('-webkit-transform', (0, _extends2.default)((0, _extends2.default)({}, transitionProps), {}, {
-      easing: theme.transitions.easing.easeOut
-    }));
-    node.style.transition = theme.transitions.create('transform', (0, _extends2.default)((0, _extends2.default)({}, transitionProps), {}, {
-      easing: theme.transitions.easing.easeOut
-    }));
-    node.style.webkitTransform = 'none';
-    node.style.transform = 'none';
-
-    if (onEntering) {
-      onEntering(node, isAppearing);
-    }
-  };
-
-  var handleExit = function handleExit() {
-    var node = childrenRef.current;
-    var transitionProps = (0, _utils2.getTransitionProps)({
-      timeout: timeout,
-      style: style
-    }, {
-      mode: 'exit'
-    });
-    node.style.webkitTransition = theme.transitions.create('-webkit-transform', (0, _extends2.default)((0, _extends2.default)({}, transitionProps), {}, {
-      easing: theme.transitions.easing.sharp
-    }));
-    node.style.transition = theme.transitions.create('transform', (0, _extends2.default)((0, _extends2.default)({}, transitionProps), {}, {
-      easing: theme.transitions.easing.sharp
-    }));
-    setTranslateValue(direction, node);
-
-    if (onExit) {
-      onExit(node);
-    }
-  };
-
-  var handleExited = function handleExited() {
-    var node = childrenRef.current; // No need for transitions when the component is hidden
-
-    node.style.webkitTransition = '';
-    node.style.transition = '';
-
-    if (onExited) {
-      onExited(node);
-    }
-  };
-
-  var updatePosition = React.useCallback(function () {
-    if (childrenRef.current) {
-      setTranslateValue(direction, childrenRef.current);
-    }
-  }, [direction]);
-  React.useEffect(function () {
-    // Skip configuration where the position is screen size invariant.
-    if (inProp || direction === 'down' || direction === 'right') {
-      return undefined;
-    }
-
-    var handleResize = (0, _debounce.default)(function () {
-      if (childrenRef.current) {
-        setTranslateValue(direction, childrenRef.current);
-      }
-    });
-    window.addEventListener('resize', handleResize);
-    return function () {
-      handleResize.clear();
-      window.removeEventListener('resize', handleResize);
-    };
-  }, [direction, inProp]);
-  React.useEffect(function () {
-    if (!inProp) {
-      // We need to update the position of the drawer when the direction change and
-      // when it's hidden.
-      updatePosition();
-    }
-  }, [inProp, updatePosition]);
-  return /*#__PURE__*/React.createElement(TransitionComponent, (0, _extends2.default)({
-    onEnter: handleEnter,
-    onEntering: handleEntering,
-    onExit: handleExit,
-    onExited: handleExited,
-    appear: true,
-    in: inProp,
-    timeout: timeout
-  }, other), function (state, childProps) {
-    return React.cloneElement(children, (0, _extends2.default)({
-      ref: handleRef,
-      style: (0, _extends2.default)((0, _extends2.default)({
-        visibility: state === 'exited' && !inProp ? 'hidden' : undefined
-      }, style), children.props.style)
-    }, childProps));
-  });
-});
-"development" !== "production" ? Slide.propTypes = {
-  // ----------------------------- Warning --------------------------------
-  // | These PropTypes are generated from the TypeScript type definitions |
-  // |     To update them edit the d.ts file and run "yarn proptypes"     |
-  // ----------------------------------------------------------------------
-
-  /**
-   * A single child content element.
-   */
-  children: _utils.elementAcceptingRef,
-
-  /**
-   * Direction the child node will enter from.
-   */
-  direction: _propTypes.default.oneOf(['down', 'left', 'right', 'up']),
-
-  /**
-   * If `true`, show the component; triggers the enter or exit animation.
-   */
-  in: _propTypes.default.bool,
-
-  /**
-   * @ignore
-   */
-  onEnter: _propTypes.default.func,
-
-  /**
-   * @ignore
-   */
-  onEntering: _propTypes.default.func,
-
-  /**
-   * @ignore
-   */
-  onExit: _propTypes.default.func,
-
-  /**
-   * @ignore
-   */
-  onExited: _propTypes.default.func,
-
-  /**
-   * @ignore
-   */
-  style: _propTypes.default.object,
-
-  /**
-   * The duration for the transition, in milliseconds.
-   * You may specify a single timeout for all transitions, or individually with an object.
-   */
-  timeout: _propTypes.default.oneOfType([_propTypes.default.number, _propTypes.default.shape({
-    appear: _propTypes.default.number,
-    enter: _propTypes.default.number,
-    exit: _propTypes.default.number
-  })])
-} : void 0;
-var _default = Slide;
-exports.default = _default;
-},{"@babel/runtime/helpers/esm/extends":"../node_modules/@babel/runtime/helpers/esm/extends.js","@babel/runtime/helpers/esm/objectWithoutProperties":"../node_modules/@babel/runtime/helpers/esm/objectWithoutProperties.js","react":"../node_modules/react/index.js","prop-types":"../node_modules/prop-types/index.js","react-dom":"../node_modules/react-dom/index.js","../utils/debounce":"../node_modules/@material-ui/core/esm/utils/debounce.js","react-transition-group":"../node_modules/react-transition-group/esm/index.js","@material-ui/utils":"../node_modules/@material-ui/utils/esm/index.js","../utils/useForkRef":"../node_modules/@material-ui/core/esm/utils/useForkRef.js","../styles/useTheme":"../node_modules/@material-ui/core/esm/styles/useTheme.js","../styles/transitions":"../node_modules/@material-ui/core/esm/styles/transitions.js","../transitions/utils":"../node_modules/@material-ui/core/esm/transitions/utils.js"}],"../node_modules/@material-ui/core/esm/Slide/StrictModeSlide.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/esm/extends"));
-
-var React = _interopRequireWildcard(require("react"));
-
-var _reactTransitionGroup = require("@material-ui/react-transition-group");
-
-var _utils = require("../utils");
-
-var _Slide = _interopRequireDefault(require("./Slide"));
-
-function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-/**
- * @ignore - internal component.
- */
-var StrictModeSlide = React.forwardRef(function StrictModeSlide(props, forwardedRef) {
-  var domRef = React.useRef(null);
-  var ref = (0, _utils.useForkRef)(domRef, forwardedRef);
-  return /*#__PURE__*/React.createElement(_Slide.default, (0, _extends2.default)({}, props, {
-    findDOMNode: function findDOMNode() {
-      return domRef.current;
-    },
-    ref: ref,
-    TransitionComponent: _reactTransitionGroup.Transition
-  }));
-});
-var _default = StrictModeSlide;
-exports.default = _default;
-},{"@babel/runtime/helpers/esm/extends":"../node_modules/@babel/runtime/helpers/esm/extends.js","react":"../node_modules/react/index.js","@material-ui/react-transition-group":"../node_modules/@material-ui/react-transition-group/lib/esm/index.js","../utils":"../node_modules/@material-ui/core/esm/utils/index.js","./Slide":"../node_modules/@material-ui/core/esm/Slide/Slide.js"}],"../node_modules/@material-ui/core/esm/Slide/index.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-Object.defineProperty(exports, "default", {
-  enumerable: true,
-  get: function () {
-    return _Slide.default;
-  }
-});
-Object.defineProperty(exports, "unstable_StrictModeSlide", {
-  enumerable: true,
-  get: function () {
-    return _StrictModeSlide.default;
-  }
-});
-
-var _Slide = _interopRequireDefault(require("./Slide"));
-
-var _StrictModeSlide = _interopRequireDefault(require("./StrictModeSlide"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-},{"./Slide":"../node_modules/@material-ui/core/esm/Slide/Slide.js","./StrictModeSlide":"../node_modules/@material-ui/core/esm/Slide/StrictModeSlide.js"}],"../node_modules/@material-ui/core/esm/Zoom/Zoom.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/esm/extends"));
-
-var _objectWithoutProperties2 = _interopRequireDefault(require("@babel/runtime/helpers/esm/objectWithoutProperties"));
-
-var React = _interopRequireWildcard(require("react"));
-
-var _propTypes = _interopRequireDefault(require("prop-types"));
-
-var _reactTransitionGroup = require("react-transition-group");
-
-var _transitions = require("../styles/transitions");
-
-var _useTheme = _interopRequireDefault(require("../styles/useTheme"));
-
-var _utils = require("../transitions/utils");
-
-var _useForkRef = _interopRequireDefault(require("../utils/useForkRef"));
-
-function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var styles = {
-  entering: {
-    transform: 'none'
-  },
-  entered: {
-    transform: 'none'
-  }
-};
-var defaultTimeout = {
-  enter: _transitions.duration.enteringScreen,
-  exit: _transitions.duration.leavingScreen
-};
-/**
- * The Zoom transition can be used for the floating variant of the
- * [Button](/components/buttons/#floating-action-buttons) component.
- * It uses [react-transition-group](https://github.com/reactjs/react-transition-group) internally.
- */
-
-var Zoom = React.forwardRef(function Zoom(props, ref) {
-  var children = props.children,
-      inProp = props.in,
-      onEnter = props.onEnter,
-      onExit = props.onExit,
-      style = props.style,
-      _props$timeout = props.timeout,
-      timeout = _props$timeout === void 0 ? defaultTimeout : _props$timeout,
-      _props$TransitionComp = props.TransitionComponent,
-      TransitionComponent = _props$TransitionComp === void 0 ? _reactTransitionGroup.Transition : _props$TransitionComp,
-      other = (0, _objectWithoutProperties2.default)(props, ["children", "in", "onEnter", "onExit", "style", "timeout", "TransitionComponent"]);
-  var theme = (0, _useTheme.default)();
-  var handleRef = (0, _useForkRef.default)(children.ref, ref);
-
-  var handleEnter = function handleEnter(node, isAppearing) {
-    (0, _utils.reflow)(node); // So the animation always start from the start.
-
-    var transitionProps = (0, _utils.getTransitionProps)({
-      style: style,
-      timeout: timeout
-    }, {
-      mode: 'enter'
-    });
-    node.style.webkitTransition = theme.transitions.create('transform', transitionProps);
-    node.style.transition = theme.transitions.create('transform', transitionProps);
-
-    if (onEnter) {
-      onEnter(node, isAppearing);
-    }
-  };
-
-  var handleExit = function handleExit(node) {
-    var transitionProps = (0, _utils.getTransitionProps)({
-      style: style,
-      timeout: timeout
-    }, {
-      mode: 'exit'
-    });
-    node.style.webkitTransition = theme.transitions.create('transform', transitionProps);
-    node.style.transition = theme.transitions.create('transform', transitionProps);
-
-    if (onExit) {
-      onExit(node);
-    }
-  };
-
-  return /*#__PURE__*/React.createElement(TransitionComponent, (0, _extends2.default)({
-    appear: true,
-    in: inProp,
-    onEnter: handleEnter,
-    onExit: handleExit,
-    timeout: timeout
-  }, other), function (state, childProps) {
-    return React.cloneElement(children, (0, _extends2.default)({
-      style: (0, _extends2.default)((0, _extends2.default)((0, _extends2.default)({
-        transform: 'scale(0)',
-        visibility: state === 'exited' && !inProp ? 'hidden' : undefined
-      }, styles[state]), style), children.props.style),
-      ref: handleRef
-    }, childProps));
-  });
-});
-"development" !== "production" ? Zoom.propTypes = {
-  // ----------------------------- Warning --------------------------------
-  // | These PropTypes are generated from the TypeScript type definitions |
-  // |     To update them edit the d.ts file and run "yarn proptypes"     |
-  // ----------------------------------------------------------------------
-
-  /**
-   * A single child content element.
-   */
-  children: _propTypes.default.element,
-
-  /**
-   * If `true`, the component will transition in.
-   */
-  in: _propTypes.default.bool,
-
-  /**
-   * @ignore
-   */
-  onEnter: _propTypes.default.func,
-
-  /**
-   * @ignore
-   */
-  onExit: _propTypes.default.func,
-
-  /**
-   * @ignore
-   */
-  style: _propTypes.default.object,
-
-  /**
-   * The duration for the transition, in milliseconds.
-   * You may specify a single timeout for all transitions, or individually with an object.
-   */
-  timeout: _propTypes.default.oneOfType([_propTypes.default.number, _propTypes.default.shape({
-    appear: _propTypes.default.number,
-    enter: _propTypes.default.number,
-    exit: _propTypes.default.number
-  })])
-} : void 0;
-var _default = Zoom;
-exports.default = _default;
-},{"@babel/runtime/helpers/esm/extends":"../node_modules/@babel/runtime/helpers/esm/extends.js","@babel/runtime/helpers/esm/objectWithoutProperties":"../node_modules/@babel/runtime/helpers/esm/objectWithoutProperties.js","react":"../node_modules/react/index.js","prop-types":"../node_modules/prop-types/index.js","react-transition-group":"../node_modules/react-transition-group/esm/index.js","../styles/transitions":"../node_modules/@material-ui/core/esm/styles/transitions.js","../styles/useTheme":"../node_modules/@material-ui/core/esm/styles/useTheme.js","../transitions/utils":"../node_modules/@material-ui/core/esm/transitions/utils.js","../utils/useForkRef":"../node_modules/@material-ui/core/esm/utils/useForkRef.js"}],"../node_modules/@material-ui/core/esm/Zoom/StrictModeZoom.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/esm/extends"));
-
-var React = _interopRequireWildcard(require("react"));
-
-var _reactTransitionGroup = require("@material-ui/react-transition-group");
-
-var _utils = require("../utils");
-
-var _Zoom = _interopRequireDefault(require("./Zoom"));
-
-function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-/**
- * @ignore - internal component.
- */
-var StrictModeZoom = React.forwardRef(function StrictModeZoom(props, forwardedRef) {
-  var domRef = React.useRef(null);
-  var ref = (0, _utils.useForkRef)(domRef, forwardedRef);
-  return /*#__PURE__*/React.createElement(_Zoom.default, (0, _extends2.default)({}, props, {
-    findDOMNode: function findDOMNode() {
-      return domRef.current;
-    },
-    ref: ref,
-    TransitionComponent: _reactTransitionGroup.Transition
-  }));
-});
-var _default = StrictModeZoom;
-exports.default = _default;
-},{"@babel/runtime/helpers/esm/extends":"../node_modules/@babel/runtime/helpers/esm/extends.js","react":"../node_modules/react/index.js","@material-ui/react-transition-group":"../node_modules/@material-ui/react-transition-group/lib/esm/index.js","../utils":"../node_modules/@material-ui/core/esm/utils/index.js","./Zoom":"../node_modules/@material-ui/core/esm/Zoom/Zoom.js"}],"../node_modules/@material-ui/core/esm/Zoom/index.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-Object.defineProperty(exports, "default", {
-  enumerable: true,
-  get: function () {
-    return _Zoom.default;
-  }
-});
-Object.defineProperty(exports, "unstable_StrictModeZoom", {
-  enumerable: true,
-  get: function () {
-    return _StrictModeZoom.default;
-  }
-});
-
-var _Zoom = _interopRequireDefault(require("./Zoom"));
-
-var _StrictModeZoom = _interopRequireDefault(require("./StrictModeZoom"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-},{"./Zoom":"../node_modules/@material-ui/core/esm/Zoom/Zoom.js","./StrictModeZoom":"../node_modules/@material-ui/core/esm/Zoom/StrictModeZoom.js"}],"../node_modules/@material-ui/core/esm/styles/createMuiStrictModeTheme.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = createMuiStrictModeTheme;
-
-var _utils = require("@material-ui/utils");
-
-var _createMuiTheme = _interopRequireDefault(require("./createMuiTheme"));
-
-var _Collapse = require("../Collapse");
-
-var _Fade = require("../Fade");
-
-var _Grow = require("../Grow");
-
-var _Slide = require("../Slide");
-
-var _Zoom = require("../Zoom");
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function createMuiStrictModeTheme(options) {
-  return (0, _createMuiTheme.default)((0, _utils.deepmerge)({
-    props: {
-      // Collapse
-      MuiExpansionPanel: {
-        TransitionComponent: _Collapse.unstable_StrictModeCollapse
-      },
-      MuiStepContent: {
-        TransitionComponent: _Collapse.unstable_StrictModeCollapse
-      },
-      // Fade
-      MuiBackdrop: {
-        TransitionComponent: _Fade.unstable_StrictModeFade
-      },
-      MuiDialog: {
-        TransitionComponent: _Fade.unstable_StrictModeFade
-      },
-      // Grow
-      MuiPopover: {
-        TransitionComponent: _Grow.unstable_StrictModeGrow
-      },
-      MuiSnackbar: {
-        TransitionComponent: _Grow.unstable_StrictModeGrow
-      },
-      MuiTooltip: {
-        TransitionComponent: _Grow.unstable_StrictModeGrow
-      },
-      // Slide
-      MuiDrawer: {
-        TransitionComponent: _Slide.unstable_StrictModeSlide
-      },
-      // Zoom
-      MuiSpeedDial: {
-        TransitionComponent: _Zoom.unstable_StrictModeZoom
-      }
-    }
-  }, options));
-}
-},{"@material-ui/utils":"../node_modules/@material-ui/utils/esm/index.js","./createMuiTheme":"../node_modules/@material-ui/core/esm/styles/createMuiTheme.js","../Collapse":"../node_modules/@material-ui/core/esm/Collapse/index.js","../Fade":"../node_modules/@material-ui/core/esm/Fade/index.js","../Grow":"../node_modules/@material-ui/core/esm/Grow/index.js","../Slide":"../node_modules/@material-ui/core/esm/Slide/index.js","../Zoom":"../node_modules/@material-ui/core/esm/Zoom/index.js"}],"../node_modules/@material-ui/core/esm/styles/createStyles.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = createStyles;
-
-var _styles = require("@material-ui/styles");
-
-// let warnOnce = false;
-// To remove in v5
-function createStyles(styles) {
-  // warning(
-  //   warnOnce,
-  //   [
-  //     'Material-UI: createStyles from @material-ui/core/styles is deprecated.',
-  //     'Please use @material-ui/styles/createStyles',
-  //   ].join('\n'),
-  // );
-  // warnOnce = true;
-  return (0, _styles.createStyles)(styles);
-}
-},{"@material-ui/styles":"../node_modules/@material-ui/styles/esm/index.js"}],"../node_modules/@material-ui/core/esm/styles/makeStyles.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/esm/extends"));
-
-var _styles = require("@material-ui/styles");
-
-var _defaultTheme = _interopRequireDefault(require("./defaultTheme"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function makeStyles(stylesOrCreator) {
-  var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-  return (0, _styles.makeStyles)(stylesOrCreator, (0, _extends2.default)({
-    defaultTheme: _defaultTheme.default
-  }, options));
-}
-
-var _default = makeStyles;
-exports.default = _default;
-},{"@babel/runtime/helpers/esm/extends":"../node_modules/@babel/runtime/helpers/esm/extends.js","@material-ui/styles":"../node_modules/@material-ui/styles/esm/index.js","./defaultTheme":"../node_modules/@material-ui/core/esm/styles/defaultTheme.js"}],"../node_modules/@material-ui/core/esm/styles/cssUtils.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.isUnitless = isUnitless;
-exports.getUnit = getUnit;
-exports.toUnitless = toUnitless;
-exports.convertLength = convertLength;
-exports.alignProperty = alignProperty;
-exports.fontGrid = fontGrid;
-exports.responsiveProperty = responsiveProperty;
-
-var _defineProperty2 = _interopRequireDefault(require("@babel/runtime/helpers/esm/defineProperty"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function isUnitless(value) {
-  return String(parseFloat(value)).length === String(value).length;
-} // Ported from Compass
-// https://github.com/Compass/compass/blob/master/core/stylesheets/compass/typography/_units.scss
-// Emulate the sass function "unit"
-
-
-function getUnit(input) {
-  return String(input).match(/[\d.\-+]*\s*(.*)/)[1] || '';
-} // Emulate the sass function "unitless"
-
-
-function toUnitless(length) {
-  return parseFloat(length);
-} // Convert any CSS <length> or <percentage> value to any another.
-// From https://github.com/KyleAMathews/convert-css-length
-
-
-function convertLength(baseFontSize) {
-  return function (length, toUnit) {
-    var fromUnit = getUnit(length); // Optimize for cases where `from` and `to` units are accidentally the same.
-
-    if (fromUnit === toUnit) {
-      return length;
-    } // Convert input length to pixels.
-
-
-    var pxLength = toUnitless(length);
-
-    if (fromUnit !== 'px') {
-      if (fromUnit === 'em') {
-        pxLength = toUnitless(length) * toUnitless(baseFontSize);
-      } else if (fromUnit === 'rem') {
-        pxLength = toUnitless(length) * toUnitless(baseFontSize);
-        return length;
-      }
-    } // Convert length in pixels to the output unit
-
-
-    var outputLength = pxLength;
-
-    if (toUnit !== 'px') {
-      if (toUnit === 'em') {
-        outputLength = pxLength / toUnitless(baseFontSize);
-      } else if (toUnit === 'rem') {
-        outputLength = pxLength / toUnitless(baseFontSize);
-      } else {
-        return length;
-      }
-    }
-
-    return parseFloat(outputLength.toFixed(5)) + toUnit;
-  };
-}
-
-function alignProperty(_ref) {
-  var size = _ref.size,
-      grid = _ref.grid;
-  var sizeBelow = size - size % grid;
-  var sizeAbove = sizeBelow + grid;
-  return size - sizeBelow < sizeAbove - size ? sizeBelow : sizeAbove;
-} // fontGrid finds a minimal grid (in rem) for the fontSize values so that the
-// lineHeight falls under a x pixels grid, 4px in the case of Material Design,
-// without changing the relative line height
-
-
-function fontGrid(_ref2) {
-  var lineHeight = _ref2.lineHeight,
-      pixels = _ref2.pixels,
-      htmlFontSize = _ref2.htmlFontSize;
-  return pixels / (lineHeight * htmlFontSize);
-}
-/**
- * generate a responsive version of a given CSS property
- * @example
- * responsiveProperty({
- *   cssProperty: 'fontSize',
- *   min: 15,
- *   max: 20,
- *   unit: 'px',
- *   breakpoints: [300, 600],
- * })
- *
- * // this returns
- *
- * {
- *   fontSize: '15px',
- *   '@media (min-width:300px)': {
- *     fontSize: '17.5px',
- *   },
- *   '@media (min-width:600px)': {
- *     fontSize: '20px',
- *   },
- * }
- *
- * @param {Object} params
- * @param {string} params.cssProperty - The CSS property to be made responsive
- * @param {number} params.min - The smallest value of the CSS property
- * @param {number} params.max - The largest value of the CSS property
- * @param {string} [params.unit] - The unit to be used for the CSS property
- * @param {Array.number} [params.breakpoints]  - An array of breakpoints
- * @param {number} [params.alignStep] - Round scaled value to fall under this grid
- * @returns {Object} responsive styles for {params.cssProperty}
- */
-
-
-function responsiveProperty(_ref3) {
-  var cssProperty = _ref3.cssProperty,
-      min = _ref3.min,
-      max = _ref3.max,
-      _ref3$unit = _ref3.unit,
-      unit = _ref3$unit === void 0 ? 'rem' : _ref3$unit,
-      _ref3$breakpoints = _ref3.breakpoints,
-      breakpoints = _ref3$breakpoints === void 0 ? [600, 960, 1280] : _ref3$breakpoints,
-      _ref3$transform = _ref3.transform,
-      transform = _ref3$transform === void 0 ? null : _ref3$transform;
-  var output = (0, _defineProperty2.default)({}, cssProperty, "".concat(min).concat(unit));
-  var factor = (max - min) / breakpoints[breakpoints.length - 1];
-  breakpoints.forEach(function (breakpoint) {
-    var value = min + factor * breakpoint;
-
-    if (transform !== null) {
-      value = transform(value);
-    }
-
-    output["@media (min-width:".concat(breakpoint, "px)")] = (0, _defineProperty2.default)({}, cssProperty, "".concat(Math.round(value * 10000) / 10000).concat(unit));
-  });
-  return output;
-}
-},{"@babel/runtime/helpers/esm/defineProperty":"../node_modules/@babel/runtime/helpers/esm/defineProperty.js"}],"../node_modules/@material-ui/core/esm/styles/responsiveFontSizes.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = responsiveFontSizes;
-
-var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/esm/extends"));
-
-var _cssUtils = require("./cssUtils");
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function responsiveFontSizes(themeInput) {
-  var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-  var _options$breakpoints = options.breakpoints,
-      breakpoints = _options$breakpoints === void 0 ? ['sm', 'md', 'lg'] : _options$breakpoints,
-      _options$disableAlign = options.disableAlign,
-      disableAlign = _options$disableAlign === void 0 ? false : _options$disableAlign,
-      _options$factor = options.factor,
-      factor = _options$factor === void 0 ? 2 : _options$factor,
-      _options$variants = options.variants,
-      variants = _options$variants === void 0 ? ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'subtitle1', 'subtitle2', 'body1', 'body2', 'caption', 'button', 'overline'] : _options$variants;
-  var theme = (0, _extends2.default)({}, themeInput);
-  theme.typography = (0, _extends2.default)({}, theme.typography);
-  var typography = theme.typography; // Convert between css lengths e.g. em->px or px->rem
-  // Set the baseFontSize for your project. Defaults to 16px (also the browser default).
-
-  var convert = (0, _cssUtils.convertLength)(typography.htmlFontSize);
-  var breakpointValues = breakpoints.map(function (x) {
-    return theme.breakpoints.values[x];
-  });
-  variants.forEach(function (variant) {
-    var style = typography[variant];
-    var remFontSize = parseFloat(convert(style.fontSize, 'rem'));
-
-    if (remFontSize <= 1) {
-      return;
-    }
-
-    var maxFontSize = remFontSize;
-    var minFontSize = 1 + (maxFontSize - 1) / factor;
-    var lineHeight = style.lineHeight;
-
-    if (!(0, _cssUtils.isUnitless)(lineHeight) && !disableAlign) {
-      throw new Error(['Material-UI: Unsupported non-unitless line height with grid alignment.', 'Use unitless line heights instead.'].join('\n'));
-    }
-
-    if (!(0, _cssUtils.isUnitless)(lineHeight)) {
-      // make it unitless
-      lineHeight = parseFloat(convert(lineHeight, 'rem')) / parseFloat(remFontSize);
-    }
-
-    var transform = null;
-
-    if (!disableAlign) {
-      transform = function transform(value) {
-        return (0, _cssUtils.alignProperty)({
-          size: value,
-          grid: (0, _cssUtils.fontGrid)({
-            pixels: 4,
-            lineHeight: lineHeight,
-            htmlFontSize: typography.htmlFontSize
-          })
-        });
-      };
-    }
-
-    typography[variant] = (0, _extends2.default)((0, _extends2.default)({}, style), (0, _cssUtils.responsiveProperty)({
-      cssProperty: 'fontSize',
-      min: minFontSize,
-      max: maxFontSize,
-      unit: 'rem',
-      breakpoints: breakpointValues,
-      transform: transform
-    }));
-  });
-  return theme;
-}
-},{"@babel/runtime/helpers/esm/extends":"../node_modules/@babel/runtime/helpers/esm/extends.js","./cssUtils":"../node_modules/@material-ui/core/esm/styles/cssUtils.js"}],"../node_modules/@material-ui/core/esm/styles/styled.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/esm/extends"));
-
-var _styles = require("@material-ui/styles");
-
-var _defaultTheme = _interopRequireDefault(require("./defaultTheme"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var styled = function styled(Component) {
-  var componentCreator = (0, _styles.styled)(Component);
-  return function (style, options) {
-    return componentCreator(style, (0, _extends2.default)({
-      defaultTheme: _defaultTheme.default
-    }, options));
-  };
-};
-
-var _default = styled;
-exports.default = _default;
-},{"@babel/runtime/helpers/esm/extends":"../node_modules/@babel/runtime/helpers/esm/extends.js","@material-ui/styles":"../node_modules/@material-ui/styles/esm/index.js","./defaultTheme":"../node_modules/@material-ui/core/esm/styles/defaultTheme.js"}],"../node_modules/@material-ui/core/esm/styles/withTheme.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _styles = require("@material-ui/styles");
-
-var _defaultTheme = _interopRequireDefault(require("./defaultTheme"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var withTheme = (0, _styles.withThemeCreator)({
-  defaultTheme: _defaultTheme.default
-});
-var _default = withTheme;
-exports.default = _default;
-},{"@material-ui/styles":"../node_modules/@material-ui/styles/esm/index.js","./defaultTheme":"../node_modules/@material-ui/core/esm/styles/defaultTheme.js"}],"../node_modules/@material-ui/core/esm/styles/index.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-var _exportNames = {
-  createMuiTheme: true,
-  unstable_createMuiStrictModeTheme: true,
-  createStyles: true,
-  makeStyles: true,
-  responsiveFontSizes: true,
-  styled: true,
-  useTheme: true,
-  withStyles: true,
-  withTheme: true,
-  createGenerateClassName: true,
-  jssPreset: true,
-  ServerStyleSheets: true,
-  StylesProvider: true,
-  MuiThemeProvider: true,
-  ThemeProvider: true
-};
-Object.defineProperty(exports, "createMuiTheme", {
-  enumerable: true,
-  get: function () {
-    return _createMuiTheme.default;
-  }
-});
-Object.defineProperty(exports, "unstable_createMuiStrictModeTheme", {
-  enumerable: true,
-  get: function () {
-    return _createMuiStrictModeTheme.default;
-  }
-});
-Object.defineProperty(exports, "createStyles", {
-  enumerable: true,
-  get: function () {
-    return _createStyles.default;
-  }
-});
-Object.defineProperty(exports, "makeStyles", {
-  enumerable: true,
-  get: function () {
-    return _makeStyles.default;
-  }
-});
-Object.defineProperty(exports, "responsiveFontSizes", {
-  enumerable: true,
-  get: function () {
-    return _responsiveFontSizes.default;
-  }
-});
-Object.defineProperty(exports, "styled", {
-  enumerable: true,
-  get: function () {
-    return _styled.default;
-  }
-});
-Object.defineProperty(exports, "useTheme", {
-  enumerable: true,
-  get: function () {
-    return _useTheme.default;
-  }
-});
-Object.defineProperty(exports, "withStyles", {
-  enumerable: true,
-  get: function () {
-    return _withStyles.default;
-  }
-});
-Object.defineProperty(exports, "withTheme", {
-  enumerable: true,
-  get: function () {
-    return _withTheme.default;
-  }
-});
-Object.defineProperty(exports, "createGenerateClassName", {
-  enumerable: true,
-  get: function () {
-    return _styles.createGenerateClassName;
-  }
-});
-Object.defineProperty(exports, "jssPreset", {
-  enumerable: true,
-  get: function () {
-    return _styles.jssPreset;
-  }
-});
-Object.defineProperty(exports, "ServerStyleSheets", {
-  enumerable: true,
-  get: function () {
-    return _styles.ServerStyleSheets;
-  }
-});
-Object.defineProperty(exports, "StylesProvider", {
-  enumerable: true,
-  get: function () {
-    return _styles.StylesProvider;
-  }
-});
-Object.defineProperty(exports, "MuiThemeProvider", {
-  enumerable: true,
-  get: function () {
-    return _styles.ThemeProvider;
-  }
-});
-Object.defineProperty(exports, "ThemeProvider", {
-  enumerable: true,
-  get: function () {
-    return _styles.ThemeProvider;
-  }
-});
-
-var _colorManipulator = require("./colorManipulator");
-
-Object.keys(_colorManipulator).forEach(function (key) {
-  if (key === "default" || key === "__esModule") return;
-  if (Object.prototype.hasOwnProperty.call(_exportNames, key)) return;
-  Object.defineProperty(exports, key, {
-    enumerable: true,
-    get: function () {
-      return _colorManipulator[key];
-    }
-  });
-});
-
-var _createMuiTheme = _interopRequireDefault(require("./createMuiTheme"));
-
-var _createMuiStrictModeTheme = _interopRequireDefault(require("./createMuiStrictModeTheme"));
-
-var _createStyles = _interopRequireDefault(require("./createStyles"));
-
-var _makeStyles = _interopRequireDefault(require("./makeStyles"));
-
-var _responsiveFontSizes = _interopRequireDefault(require("./responsiveFontSizes"));
-
-var _styled = _interopRequireDefault(require("./styled"));
-
-var _transitions = require("./transitions");
-
-Object.keys(_transitions).forEach(function (key) {
-  if (key === "default" || key === "__esModule") return;
-  if (Object.prototype.hasOwnProperty.call(_exportNames, key)) return;
-  Object.defineProperty(exports, key, {
-    enumerable: true,
-    get: function () {
-      return _transitions[key];
-    }
-  });
-});
-
-var _useTheme = _interopRequireDefault(require("./useTheme"));
-
-var _withStyles = _interopRequireDefault(require("./withStyles"));
-
-var _withTheme = _interopRequireDefault(require("./withTheme"));
-
-var _styles = require("@material-ui/styles");
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-},{"./colorManipulator":"../node_modules/@material-ui/core/esm/styles/colorManipulator.js","./createMuiTheme":"../node_modules/@material-ui/core/esm/styles/createMuiTheme.js","./createMuiStrictModeTheme":"../node_modules/@material-ui/core/esm/styles/createMuiStrictModeTheme.js","./createStyles":"../node_modules/@material-ui/core/esm/styles/createStyles.js","./makeStyles":"../node_modules/@material-ui/core/esm/styles/makeStyles.js","./responsiveFontSizes":"../node_modules/@material-ui/core/esm/styles/responsiveFontSizes.js","./styled":"../node_modules/@material-ui/core/esm/styles/styled.js","./transitions":"../node_modules/@material-ui/core/esm/styles/transitions.js","./useTheme":"../node_modules/@material-ui/core/esm/styles/useTheme.js","./withStyles":"../node_modules/@material-ui/core/esm/styles/withStyles.js","./withTheme":"../node_modules/@material-ui/core/esm/styles/withTheme.js","@material-ui/styles":"../node_modules/@material-ui/styles/esm/index.js"}],"../node_modules/@material-ui/core/esm/Paper/Paper.js":[function(require,module,exports) {
+},{"./capitalize":"../node_modules/@material-ui/core/esm/utils/capitalize.js","./deprecatedPropType":"../node_modules/@material-ui/core/esm/utils/deprecatedPropType.js","./createSvgIcon":"../node_modules/@material-ui/core/esm/utils/createSvgIcon.js","./debounce":"../node_modules/@material-ui/core/esm/utils/debounce.js","./isMuiElement":"../node_modules/@material-ui/core/esm/utils/isMuiElement.js","./ownerDocument":"../node_modules/@material-ui/core/esm/utils/ownerDocument.js","./ownerWindow":"../node_modules/@material-ui/core/esm/utils/ownerWindow.js","./requirePropFactory":"../node_modules/@material-ui/core/esm/utils/requirePropFactory.js","./setRef":"../node_modules/@material-ui/core/esm/utils/setRef.js","./unsupportedProp":"../node_modules/@material-ui/core/esm/utils/unsupportedProp.js","./useControlled":"../node_modules/@material-ui/core/esm/utils/useControlled.js","./useEventCallback":"../node_modules/@material-ui/core/esm/utils/useEventCallback.js","./useForkRef":"../node_modules/@material-ui/core/esm/utils/useForkRef.js","./unstable_useId":"../node_modules/@material-ui/core/esm/utils/unstable_useId.js","./useIsFocusVisible":"../node_modules/@material-ui/core/esm/utils/useIsFocusVisible.js"}],"../node_modules/@material-ui/core/esm/Paper/Paper.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -46155,7 +40745,2272 @@ Object.defineProperty(exports, "default", {
 var _Avatar = _interopRequireDefault(require("./Avatar"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-},{"./Avatar":"../node_modules/@material-ui/core/esm/Avatar/Avatar.js"}],"../node_modules/@material-ui/core/esm/Backdrop/Backdrop.js":[function(require,module,exports) {
+},{"./Avatar":"../node_modules/@material-ui/core/esm/Avatar/Avatar.js"}],"../node_modules/dom-helpers/esm/hasClass.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = hasClass;
+
+function hasClass(element, className) {
+  if (element.classList) return !!className && element.classList.contains(className);
+  return (" " + (element.className.baseVal || element.className) + " ").indexOf(" " + className + " ") !== -1;
+}
+},{}],"../node_modules/dom-helpers/esm/addClass.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = addClass;
+
+var _hasClass = _interopRequireDefault(require("./hasClass"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function addClass(element, className) {
+  if (element.classList) element.classList.add(className);else if (!(0, _hasClass.default)(element, className)) if (typeof element.className === 'string') element.className = element.className + " " + className;else element.setAttribute('class', (element.className && element.className.baseVal || '') + " " + className);
+}
+},{"./hasClass":"../node_modules/dom-helpers/esm/hasClass.js"}],"../node_modules/dom-helpers/esm/removeClass.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = removeClass;
+
+function replaceClassName(origClass, classToRemove) {
+  return origClass.replace(new RegExp("(^|\\s)" + classToRemove + "(?:\\s|$)", 'g'), '$1').replace(/\s+/g, ' ').replace(/^\s*|\s*$/g, '');
+}
+
+function removeClass(element, className) {
+  if (element.classList) {
+    element.classList.remove(className);
+  } else if (typeof element.className === 'string') {
+    ;
+    element.className = replaceClassName(element.className, className);
+  } else {
+    element.setAttribute('class', replaceClassName(element.className && element.className.baseVal || '', className));
+  }
+}
+},{}],"../node_modules/react-transition-group/esm/config.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+var _default = {
+  disabled: false
+};
+exports.default = _default;
+},{}],"../node_modules/react-transition-group/esm/utils/PropTypes.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.classNamesShape = exports.timeoutsShape = void 0;
+
+var _propTypes = _interopRequireDefault(require("prop-types"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var timeoutsShape = "development" !== 'production' ? _propTypes.default.oneOfType([_propTypes.default.number, _propTypes.default.shape({
+  enter: _propTypes.default.number,
+  exit: _propTypes.default.number,
+  appear: _propTypes.default.number
+}).isRequired]) : null;
+exports.timeoutsShape = timeoutsShape;
+var classNamesShape = "development" !== 'production' ? _propTypes.default.oneOfType([_propTypes.default.string, _propTypes.default.shape({
+  enter: _propTypes.default.string,
+  exit: _propTypes.default.string,
+  active: _propTypes.default.string
+}), _propTypes.default.shape({
+  enter: _propTypes.default.string,
+  enterDone: _propTypes.default.string,
+  enterActive: _propTypes.default.string,
+  exit: _propTypes.default.string,
+  exitDone: _propTypes.default.string,
+  exitActive: _propTypes.default.string
+})]) : null;
+exports.classNamesShape = classNamesShape;
+},{"prop-types":"../node_modules/prop-types/index.js"}],"../node_modules/react-transition-group/esm/TransitionGroupContext.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireDefault(require("react"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var _default = _react.default.createContext(null);
+
+exports.default = _default;
+},{"react":"../node_modules/react/index.js"}],"../node_modules/react-transition-group/esm/Transition.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = exports.EXITING = exports.ENTERED = exports.ENTERING = exports.EXITED = exports.UNMOUNTED = void 0;
+
+var _objectWithoutPropertiesLoose2 = _interopRequireDefault(require("@babel/runtime/helpers/esm/objectWithoutPropertiesLoose"));
+
+var _inheritsLoose2 = _interopRequireDefault(require("@babel/runtime/helpers/esm/inheritsLoose"));
+
+var _propTypes = _interopRequireDefault(require("prop-types"));
+
+var _react = _interopRequireDefault(require("react"));
+
+var _reactDom = _interopRequireDefault(require("react-dom"));
+
+var _config = _interopRequireDefault(require("./config"));
+
+var _PropTypes = require("./utils/PropTypes");
+
+var _TransitionGroupContext = _interopRequireDefault(require("./TransitionGroupContext"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var UNMOUNTED = 'unmounted';
+exports.UNMOUNTED = UNMOUNTED;
+var EXITED = 'exited';
+exports.EXITED = EXITED;
+var ENTERING = 'entering';
+exports.ENTERING = ENTERING;
+var ENTERED = 'entered';
+exports.ENTERED = ENTERED;
+var EXITING = 'exiting';
+/**
+ * The Transition component lets you describe a transition from one component
+ * state to another _over time_ with a simple declarative API. Most commonly
+ * it's used to animate the mounting and unmounting of a component, but can also
+ * be used to describe in-place transition states as well.
+ *
+ * ---
+ *
+ * **Note**: `Transition` is a platform-agnostic base component. If you're using
+ * transitions in CSS, you'll probably want to use
+ * [`CSSTransition`](https://reactcommunity.org/react-transition-group/css-transition)
+ * instead. It inherits all the features of `Transition`, but contains
+ * additional features necessary to play nice with CSS transitions (hence the
+ * name of the component).
+ *
+ * ---
+ *
+ * By default the `Transition` component does not alter the behavior of the
+ * component it renders, it only tracks "enter" and "exit" states for the
+ * components. It's up to you to give meaning and effect to those states. For
+ * example we can add styles to a component when it enters or exits:
+ *
+ * ```jsx
+ * import { Transition } from 'react-transition-group';
+ *
+ * const duration = 300;
+ *
+ * const defaultStyle = {
+ *   transition: `opacity ${duration}ms ease-in-out`,
+ *   opacity: 0,
+ * }
+ *
+ * const transitionStyles = {
+ *   entering: { opacity: 1 },
+ *   entered:  { opacity: 1 },
+ *   exiting:  { opacity: 0 },
+ *   exited:  { opacity: 0 },
+ * };
+ *
+ * const Fade = ({ in: inProp }) => (
+ *   <Transition in={inProp} timeout={duration}>
+ *     {state => (
+ *       <div style={{
+ *         ...defaultStyle,
+ *         ...transitionStyles[state]
+ *       }}>
+ *         I'm a fade Transition!
+ *       </div>
+ *     )}
+ *   </Transition>
+ * );
+ * ```
+ *
+ * There are 4 main states a Transition can be in:
+ *  - `'entering'`
+ *  - `'entered'`
+ *  - `'exiting'`
+ *  - `'exited'`
+ *
+ * Transition state is toggled via the `in` prop. When `true` the component
+ * begins the "Enter" stage. During this stage, the component will shift from
+ * its current transition state, to `'entering'` for the duration of the
+ * transition and then to the `'entered'` stage once it's complete. Let's take
+ * the following example (we'll use the
+ * [useState](https://reactjs.org/docs/hooks-reference.html#usestate) hook):
+ *
+ * ```jsx
+ * function App() {
+ *   const [inProp, setInProp] = useState(false);
+ *   return (
+ *     <div>
+ *       <Transition in={inProp} timeout={500}>
+ *         {state => (
+ *           // ...
+ *         )}
+ *       </Transition>
+ *       <button onClick={() => setInProp(true)}>
+ *         Click to Enter
+ *       </button>
+ *     </div>
+ *   );
+ * }
+ * ```
+ *
+ * When the button is clicked the component will shift to the `'entering'` state
+ * and stay there for 500ms (the value of `timeout`) before it finally switches
+ * to `'entered'`.
+ *
+ * When `in` is `false` the same thing happens except the state moves from
+ * `'exiting'` to `'exited'`.
+ */
+
+exports.EXITING = EXITING;
+
+var Transition = /*#__PURE__*/function (_React$Component) {
+  (0, _inheritsLoose2.default)(Transition, _React$Component);
+
+  function Transition(props, context) {
+    var _this;
+
+    _this = _React$Component.call(this, props, context) || this;
+    var parentGroup = context; // In the context of a TransitionGroup all enters are really appears
+
+    var appear = parentGroup && !parentGroup.isMounting ? props.enter : props.appear;
+    var initialStatus;
+    _this.appearStatus = null;
+
+    if (props.in) {
+      if (appear) {
+        initialStatus = EXITED;
+        _this.appearStatus = ENTERING;
+      } else {
+        initialStatus = ENTERED;
+      }
+    } else {
+      if (props.unmountOnExit || props.mountOnEnter) {
+        initialStatus = UNMOUNTED;
+      } else {
+        initialStatus = EXITED;
+      }
+    }
+
+    _this.state = {
+      status: initialStatus
+    };
+    _this.nextCallback = null;
+    return _this;
+  }
+
+  Transition.getDerivedStateFromProps = function getDerivedStateFromProps(_ref, prevState) {
+    var nextIn = _ref.in;
+
+    if (nextIn && prevState.status === UNMOUNTED) {
+      return {
+        status: EXITED
+      };
+    }
+
+    return null;
+  } // getSnapshotBeforeUpdate(prevProps) {
+  //   let nextStatus = null
+  //   if (prevProps !== this.props) {
+  //     const { status } = this.state
+  //     if (this.props.in) {
+  //       if (status !== ENTERING && status !== ENTERED) {
+  //         nextStatus = ENTERING
+  //       }
+  //     } else {
+  //       if (status === ENTERING || status === ENTERED) {
+  //         nextStatus = EXITING
+  //       }
+  //     }
+  //   }
+  //   return { nextStatus }
+  // }
+  ;
+
+  var _proto = Transition.prototype;
+
+  _proto.componentDidMount = function componentDidMount() {
+    this.updateStatus(true, this.appearStatus);
+  };
+
+  _proto.componentDidUpdate = function componentDidUpdate(prevProps) {
+    var nextStatus = null;
+
+    if (prevProps !== this.props) {
+      var status = this.state.status;
+
+      if (this.props.in) {
+        if (status !== ENTERING && status !== ENTERED) {
+          nextStatus = ENTERING;
+        }
+      } else {
+        if (status === ENTERING || status === ENTERED) {
+          nextStatus = EXITING;
+        }
+      }
+    }
+
+    this.updateStatus(false, nextStatus);
+  };
+
+  _proto.componentWillUnmount = function componentWillUnmount() {
+    this.cancelNextCallback();
+  };
+
+  _proto.getTimeouts = function getTimeouts() {
+    var timeout = this.props.timeout;
+    var exit, enter, appear;
+    exit = enter = appear = timeout;
+
+    if (timeout != null && typeof timeout !== 'number') {
+      exit = timeout.exit;
+      enter = timeout.enter; // TODO: remove fallback for next major
+
+      appear = timeout.appear !== undefined ? timeout.appear : enter;
+    }
+
+    return {
+      exit: exit,
+      enter: enter,
+      appear: appear
+    };
+  };
+
+  _proto.updateStatus = function updateStatus(mounting, nextStatus) {
+    if (mounting === void 0) {
+      mounting = false;
+    }
+
+    if (nextStatus !== null) {
+      // nextStatus will always be ENTERING or EXITING.
+      this.cancelNextCallback();
+
+      if (nextStatus === ENTERING) {
+        this.performEnter(mounting);
+      } else {
+        this.performExit();
+      }
+    } else if (this.props.unmountOnExit && this.state.status === EXITED) {
+      this.setState({
+        status: UNMOUNTED
+      });
+    }
+  };
+
+  _proto.performEnter = function performEnter(mounting) {
+    var _this2 = this;
+
+    var enter = this.props.enter;
+    var appearing = this.context ? this.context.isMounting : mounting;
+
+    var _ref2 = this.props.nodeRef ? [appearing] : [_reactDom.default.findDOMNode(this), appearing],
+        maybeNode = _ref2[0],
+        maybeAppearing = _ref2[1];
+
+    var timeouts = this.getTimeouts();
+    var enterTimeout = appearing ? timeouts.appear : timeouts.enter; // no enter animation skip right to ENTERED
+    // if we are mounting and running this it means appear _must_ be set
+
+    if (!mounting && !enter || _config.default.disabled) {
+      this.safeSetState({
+        status: ENTERED
+      }, function () {
+        _this2.props.onEntered(maybeNode);
+      });
+      return;
+    }
+
+    this.props.onEnter(maybeNode, maybeAppearing);
+    this.safeSetState({
+      status: ENTERING
+    }, function () {
+      _this2.props.onEntering(maybeNode, maybeAppearing);
+
+      _this2.onTransitionEnd(enterTimeout, function () {
+        _this2.safeSetState({
+          status: ENTERED
+        }, function () {
+          _this2.props.onEntered(maybeNode, maybeAppearing);
+        });
+      });
+    });
+  };
+
+  _proto.performExit = function performExit() {
+    var _this3 = this;
+
+    var exit = this.props.exit;
+    var timeouts = this.getTimeouts();
+    var maybeNode = this.props.nodeRef ? undefined : _reactDom.default.findDOMNode(this); // no exit animation skip right to EXITED
+
+    if (!exit || _config.default.disabled) {
+      this.safeSetState({
+        status: EXITED
+      }, function () {
+        _this3.props.onExited(maybeNode);
+      });
+      return;
+    }
+
+    this.props.onExit(maybeNode);
+    this.safeSetState({
+      status: EXITING
+    }, function () {
+      _this3.props.onExiting(maybeNode);
+
+      _this3.onTransitionEnd(timeouts.exit, function () {
+        _this3.safeSetState({
+          status: EXITED
+        }, function () {
+          _this3.props.onExited(maybeNode);
+        });
+      });
+    });
+  };
+
+  _proto.cancelNextCallback = function cancelNextCallback() {
+    if (this.nextCallback !== null) {
+      this.nextCallback.cancel();
+      this.nextCallback = null;
+    }
+  };
+
+  _proto.safeSetState = function safeSetState(nextState, callback) {
+    // This shouldn't be necessary, but there are weird race conditions with
+    // setState callbacks and unmounting in testing, so always make sure that
+    // we can cancel any pending setState callbacks after we unmount.
+    callback = this.setNextCallback(callback);
+    this.setState(nextState, callback);
+  };
+
+  _proto.setNextCallback = function setNextCallback(callback) {
+    var _this4 = this;
+
+    var active = true;
+
+    this.nextCallback = function (event) {
+      if (active) {
+        active = false;
+        _this4.nextCallback = null;
+        callback(event);
+      }
+    };
+
+    this.nextCallback.cancel = function () {
+      active = false;
+    };
+
+    return this.nextCallback;
+  };
+
+  _proto.onTransitionEnd = function onTransitionEnd(timeout, handler) {
+    this.setNextCallback(handler);
+    var node = this.props.nodeRef ? this.props.nodeRef.current : _reactDom.default.findDOMNode(this);
+    var doesNotHaveTimeoutOrListener = timeout == null && !this.props.addEndListener;
+
+    if (!node || doesNotHaveTimeoutOrListener) {
+      setTimeout(this.nextCallback, 0);
+      return;
+    }
+
+    if (this.props.addEndListener) {
+      var _ref3 = this.props.nodeRef ? [this.nextCallback] : [node, this.nextCallback],
+          maybeNode = _ref3[0],
+          maybeNextCallback = _ref3[1];
+
+      this.props.addEndListener(maybeNode, maybeNextCallback);
+    }
+
+    if (timeout != null) {
+      setTimeout(this.nextCallback, timeout);
+    }
+  };
+
+  _proto.render = function render() {
+    var status = this.state.status;
+
+    if (status === UNMOUNTED) {
+      return null;
+    }
+
+    var _this$props = this.props,
+        children = _this$props.children,
+        _in = _this$props.in,
+        _mountOnEnter = _this$props.mountOnEnter,
+        _unmountOnExit = _this$props.unmountOnExit,
+        _appear = _this$props.appear,
+        _enter = _this$props.enter,
+        _exit = _this$props.exit,
+        _timeout = _this$props.timeout,
+        _addEndListener = _this$props.addEndListener,
+        _onEnter = _this$props.onEnter,
+        _onEntering = _this$props.onEntering,
+        _onEntered = _this$props.onEntered,
+        _onExit = _this$props.onExit,
+        _onExiting = _this$props.onExiting,
+        _onExited = _this$props.onExited,
+        _nodeRef = _this$props.nodeRef,
+        childProps = (0, _objectWithoutPropertiesLoose2.default)(_this$props, ["children", "in", "mountOnEnter", "unmountOnExit", "appear", "enter", "exit", "timeout", "addEndListener", "onEnter", "onEntering", "onEntered", "onExit", "onExiting", "onExited", "nodeRef"]);
+    return (
+      /*#__PURE__*/
+      // allows for nested Transitions
+      _react.default.createElement(_TransitionGroupContext.default.Provider, {
+        value: null
+      }, typeof children === 'function' ? children(status, childProps) : _react.default.cloneElement(_react.default.Children.only(children), childProps))
+    );
+  };
+
+  return Transition;
+}(_react.default.Component);
+
+Transition.contextType = _TransitionGroupContext.default;
+Transition.propTypes = "development" !== "production" ? {
+  /**
+   * A React reference to DOM element that need to transition:
+   * https://stackoverflow.com/a/51127130/4671932
+   *
+   *   - When `nodeRef` prop is used, `node` is not passed to callback functions
+   *      (e.g. `onEnter`) because user already has direct access to the node.
+   *   - When changing `key` prop of `Transition` in a `TransitionGroup` a new
+   *     `nodeRef` need to be provided to `Transition` with changed `key` prop
+   *     (see
+   *     [test/CSSTransition-test.js](https://github.com/reactjs/react-transition-group/blob/13435f897b3ab71f6e19d724f145596f5910581c/test/CSSTransition-test.js#L362-L437)).
+   */
+  nodeRef: _propTypes.default.shape({
+    current: typeof Element === 'undefined' ? _propTypes.default.any : _propTypes.default.instanceOf(Element)
+  }),
+
+  /**
+   * A `function` child can be used instead of a React element. This function is
+   * called with the current transition status (`'entering'`, `'entered'`,
+   * `'exiting'`, `'exited'`), which can be used to apply context
+   * specific props to a component.
+   *
+   * ```jsx
+   * <Transition in={this.state.in} timeout={150}>
+   *   {state => (
+   *     <MyComponent className={`fade fade-${state}`} />
+   *   )}
+   * </Transition>
+   * ```
+   */
+  children: _propTypes.default.oneOfType([_propTypes.default.func.isRequired, _propTypes.default.element.isRequired]).isRequired,
+
+  /**
+   * Show the component; triggers the enter or exit states
+   */
+  in: _propTypes.default.bool,
+
+  /**
+   * By default the child component is mounted immediately along with
+   * the parent `Transition` component. If you want to "lazy mount" the component on the
+   * first `in={true}` you can set `mountOnEnter`. After the first enter transition the component will stay
+   * mounted, even on "exited", unless you also specify `unmountOnExit`.
+   */
+  mountOnEnter: _propTypes.default.bool,
+
+  /**
+   * By default the child component stays mounted after it reaches the `'exited'` state.
+   * Set `unmountOnExit` if you'd prefer to unmount the component after it finishes exiting.
+   */
+  unmountOnExit: _propTypes.default.bool,
+
+  /**
+   * By default the child component does not perform the enter transition when
+   * it first mounts, regardless of the value of `in`. If you want this
+   * behavior, set both `appear` and `in` to `true`.
+   *
+   * > **Note**: there are no special appear states like `appearing`/`appeared`, this prop
+   * > only adds an additional enter transition. However, in the
+   * > `<CSSTransition>` component that first enter transition does result in
+   * > additional `.appear-*` classes, that way you can choose to style it
+   * > differently.
+   */
+  appear: _propTypes.default.bool,
+
+  /**
+   * Enable or disable enter transitions.
+   */
+  enter: _propTypes.default.bool,
+
+  /**
+   * Enable or disable exit transitions.
+   */
+  exit: _propTypes.default.bool,
+
+  /**
+   * The duration of the transition, in milliseconds.
+   * Required unless `addEndListener` is provided.
+   *
+   * You may specify a single timeout for all transitions:
+   *
+   * ```jsx
+   * timeout={500}
+   * ```
+   *
+   * or individually:
+   *
+   * ```jsx
+   * timeout={{
+   *  appear: 500,
+   *  enter: 300,
+   *  exit: 500,
+   * }}
+   * ```
+   *
+   * - `appear` defaults to the value of `enter`
+   * - `enter` defaults to `0`
+   * - `exit` defaults to `0`
+   *
+   * @type {number | { enter?: number, exit?: number, appear?: number }}
+   */
+  timeout: function timeout(props) {
+    var pt = _PropTypes.timeoutsShape;
+    if (!props.addEndListener) pt = pt.isRequired;
+
+    for (var _len = arguments.length, args = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+      args[_key - 1] = arguments[_key];
+    }
+
+    return pt.apply(void 0, [props].concat(args));
+  },
+
+  /**
+   * Add a custom transition end trigger. Called with the transitioning
+   * DOM node and a `done` callback. Allows for more fine grained transition end
+   * logic. Timeouts are still used as a fallback if provided.
+   *
+   * **Note**: when `nodeRef` prop is passed, `node` is not passed.
+   *
+   * ```jsx
+   * addEndListener={(node, done) => {
+   *   // use the css transitionend event to mark the finish of a transition
+   *   node.addEventListener('transitionend', done, false);
+   * }}
+   * ```
+   */
+  addEndListener: _propTypes.default.func,
+
+  /**
+   * Callback fired before the "entering" status is applied. An extra parameter
+   * `isAppearing` is supplied to indicate if the enter stage is occurring on the initial mount
+   *
+   * **Note**: when `nodeRef` prop is passed, `node` is not passed.
+   *
+   * @type Function(node: HtmlElement, isAppearing: bool) -> void
+   */
+  onEnter: _propTypes.default.func,
+
+  /**
+   * Callback fired after the "entering" status is applied. An extra parameter
+   * `isAppearing` is supplied to indicate if the enter stage is occurring on the initial mount
+   *
+   * **Note**: when `nodeRef` prop is passed, `node` is not passed.
+   *
+   * @type Function(node: HtmlElement, isAppearing: bool)
+   */
+  onEntering: _propTypes.default.func,
+
+  /**
+   * Callback fired after the "entered" status is applied. An extra parameter
+   * `isAppearing` is supplied to indicate if the enter stage is occurring on the initial mount
+   *
+   * **Note**: when `nodeRef` prop is passed, `node` is not passed.
+   *
+   * @type Function(node: HtmlElement, isAppearing: bool) -> void
+   */
+  onEntered: _propTypes.default.func,
+
+  /**
+   * Callback fired before the "exiting" status is applied.
+   *
+   * **Note**: when `nodeRef` prop is passed, `node` is not passed.
+   *
+   * @type Function(node: HtmlElement) -> void
+   */
+  onExit: _propTypes.default.func,
+
+  /**
+   * Callback fired after the "exiting" status is applied.
+   *
+   * **Note**: when `nodeRef` prop is passed, `node` is not passed.
+   *
+   * @type Function(node: HtmlElement) -> void
+   */
+  onExiting: _propTypes.default.func,
+
+  /**
+   * Callback fired after the "exited" status is applied.
+   *
+   * **Note**: when `nodeRef` prop is passed, `node` is not passed
+   *
+   * @type Function(node: HtmlElement) -> void
+   */
+  onExited: _propTypes.default.func
+} : {}; // Name the function so it is clearer in the documentation
+
+function noop() {}
+
+Transition.defaultProps = {
+  in: false,
+  mountOnEnter: false,
+  unmountOnExit: false,
+  appear: false,
+  enter: true,
+  exit: true,
+  onEnter: noop,
+  onEntering: noop,
+  onEntered: noop,
+  onExit: noop,
+  onExiting: noop,
+  onExited: noop
+};
+Transition.UNMOUNTED = UNMOUNTED;
+Transition.EXITED = EXITED;
+Transition.ENTERING = ENTERING;
+Transition.ENTERED = ENTERED;
+Transition.EXITING = EXITING;
+var _default = Transition;
+exports.default = _default;
+},{"@babel/runtime/helpers/esm/objectWithoutPropertiesLoose":"../node_modules/@babel/runtime/helpers/esm/objectWithoutPropertiesLoose.js","@babel/runtime/helpers/esm/inheritsLoose":"../node_modules/@babel/runtime/helpers/esm/inheritsLoose.js","prop-types":"../node_modules/prop-types/index.js","react":"../node_modules/react/index.js","react-dom":"../node_modules/react-dom/index.js","./config":"../node_modules/react-transition-group/esm/config.js","./utils/PropTypes":"../node_modules/react-transition-group/esm/utils/PropTypes.js","./TransitionGroupContext":"../node_modules/react-transition-group/esm/TransitionGroupContext.js"}],"../node_modules/react-transition-group/esm/CSSTransition.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/esm/extends"));
+
+var _objectWithoutPropertiesLoose2 = _interopRequireDefault(require("@babel/runtime/helpers/esm/objectWithoutPropertiesLoose"));
+
+var _inheritsLoose2 = _interopRequireDefault(require("@babel/runtime/helpers/esm/inheritsLoose"));
+
+var _propTypes = _interopRequireDefault(require("prop-types"));
+
+var _addClass2 = _interopRequireDefault(require("dom-helpers/addClass"));
+
+var _removeClass = _interopRequireDefault(require("dom-helpers/removeClass"));
+
+var _react = _interopRequireDefault(require("react"));
+
+var _Transition = _interopRequireDefault(require("./Transition"));
+
+var _PropTypes = require("./utils/PropTypes");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var _addClass = function addClass(node, classes) {
+  return node && classes && classes.split(' ').forEach(function (c) {
+    return (0, _addClass2.default)(node, c);
+  });
+};
+
+var removeClass = function removeClass(node, classes) {
+  return node && classes && classes.split(' ').forEach(function (c) {
+    return (0, _removeClass.default)(node, c);
+  });
+};
+/**
+ * A transition component inspired by the excellent
+ * [ng-animate](https://docs.angularjs.org/api/ngAnimate) library, you should
+ * use it if you're using CSS transitions or animations. It's built upon the
+ * [`Transition`](https://reactcommunity.org/react-transition-group/transition)
+ * component, so it inherits all of its props.
+ *
+ * `CSSTransition` applies a pair of class names during the `appear`, `enter`,
+ * and `exit` states of the transition. The first class is applied and then a
+ * second `*-active` class in order to activate the CSS transition. After the
+ * transition, matching `*-done` class names are applied to persist the
+ * transition state.
+ *
+ * ```jsx
+ * function App() {
+ *   const [inProp, setInProp] = useState(false);
+ *   return (
+ *     <div>
+ *       <CSSTransition in={inProp} timeout={200} classNames="my-node">
+ *         <div>
+ *           {"I'll receive my-node-* classes"}
+ *         </div>
+ *       </CSSTransition>
+ *       <button type="button" onClick={() => setInProp(true)}>
+ *         Click to Enter
+ *       </button>
+ *     </div>
+ *   );
+ * }
+ * ```
+ *
+ * When the `in` prop is set to `true`, the child component will first receive
+ * the class `example-enter`, then the `example-enter-active` will be added in
+ * the next tick. `CSSTransition` [forces a
+ * reflow](https://github.com/reactjs/react-transition-group/blob/5007303e729a74be66a21c3e2205e4916821524b/src/CSSTransition.js#L208-L215)
+ * between before adding the `example-enter-active`. This is an important trick
+ * because it allows us to transition between `example-enter` and
+ * `example-enter-active` even though they were added immediately one after
+ * another. Most notably, this is what makes it possible for us to animate
+ * _appearance_.
+ *
+ * ```css
+ * .my-node-enter {
+ *   opacity: 0;
+ * }
+ * .my-node-enter-active {
+ *   opacity: 1;
+ *   transition: opacity 200ms;
+ * }
+ * .my-node-exit {
+ *   opacity: 1;
+ * }
+ * .my-node-exit-active {
+ *   opacity: 0;
+ *   transition: opacity 200ms;
+ * }
+ * ```
+ *
+ * `*-active` classes represent which styles you want to animate **to**, so it's
+ * important to add `transition` declaration only to them, otherwise transitions
+ * might not behave as intended! This might not be obvious when the transitions
+ * are symmetrical, i.e. when `*-enter-active` is the same as `*-exit`, like in
+ * the example above (minus `transition`), but it becomes apparent in more
+ * complex transitions.
+ *
+ * **Note**: If you're using the
+ * [`appear`](http://reactcommunity.org/react-transition-group/transition#Transition-prop-appear)
+ * prop, make sure to define styles for `.appear-*` classes as well.
+ */
+
+
+var CSSTransition = /*#__PURE__*/function (_React$Component) {
+  (0, _inheritsLoose2.default)(CSSTransition, _React$Component);
+
+  function CSSTransition() {
+    var _this;
+
+    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    _this = _React$Component.call.apply(_React$Component, [this].concat(args)) || this;
+    _this.appliedClasses = {
+      appear: {},
+      enter: {},
+      exit: {}
+    };
+
+    _this.onEnter = function (maybeNode, maybeAppearing) {
+      var _this$resolveArgument = _this.resolveArguments(maybeNode, maybeAppearing),
+          node = _this$resolveArgument[0],
+          appearing = _this$resolveArgument[1];
+
+      _this.removeClasses(node, 'exit');
+
+      _this.addClass(node, appearing ? 'appear' : 'enter', 'base');
+
+      if (_this.props.onEnter) {
+        _this.props.onEnter(maybeNode, maybeAppearing);
+      }
+    };
+
+    _this.onEntering = function (maybeNode, maybeAppearing) {
+      var _this$resolveArgument2 = _this.resolveArguments(maybeNode, maybeAppearing),
+          node = _this$resolveArgument2[0],
+          appearing = _this$resolveArgument2[1];
+
+      var type = appearing ? 'appear' : 'enter';
+
+      _this.addClass(node, type, 'active');
+
+      if (_this.props.onEntering) {
+        _this.props.onEntering(maybeNode, maybeAppearing);
+      }
+    };
+
+    _this.onEntered = function (maybeNode, maybeAppearing) {
+      var _this$resolveArgument3 = _this.resolveArguments(maybeNode, maybeAppearing),
+          node = _this$resolveArgument3[0],
+          appearing = _this$resolveArgument3[1];
+
+      var type = appearing ? 'appear' : 'enter';
+
+      _this.removeClasses(node, type);
+
+      _this.addClass(node, type, 'done');
+
+      if (_this.props.onEntered) {
+        _this.props.onEntered(maybeNode, maybeAppearing);
+      }
+    };
+
+    _this.onExit = function (maybeNode) {
+      var _this$resolveArgument4 = _this.resolveArguments(maybeNode),
+          node = _this$resolveArgument4[0];
+
+      _this.removeClasses(node, 'appear');
+
+      _this.removeClasses(node, 'enter');
+
+      _this.addClass(node, 'exit', 'base');
+
+      if (_this.props.onExit) {
+        _this.props.onExit(maybeNode);
+      }
+    };
+
+    _this.onExiting = function (maybeNode) {
+      var _this$resolveArgument5 = _this.resolveArguments(maybeNode),
+          node = _this$resolveArgument5[0];
+
+      _this.addClass(node, 'exit', 'active');
+
+      if (_this.props.onExiting) {
+        _this.props.onExiting(maybeNode);
+      }
+    };
+
+    _this.onExited = function (maybeNode) {
+      var _this$resolveArgument6 = _this.resolveArguments(maybeNode),
+          node = _this$resolveArgument6[0];
+
+      _this.removeClasses(node, 'exit');
+
+      _this.addClass(node, 'exit', 'done');
+
+      if (_this.props.onExited) {
+        _this.props.onExited(maybeNode);
+      }
+    };
+
+    _this.resolveArguments = function (maybeNode, maybeAppearing) {
+      return _this.props.nodeRef ? [_this.props.nodeRef.current, maybeNode] // here `maybeNode` is actually `appearing`
+      : [maybeNode, maybeAppearing];
+    };
+
+    _this.getClassNames = function (type) {
+      var classNames = _this.props.classNames;
+      var isStringClassNames = typeof classNames === 'string';
+      var prefix = isStringClassNames && classNames ? classNames + "-" : '';
+      var baseClassName = isStringClassNames ? "" + prefix + type : classNames[type];
+      var activeClassName = isStringClassNames ? baseClassName + "-active" : classNames[type + "Active"];
+      var doneClassName = isStringClassNames ? baseClassName + "-done" : classNames[type + "Done"];
+      return {
+        baseClassName: baseClassName,
+        activeClassName: activeClassName,
+        doneClassName: doneClassName
+      };
+    };
+
+    return _this;
+  }
+
+  var _proto = CSSTransition.prototype;
+
+  _proto.addClass = function addClass(node, type, phase) {
+    var className = this.getClassNames(type)[phase + "ClassName"];
+
+    var _this$getClassNames = this.getClassNames('enter'),
+        doneClassName = _this$getClassNames.doneClassName;
+
+    if (type === 'appear' && phase === 'done' && doneClassName) {
+      className += " " + doneClassName;
+    } // This is for to force a repaint,
+    // which is necessary in order to transition styles when adding a class name.
+
+
+    if (phase === 'active') {
+      /* eslint-disable no-unused-expressions */
+      node && node.scrollTop;
+    }
+
+    if (className) {
+      this.appliedClasses[type][phase] = className;
+
+      _addClass(node, className);
+    }
+  };
+
+  _proto.removeClasses = function removeClasses(node, type) {
+    var _this$appliedClasses$ = this.appliedClasses[type],
+        baseClassName = _this$appliedClasses$.base,
+        activeClassName = _this$appliedClasses$.active,
+        doneClassName = _this$appliedClasses$.done;
+    this.appliedClasses[type] = {};
+
+    if (baseClassName) {
+      removeClass(node, baseClassName);
+    }
+
+    if (activeClassName) {
+      removeClass(node, activeClassName);
+    }
+
+    if (doneClassName) {
+      removeClass(node, doneClassName);
+    }
+  };
+
+  _proto.render = function render() {
+    var _this$props = this.props,
+        _ = _this$props.classNames,
+        props = (0, _objectWithoutPropertiesLoose2.default)(_this$props, ["classNames"]);
+    return /*#__PURE__*/_react.default.createElement(_Transition.default, (0, _extends2.default)({}, props, {
+      onEnter: this.onEnter,
+      onEntered: this.onEntered,
+      onEntering: this.onEntering,
+      onExit: this.onExit,
+      onExiting: this.onExiting,
+      onExited: this.onExited
+    }));
+  };
+
+  return CSSTransition;
+}(_react.default.Component);
+
+CSSTransition.defaultProps = {
+  classNames: ''
+};
+CSSTransition.propTypes = "development" !== "production" ? (0, _extends2.default)({}, _Transition.default.propTypes, {
+  /**
+   * The animation classNames applied to the component as it appears, enters,
+   * exits or has finished the transition. A single name can be provided, which
+   * will be suffixed for each stage, e.g. `classNames="fade"` applies:
+   *
+   * - `fade-appear`, `fade-appear-active`, `fade-appear-done`
+   * - `fade-enter`, `fade-enter-active`, `fade-enter-done`
+   * - `fade-exit`, `fade-exit-active`, `fade-exit-done`
+   *
+   * A few details to note about how these classes are applied:
+   *
+   * 1. They are _joined_ with the ones that are already defined on the child
+   *    component, so if you want to add some base styles, you can use
+   *    `className` without worrying that it will be overridden.
+   *
+   * 2. If the transition component mounts with `in={false}`, no classes are
+   *    applied yet. You might be expecting `*-exit-done`, but if you think
+   *    about it, a component cannot finish exiting if it hasn't entered yet.
+   *
+   * 2. `fade-appear-done` and `fade-enter-done` will _both_ be applied. This
+   *    allows you to define different behavior for when appearing is done and
+   *    when regular entering is done, using selectors like
+   *    `.fade-enter-done:not(.fade-appear-done)`. For example, you could apply
+   *    an epic entrance animation when element first appears in the DOM using
+   *    [Animate.css](https://daneden.github.io/animate.css/). Otherwise you can
+   *    simply use `fade-enter-done` for defining both cases.
+   *
+   * Each individual classNames can also be specified independently like:
+   *
+   * ```js
+   * classNames={{
+   *  appear: 'my-appear',
+   *  appearActive: 'my-active-appear',
+   *  appearDone: 'my-done-appear',
+   *  enter: 'my-enter',
+   *  enterActive: 'my-active-enter',
+   *  enterDone: 'my-done-enter',
+   *  exit: 'my-exit',
+   *  exitActive: 'my-active-exit',
+   *  exitDone: 'my-done-exit',
+   * }}
+   * ```
+   *
+   * If you want to set these classes using CSS Modules:
+   *
+   * ```js
+   * import styles from './styles.css';
+   * ```
+   *
+   * you might want to use camelCase in your CSS file, that way could simply
+   * spread them instead of listing them one by one:
+   *
+   * ```js
+   * classNames={{ ...styles }}
+   * ```
+   *
+   * @type {string | {
+   *  appear?: string,
+   *  appearActive?: string,
+   *  appearDone?: string,
+   *  enter?: string,
+   *  enterActive?: string,
+   *  enterDone?: string,
+   *  exit?: string,
+   *  exitActive?: string,
+   *  exitDone?: string,
+   * }}
+   */
+  classNames: _PropTypes.classNamesShape,
+
+  /**
+   * A `<Transition>` callback fired immediately after the 'enter' or 'appear' class is
+   * applied.
+   *
+   * **Note**: when `nodeRef` prop is passed, `node` is not passed.
+   *
+   * @type Function(node: HtmlElement, isAppearing: bool)
+   */
+  onEnter: _propTypes.default.func,
+
+  /**
+   * A `<Transition>` callback fired immediately after the 'enter-active' or
+   * 'appear-active' class is applied.
+   *
+   * **Note**: when `nodeRef` prop is passed, `node` is not passed.
+   *
+   * @type Function(node: HtmlElement, isAppearing: bool)
+   */
+  onEntering: _propTypes.default.func,
+
+  /**
+   * A `<Transition>` callback fired immediately after the 'enter' or
+   * 'appear' classes are **removed** and the `done` class is added to the DOM node.
+   *
+   * **Note**: when `nodeRef` prop is passed, `node` is not passed.
+   *
+   * @type Function(node: HtmlElement, isAppearing: bool)
+   */
+  onEntered: _propTypes.default.func,
+
+  /**
+   * A `<Transition>` callback fired immediately after the 'exit' class is
+   * applied.
+   *
+   * **Note**: when `nodeRef` prop is passed, `node` is not passed
+   *
+   * @type Function(node: HtmlElement)
+   */
+  onExit: _propTypes.default.func,
+
+  /**
+   * A `<Transition>` callback fired immediately after the 'exit-active' is applied.
+   *
+   * **Note**: when `nodeRef` prop is passed, `node` is not passed
+   *
+   * @type Function(node: HtmlElement)
+   */
+  onExiting: _propTypes.default.func,
+
+  /**
+   * A `<Transition>` callback fired immediately after the 'exit' classes
+   * are **removed** and the `exit-done` class is added to the DOM node.
+   *
+   * **Note**: when `nodeRef` prop is passed, `node` is not passed
+   *
+   * @type Function(node: HtmlElement)
+   */
+  onExited: _propTypes.default.func
+}) : {};
+var _default = CSSTransition;
+exports.default = _default;
+},{"@babel/runtime/helpers/esm/extends":"../node_modules/@babel/runtime/helpers/esm/extends.js","@babel/runtime/helpers/esm/objectWithoutPropertiesLoose":"../node_modules/@babel/runtime/helpers/esm/objectWithoutPropertiesLoose.js","@babel/runtime/helpers/esm/inheritsLoose":"../node_modules/@babel/runtime/helpers/esm/inheritsLoose.js","prop-types":"../node_modules/prop-types/index.js","dom-helpers/addClass":"../node_modules/dom-helpers/esm/addClass.js","dom-helpers/removeClass":"../node_modules/dom-helpers/esm/removeClass.js","react":"../node_modules/react/index.js","./Transition":"../node_modules/react-transition-group/esm/Transition.js","./utils/PropTypes":"../node_modules/react-transition-group/esm/utils/PropTypes.js"}],"../node_modules/react-transition-group/esm/utils/ChildMapping.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.getChildMapping = getChildMapping;
+exports.mergeChildMappings = mergeChildMappings;
+exports.getInitialChildMapping = getInitialChildMapping;
+exports.getNextChildMapping = getNextChildMapping;
+
+var _react = require("react");
+
+/**
+ * Given `this.props.children`, return an object mapping key to child.
+ *
+ * @param {*} children `this.props.children`
+ * @return {object} Mapping of key to child
+ */
+function getChildMapping(children, mapFn) {
+  var mapper = function mapper(child) {
+    return mapFn && (0, _react.isValidElement)(child) ? mapFn(child) : child;
+  };
+
+  var result = Object.create(null);
+  if (children) _react.Children.map(children, function (c) {
+    return c;
+  }).forEach(function (child) {
+    // run the map function here instead so that the key is the computed one
+    result[child.key] = mapper(child);
+  });
+  return result;
+}
+/**
+ * When you're adding or removing children some may be added or removed in the
+ * same render pass. We want to show *both* since we want to simultaneously
+ * animate elements in and out. This function takes a previous set of keys
+ * and a new set of keys and merges them with its best guess of the correct
+ * ordering. In the future we may expose some of the utilities in
+ * ReactMultiChild to make this easy, but for now React itself does not
+ * directly have this concept of the union of prevChildren and nextChildren
+ * so we implement it here.
+ *
+ * @param {object} prev prev children as returned from
+ * `ReactTransitionChildMapping.getChildMapping()`.
+ * @param {object} next next children as returned from
+ * `ReactTransitionChildMapping.getChildMapping()`.
+ * @return {object} a key set that contains all keys in `prev` and all keys
+ * in `next` in a reasonable order.
+ */
+
+
+function mergeChildMappings(prev, next) {
+  prev = prev || {};
+  next = next || {};
+
+  function getValueForKey(key) {
+    return key in next ? next[key] : prev[key];
+  } // For each key of `next`, the list of keys to insert before that key in
+  // the combined list
+
+
+  var nextKeysPending = Object.create(null);
+  var pendingKeys = [];
+
+  for (var prevKey in prev) {
+    if (prevKey in next) {
+      if (pendingKeys.length) {
+        nextKeysPending[prevKey] = pendingKeys;
+        pendingKeys = [];
+      }
+    } else {
+      pendingKeys.push(prevKey);
+    }
+  }
+
+  var i;
+  var childMapping = {};
+
+  for (var nextKey in next) {
+    if (nextKeysPending[nextKey]) {
+      for (i = 0; i < nextKeysPending[nextKey].length; i++) {
+        var pendingNextKey = nextKeysPending[nextKey][i];
+        childMapping[nextKeysPending[nextKey][i]] = getValueForKey(pendingNextKey);
+      }
+    }
+
+    childMapping[nextKey] = getValueForKey(nextKey);
+  } // Finally, add the keys which didn't appear before any key in `next`
+
+
+  for (i = 0; i < pendingKeys.length; i++) {
+    childMapping[pendingKeys[i]] = getValueForKey(pendingKeys[i]);
+  }
+
+  return childMapping;
+}
+
+function getProp(child, prop, props) {
+  return props[prop] != null ? props[prop] : child.props[prop];
+}
+
+function getInitialChildMapping(props, onExited) {
+  return getChildMapping(props.children, function (child) {
+    return (0, _react.cloneElement)(child, {
+      onExited: onExited.bind(null, child),
+      in: true,
+      appear: getProp(child, 'appear', props),
+      enter: getProp(child, 'enter', props),
+      exit: getProp(child, 'exit', props)
+    });
+  });
+}
+
+function getNextChildMapping(nextProps, prevChildMapping, onExited) {
+  var nextChildMapping = getChildMapping(nextProps.children);
+  var children = mergeChildMappings(prevChildMapping, nextChildMapping);
+  Object.keys(children).forEach(function (key) {
+    var child = children[key];
+    if (!(0, _react.isValidElement)(child)) return;
+    var hasPrev = (key in prevChildMapping);
+    var hasNext = (key in nextChildMapping);
+    var prevChild = prevChildMapping[key];
+    var isLeaving = (0, _react.isValidElement)(prevChild) && !prevChild.props.in; // item is new (entering)
+
+    if (hasNext && (!hasPrev || isLeaving)) {
+      // console.log('entering', key)
+      children[key] = (0, _react.cloneElement)(child, {
+        onExited: onExited.bind(null, child),
+        in: true,
+        exit: getProp(child, 'exit', nextProps),
+        enter: getProp(child, 'enter', nextProps)
+      });
+    } else if (!hasNext && hasPrev && !isLeaving) {
+      // item is old (exiting)
+      // console.log('leaving', key)
+      children[key] = (0, _react.cloneElement)(child, {
+        in: false
+      });
+    } else if (hasNext && hasPrev && (0, _react.isValidElement)(prevChild)) {
+      // item hasn't changed transition states
+      // copy over the last transition props;
+      // console.log('unchanged', key)
+      children[key] = (0, _react.cloneElement)(child, {
+        onExited: onExited.bind(null, child),
+        in: prevChild.props.in,
+        exit: getProp(child, 'exit', nextProps),
+        enter: getProp(child, 'enter', nextProps)
+      });
+    }
+  });
+  return children;
+}
+},{"react":"../node_modules/react/index.js"}],"../node_modules/react-transition-group/esm/TransitionGroup.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _objectWithoutPropertiesLoose2 = _interopRequireDefault(require("@babel/runtime/helpers/esm/objectWithoutPropertiesLoose"));
+
+var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/esm/extends"));
+
+var _assertThisInitialized2 = _interopRequireDefault(require("@babel/runtime/helpers/esm/assertThisInitialized"));
+
+var _inheritsLoose2 = _interopRequireDefault(require("@babel/runtime/helpers/esm/inheritsLoose"));
+
+var _propTypes = _interopRequireDefault(require("prop-types"));
+
+var _react = _interopRequireDefault(require("react"));
+
+var _TransitionGroupContext = _interopRequireDefault(require("./TransitionGroupContext"));
+
+var _ChildMapping = require("./utils/ChildMapping");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var values = Object.values || function (obj) {
+  return Object.keys(obj).map(function (k) {
+    return obj[k];
+  });
+};
+
+var defaultProps = {
+  component: 'div',
+  childFactory: function childFactory(child) {
+    return child;
+  }
+};
+/**
+ * The `<TransitionGroup>` component manages a set of transition components
+ * (`<Transition>` and `<CSSTransition>`) in a list. Like with the transition
+ * components, `<TransitionGroup>` is a state machine for managing the mounting
+ * and unmounting of components over time.
+ *
+ * Consider the example below. As items are removed or added to the TodoList the
+ * `in` prop is toggled automatically by the `<TransitionGroup>`.
+ *
+ * Note that `<TransitionGroup>`  does not define any animation behavior!
+ * Exactly _how_ a list item animates is up to the individual transition
+ * component. This means you can mix and match animations across different list
+ * items.
+ */
+
+var TransitionGroup = /*#__PURE__*/function (_React$Component) {
+  (0, _inheritsLoose2.default)(TransitionGroup, _React$Component);
+
+  function TransitionGroup(props, context) {
+    var _this;
+
+    _this = _React$Component.call(this, props, context) || this;
+
+    var handleExited = _this.handleExited.bind((0, _assertThisInitialized2.default)(_this)); // Initial children should all be entering, dependent on appear
+
+
+    _this.state = {
+      contextValue: {
+        isMounting: true
+      },
+      handleExited: handleExited,
+      firstRender: true
+    };
+    return _this;
+  }
+
+  var _proto = TransitionGroup.prototype;
+
+  _proto.componentDidMount = function componentDidMount() {
+    this.mounted = true;
+    this.setState({
+      contextValue: {
+        isMounting: false
+      }
+    });
+  };
+
+  _proto.componentWillUnmount = function componentWillUnmount() {
+    this.mounted = false;
+  };
+
+  TransitionGroup.getDerivedStateFromProps = function getDerivedStateFromProps(nextProps, _ref) {
+    var prevChildMapping = _ref.children,
+        handleExited = _ref.handleExited,
+        firstRender = _ref.firstRender;
+    return {
+      children: firstRender ? (0, _ChildMapping.getInitialChildMapping)(nextProps, handleExited) : (0, _ChildMapping.getNextChildMapping)(nextProps, prevChildMapping, handleExited),
+      firstRender: false
+    };
+  } // node is `undefined` when user provided `nodeRef` prop
+  ;
+
+  _proto.handleExited = function handleExited(child, node) {
+    var currentChildMapping = (0, _ChildMapping.getChildMapping)(this.props.children);
+    if (child.key in currentChildMapping) return;
+
+    if (child.props.onExited) {
+      child.props.onExited(node);
+    }
+
+    if (this.mounted) {
+      this.setState(function (state) {
+        var children = (0, _extends2.default)({}, state.children);
+        delete children[child.key];
+        return {
+          children: children
+        };
+      });
+    }
+  };
+
+  _proto.render = function render() {
+    var _this$props = this.props,
+        Component = _this$props.component,
+        childFactory = _this$props.childFactory,
+        props = (0, _objectWithoutPropertiesLoose2.default)(_this$props, ["component", "childFactory"]);
+    var contextValue = this.state.contextValue;
+    var children = values(this.state.children).map(childFactory);
+    delete props.appear;
+    delete props.enter;
+    delete props.exit;
+
+    if (Component === null) {
+      return /*#__PURE__*/_react.default.createElement(_TransitionGroupContext.default.Provider, {
+        value: contextValue
+      }, children);
+    }
+
+    return /*#__PURE__*/_react.default.createElement(_TransitionGroupContext.default.Provider, {
+      value: contextValue
+    }, /*#__PURE__*/_react.default.createElement(Component, props, children));
+  };
+
+  return TransitionGroup;
+}(_react.default.Component);
+
+TransitionGroup.propTypes = "development" !== "production" ? {
+  /**
+   * `<TransitionGroup>` renders a `<div>` by default. You can change this
+   * behavior by providing a `component` prop.
+   * If you use React v16+ and would like to avoid a wrapping `<div>` element
+   * you can pass in `component={null}`. This is useful if the wrapping div
+   * borks your css styles.
+   */
+  component: _propTypes.default.any,
+
+  /**
+   * A set of `<Transition>` components, that are toggled `in` and out as they
+   * leave. the `<TransitionGroup>` will inject specific transition props, so
+   * remember to spread them through if you are wrapping the `<Transition>` as
+   * with our `<Fade>` example.
+   *
+   * While this component is meant for multiple `Transition` or `CSSTransition`
+   * children, sometimes you may want to have a single transition child with
+   * content that you want to be transitioned out and in when you change it
+   * (e.g. routes, images etc.) In that case you can change the `key` prop of
+   * the transition child as you change its content, this will cause
+   * `TransitionGroup` to transition the child out and back in.
+   */
+  children: _propTypes.default.node,
+
+  /**
+   * A convenience prop that enables or disables appear animations
+   * for all children. Note that specifying this will override any defaults set
+   * on individual children Transitions.
+   */
+  appear: _propTypes.default.bool,
+
+  /**
+   * A convenience prop that enables or disables enter animations
+   * for all children. Note that specifying this will override any defaults set
+   * on individual children Transitions.
+   */
+  enter: _propTypes.default.bool,
+
+  /**
+   * A convenience prop that enables or disables exit animations
+   * for all children. Note that specifying this will override any defaults set
+   * on individual children Transitions.
+   */
+  exit: _propTypes.default.bool,
+
+  /**
+   * You may need to apply reactive updates to a child as it is exiting.
+   * This is generally done by using `cloneElement` however in the case of an exiting
+   * child the element has already been removed and not accessible to the consumer.
+   *
+   * If you do need to update a child as it leaves you can provide a `childFactory`
+   * to wrap every child, even the ones that are leaving.
+   *
+   * @type Function(child: ReactElement) -> ReactElement
+   */
+  childFactory: _propTypes.default.func
+} : {};
+TransitionGroup.defaultProps = defaultProps;
+var _default = TransitionGroup;
+exports.default = _default;
+},{"@babel/runtime/helpers/esm/objectWithoutPropertiesLoose":"../node_modules/@babel/runtime/helpers/esm/objectWithoutPropertiesLoose.js","@babel/runtime/helpers/esm/extends":"../node_modules/@babel/runtime/helpers/esm/extends.js","@babel/runtime/helpers/esm/assertThisInitialized":"../node_modules/@babel/runtime/helpers/esm/assertThisInitialized.js","@babel/runtime/helpers/esm/inheritsLoose":"../node_modules/@babel/runtime/helpers/esm/inheritsLoose.js","prop-types":"../node_modules/prop-types/index.js","react":"../node_modules/react/index.js","./TransitionGroupContext":"../node_modules/react-transition-group/esm/TransitionGroupContext.js","./utils/ChildMapping":"../node_modules/react-transition-group/esm/utils/ChildMapping.js"}],"../node_modules/react-transition-group/esm/ReplaceTransition.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _objectWithoutPropertiesLoose2 = _interopRequireDefault(require("@babel/runtime/helpers/esm/objectWithoutPropertiesLoose"));
+
+var _inheritsLoose2 = _interopRequireDefault(require("@babel/runtime/helpers/esm/inheritsLoose"));
+
+var _propTypes = _interopRequireDefault(require("prop-types"));
+
+var _react = _interopRequireDefault(require("react"));
+
+var _reactDom = _interopRequireDefault(require("react-dom"));
+
+var _TransitionGroup = _interopRequireDefault(require("./TransitionGroup"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+/**
+ * The `<ReplaceTransition>` component is a specialized `Transition` component
+ * that animates between two children.
+ *
+ * ```jsx
+ * <ReplaceTransition in>
+ *   <Fade><div>I appear first</div></Fade>
+ *   <Fade><div>I replace the above</div></Fade>
+ * </ReplaceTransition>
+ * ```
+ */
+var ReplaceTransition = /*#__PURE__*/function (_React$Component) {
+  (0, _inheritsLoose2.default)(ReplaceTransition, _React$Component);
+
+  function ReplaceTransition() {
+    var _this;
+
+    for (var _len = arguments.length, _args = new Array(_len), _key = 0; _key < _len; _key++) {
+      _args[_key] = arguments[_key];
+    }
+
+    _this = _React$Component.call.apply(_React$Component, [this].concat(_args)) || this;
+
+    _this.handleEnter = function () {
+      for (var _len2 = arguments.length, args = new Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+        args[_key2] = arguments[_key2];
+      }
+
+      return _this.handleLifecycle('onEnter', 0, args);
+    };
+
+    _this.handleEntering = function () {
+      for (var _len3 = arguments.length, args = new Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
+        args[_key3] = arguments[_key3];
+      }
+
+      return _this.handleLifecycle('onEntering', 0, args);
+    };
+
+    _this.handleEntered = function () {
+      for (var _len4 = arguments.length, args = new Array(_len4), _key4 = 0; _key4 < _len4; _key4++) {
+        args[_key4] = arguments[_key4];
+      }
+
+      return _this.handleLifecycle('onEntered', 0, args);
+    };
+
+    _this.handleExit = function () {
+      for (var _len5 = arguments.length, args = new Array(_len5), _key5 = 0; _key5 < _len5; _key5++) {
+        args[_key5] = arguments[_key5];
+      }
+
+      return _this.handleLifecycle('onExit', 1, args);
+    };
+
+    _this.handleExiting = function () {
+      for (var _len6 = arguments.length, args = new Array(_len6), _key6 = 0; _key6 < _len6; _key6++) {
+        args[_key6] = arguments[_key6];
+      }
+
+      return _this.handleLifecycle('onExiting', 1, args);
+    };
+
+    _this.handleExited = function () {
+      for (var _len7 = arguments.length, args = new Array(_len7), _key7 = 0; _key7 < _len7; _key7++) {
+        args[_key7] = arguments[_key7];
+      }
+
+      return _this.handleLifecycle('onExited', 1, args);
+    };
+
+    return _this;
+  }
+
+  var _proto = ReplaceTransition.prototype;
+
+  _proto.handleLifecycle = function handleLifecycle(handler, idx, originalArgs) {
+    var _child$props;
+
+    var children = this.props.children;
+
+    var child = _react.default.Children.toArray(children)[idx];
+
+    if (child.props[handler]) (_child$props = child.props)[handler].apply(_child$props, originalArgs);
+
+    if (this.props[handler]) {
+      var maybeNode = child.props.nodeRef ? undefined : _reactDom.default.findDOMNode(this);
+      this.props[handler](maybeNode);
+    }
+  };
+
+  _proto.render = function render() {
+    var _this$props = this.props,
+        children = _this$props.children,
+        inProp = _this$props.in,
+        props = (0, _objectWithoutPropertiesLoose2.default)(_this$props, ["children", "in"]);
+
+    var _React$Children$toArr = _react.default.Children.toArray(children),
+        first = _React$Children$toArr[0],
+        second = _React$Children$toArr[1];
+
+    delete props.onEnter;
+    delete props.onEntering;
+    delete props.onEntered;
+    delete props.onExit;
+    delete props.onExiting;
+    delete props.onExited;
+    return /*#__PURE__*/_react.default.createElement(_TransitionGroup.default, props, inProp ? _react.default.cloneElement(first, {
+      key: 'first',
+      onEnter: this.handleEnter,
+      onEntering: this.handleEntering,
+      onEntered: this.handleEntered
+    }) : _react.default.cloneElement(second, {
+      key: 'second',
+      onEnter: this.handleExit,
+      onEntering: this.handleExiting,
+      onEntered: this.handleExited
+    }));
+  };
+
+  return ReplaceTransition;
+}(_react.default.Component);
+
+ReplaceTransition.propTypes = "development" !== "production" ? {
+  in: _propTypes.default.bool.isRequired,
+  children: function children(props, propName) {
+    if (_react.default.Children.count(props[propName]) !== 2) return new Error("\"" + propName + "\" must be exactly two transition components.");
+    return null;
+  }
+} : {};
+var _default = ReplaceTransition;
+exports.default = _default;
+},{"@babel/runtime/helpers/esm/objectWithoutPropertiesLoose":"../node_modules/@babel/runtime/helpers/esm/objectWithoutPropertiesLoose.js","@babel/runtime/helpers/esm/inheritsLoose":"../node_modules/@babel/runtime/helpers/esm/inheritsLoose.js","prop-types":"../node_modules/prop-types/index.js","react":"../node_modules/react/index.js","react-dom":"../node_modules/react-dom/index.js","./TransitionGroup":"../node_modules/react-transition-group/esm/TransitionGroup.js"}],"../node_modules/react-transition-group/esm/SwitchTransition.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = exports.modes = void 0;
+
+var _inheritsLoose2 = _interopRequireDefault(require("@babel/runtime/helpers/esm/inheritsLoose"));
+
+var _react = _interopRequireDefault(require("react"));
+
+var _propTypes = _interopRequireDefault(require("prop-types"));
+
+var _Transition = require("./Transition");
+
+var _TransitionGroupContext = _interopRequireDefault(require("./TransitionGroupContext"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var _leaveRenders, _enterRenders;
+
+function areChildrenDifferent(oldChildren, newChildren) {
+  if (oldChildren === newChildren) return false;
+
+  if (_react.default.isValidElement(oldChildren) && _react.default.isValidElement(newChildren) && oldChildren.key != null && oldChildren.key === newChildren.key) {
+    return false;
+  }
+
+  return true;
+}
+/**
+ * Enum of modes for SwitchTransition component
+ * @enum { string }
+ */
+
+
+var modes = {
+  out: 'out-in',
+  in: 'in-out'
+};
+exports.modes = modes;
+
+var callHook = function callHook(element, name, cb) {
+  return function () {
+    var _element$props;
+
+    element.props[name] && (_element$props = element.props)[name].apply(_element$props, arguments);
+    cb();
+  };
+};
+
+var leaveRenders = (_leaveRenders = {}, _leaveRenders[modes.out] = function (_ref) {
+  var current = _ref.current,
+      changeState = _ref.changeState;
+  return _react.default.cloneElement(current, {
+    in: false,
+    onExited: callHook(current, 'onExited', function () {
+      changeState(_Transition.ENTERING, null);
+    })
+  });
+}, _leaveRenders[modes.in] = function (_ref2) {
+  var current = _ref2.current,
+      changeState = _ref2.changeState,
+      children = _ref2.children;
+  return [current, _react.default.cloneElement(children, {
+    in: true,
+    onEntered: callHook(children, 'onEntered', function () {
+      changeState(_Transition.ENTERING);
+    })
+  })];
+}, _leaveRenders);
+var enterRenders = (_enterRenders = {}, _enterRenders[modes.out] = function (_ref3) {
+  var children = _ref3.children,
+      changeState = _ref3.changeState;
+  return _react.default.cloneElement(children, {
+    in: true,
+    onEntered: callHook(children, 'onEntered', function () {
+      changeState(_Transition.ENTERED, _react.default.cloneElement(children, {
+        in: true
+      }));
+    })
+  });
+}, _enterRenders[modes.in] = function (_ref4) {
+  var current = _ref4.current,
+      children = _ref4.children,
+      changeState = _ref4.changeState;
+  return [_react.default.cloneElement(current, {
+    in: false,
+    onExited: callHook(current, 'onExited', function () {
+      changeState(_Transition.ENTERED, _react.default.cloneElement(children, {
+        in: true
+      }));
+    })
+  }), _react.default.cloneElement(children, {
+    in: true
+  })];
+}, _enterRenders);
+/**
+ * A transition component inspired by the [vue transition modes](https://vuejs.org/v2/guide/transitions.html#Transition-Modes).
+ * You can use it when you want to control the render between state transitions.
+ * Based on the selected mode and the child's key which is the `Transition` or `CSSTransition` component, the `SwitchTransition` makes a consistent transition between them.
+ *
+ * If the `out-in` mode is selected, the `SwitchTransition` waits until the old child leaves and then inserts a new child.
+ * If the `in-out` mode is selected, the `SwitchTransition` inserts a new child first, waits for the new child to enter and then removes the old child.
+ *
+ * **Note**: If you want the animation to happen simultaneously
+ * (that is, to have the old child removed and a new child inserted **at the same time**),
+ * you should use
+ * [`TransitionGroup`](https://reactcommunity.org/react-transition-group/transition-group)
+ * instead.
+ *
+ * ```jsx
+ * function App() {
+ *  const [state, setState] = useState(false);
+ *  return (
+ *    <SwitchTransition>
+ *      <CSSTransition
+ *        key={state ? "Goodbye, world!" : "Hello, world!"}
+ *        addEndListener={(node, done) => node.addEventListener("transitionend", done, false)}
+ *        classNames='fade'
+ *      >
+ *        <button onClick={() => setState(state => !state)}>
+ *          {state ? "Goodbye, world!" : "Hello, world!"}
+ *        </button>
+ *      </CSSTransition>
+ *    </SwitchTransition>
+ *  );
+ * }
+ * ```
+ *
+ * ```css
+ * .fade-enter{
+ *    opacity: 0;
+ * }
+ * .fade-exit{
+ *    opacity: 1;
+ * }
+ * .fade-enter-active{
+ *    opacity: 1;
+ * }
+ * .fade-exit-active{
+ *    opacity: 0;
+ * }
+ * .fade-enter-active,
+ * .fade-exit-active{
+ *    transition: opacity 500ms;
+ * }
+ * ```
+ */
+
+var SwitchTransition = /*#__PURE__*/function (_React$Component) {
+  (0, _inheritsLoose2.default)(SwitchTransition, _React$Component);
+
+  function SwitchTransition() {
+    var _this;
+
+    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    _this = _React$Component.call.apply(_React$Component, [this].concat(args)) || this;
+    _this.state = {
+      status: _Transition.ENTERED,
+      current: null
+    };
+    _this.appeared = false;
+
+    _this.changeState = function (status, current) {
+      if (current === void 0) {
+        current = _this.state.current;
+      }
+
+      _this.setState({
+        status: status,
+        current: current
+      });
+    };
+
+    return _this;
+  }
+
+  var _proto = SwitchTransition.prototype;
+
+  _proto.componentDidMount = function componentDidMount() {
+    this.appeared = true;
+  };
+
+  SwitchTransition.getDerivedStateFromProps = function getDerivedStateFromProps(props, state) {
+    if (props.children == null) {
+      return {
+        current: null
+      };
+    }
+
+    if (state.status === _Transition.ENTERING && props.mode === modes.in) {
+      return {
+        status: _Transition.ENTERING
+      };
+    }
+
+    if (state.current && areChildrenDifferent(state.current, props.children)) {
+      return {
+        status: _Transition.EXITING
+      };
+    }
+
+    return {
+      current: _react.default.cloneElement(props.children, {
+        in: true
+      })
+    };
+  };
+
+  _proto.render = function render() {
+    var _this$props = this.props,
+        children = _this$props.children,
+        mode = _this$props.mode,
+        _this$state = this.state,
+        status = _this$state.status,
+        current = _this$state.current;
+    var data = {
+      children: children,
+      current: current,
+      changeState: this.changeState,
+      status: status
+    };
+    var component;
+
+    switch (status) {
+      case _Transition.ENTERING:
+        component = enterRenders[mode](data);
+        break;
+
+      case _Transition.EXITING:
+        component = leaveRenders[mode](data);
+        break;
+
+      case _Transition.ENTERED:
+        component = current;
+    }
+
+    return /*#__PURE__*/_react.default.createElement(_TransitionGroupContext.default.Provider, {
+      value: {
+        isMounting: !this.appeared
+      }
+    }, component);
+  };
+
+  return SwitchTransition;
+}(_react.default.Component);
+
+SwitchTransition.propTypes = "development" !== "production" ? {
+  /**
+   * Transition modes.
+   * `out-in`: Current element transitions out first, then when complete, the new element transitions in.
+   * `in-out`: New element transitions in first, then when complete, the current element transitions out.
+   *
+   * @type {'out-in'|'in-out'}
+   */
+  mode: _propTypes.default.oneOf([modes.in, modes.out]),
+
+  /**
+   * Any `Transition` or `CSSTransition` component.
+   */
+  children: _propTypes.default.oneOfType([_propTypes.default.element.isRequired])
+} : {};
+SwitchTransition.defaultProps = {
+  mode: modes.out
+};
+var _default = SwitchTransition;
+exports.default = _default;
+},{"@babel/runtime/helpers/esm/inheritsLoose":"../node_modules/@babel/runtime/helpers/esm/inheritsLoose.js","react":"../node_modules/react/index.js","prop-types":"../node_modules/prop-types/index.js","./Transition":"../node_modules/react-transition-group/esm/Transition.js","./TransitionGroupContext":"../node_modules/react-transition-group/esm/TransitionGroupContext.js"}],"../node_modules/react-transition-group/esm/index.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+Object.defineProperty(exports, "CSSTransition", {
+  enumerable: true,
+  get: function () {
+    return _CSSTransition.default;
+  }
+});
+Object.defineProperty(exports, "ReplaceTransition", {
+  enumerable: true,
+  get: function () {
+    return _ReplaceTransition.default;
+  }
+});
+Object.defineProperty(exports, "SwitchTransition", {
+  enumerable: true,
+  get: function () {
+    return _SwitchTransition.default;
+  }
+});
+Object.defineProperty(exports, "TransitionGroup", {
+  enumerable: true,
+  get: function () {
+    return _TransitionGroup.default;
+  }
+});
+Object.defineProperty(exports, "Transition", {
+  enumerable: true,
+  get: function () {
+    return _Transition.default;
+  }
+});
+Object.defineProperty(exports, "config", {
+  enumerable: true,
+  get: function () {
+    return _config.default;
+  }
+});
+
+var _CSSTransition = _interopRequireDefault(require("./CSSTransition"));
+
+var _ReplaceTransition = _interopRequireDefault(require("./ReplaceTransition"));
+
+var _SwitchTransition = _interopRequireDefault(require("./SwitchTransition"));
+
+var _TransitionGroup = _interopRequireDefault(require("./TransitionGroup"));
+
+var _Transition = _interopRequireDefault(require("./Transition"));
+
+var _config = _interopRequireDefault(require("./config"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+},{"./CSSTransition":"../node_modules/react-transition-group/esm/CSSTransition.js","./ReplaceTransition":"../node_modules/react-transition-group/esm/ReplaceTransition.js","./SwitchTransition":"../node_modules/react-transition-group/esm/SwitchTransition.js","./TransitionGroup":"../node_modules/react-transition-group/esm/TransitionGroup.js","./Transition":"../node_modules/react-transition-group/esm/Transition.js","./config":"../node_modules/react-transition-group/esm/config.js"}],"../node_modules/@material-ui/core/esm/transitions/utils.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.getTransitionProps = getTransitionProps;
+exports.reflow = void 0;
+
+var reflow = function reflow(node) {
+  return node.scrollTop;
+};
+
+exports.reflow = reflow;
+
+function getTransitionProps(props, options) {
+  var timeout = props.timeout,
+      _props$style = props.style,
+      style = _props$style === void 0 ? {} : _props$style;
+  return {
+    duration: style.transitionDuration || typeof timeout === 'number' ? timeout : timeout[options.mode] || 0,
+    delay: style.transitionDelay
+  };
+}
+},{}],"../node_modules/@material-ui/core/esm/Fade/Fade.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/esm/extends"));
+
+var _slicedToArray2 = _interopRequireDefault(require("@babel/runtime/helpers/esm/slicedToArray"));
+
+var _objectWithoutProperties2 = _interopRequireDefault(require("@babel/runtime/helpers/esm/objectWithoutProperties"));
+
+var React = _interopRequireWildcard(require("react"));
+
+var _propTypes = _interopRequireDefault(require("prop-types"));
+
+var _reactTransitionGroup = require("react-transition-group");
+
+var _transitions = require("../styles/transitions");
+
+var _useTheme = _interopRequireDefault(require("../styles/useTheme"));
+
+var _utils = require("../transitions/utils");
+
+var _useForkRef = _interopRequireDefault(require("../utils/useForkRef"));
+
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var styles = {
+  entering: {
+    opacity: 1
+  },
+  entered: {
+    opacity: 1
+  }
+};
+var defaultTimeout = {
+  enter: _transitions.duration.enteringScreen,
+  exit: _transitions.duration.leavingScreen
+};
+/**
+ * The Fade transition is used by the [Modal](/components/modal/) component.
+ * It uses [react-transition-group](https://github.com/reactjs/react-transition-group) internally.
+ */
+
+var Fade = React.forwardRef(function Fade(props, ref) {
+  var children = props.children,
+      _props$disableStrictM = props.disableStrictModeCompat,
+      disableStrictModeCompat = _props$disableStrictM === void 0 ? false : _props$disableStrictM,
+      inProp = props.in,
+      onEnter = props.onEnter,
+      onEntered = props.onEntered,
+      onEntering = props.onEntering,
+      onExit = props.onExit,
+      onExited = props.onExited,
+      onExiting = props.onExiting,
+      style = props.style,
+      _props$TransitionComp = props.TransitionComponent,
+      TransitionComponent = _props$TransitionComp === void 0 ? _reactTransitionGroup.Transition : _props$TransitionComp,
+      _props$timeout = props.timeout,
+      timeout = _props$timeout === void 0 ? defaultTimeout : _props$timeout,
+      other = (0, _objectWithoutProperties2.default)(props, ["children", "disableStrictModeCompat", "in", "onEnter", "onEntered", "onEntering", "onExit", "onExited", "onExiting", "style", "TransitionComponent", "timeout"]);
+  var theme = (0, _useTheme.default)();
+  var enableStrictModeCompat = theme.unstable_strictMode && !disableStrictModeCompat;
+  var nodeRef = React.useRef(null);
+  var foreignRef = (0, _useForkRef.default)(children.ref, ref);
+  var handleRef = (0, _useForkRef.default)(enableStrictModeCompat ? nodeRef : undefined, foreignRef);
+
+  var normalizedTransitionCallback = function normalizedTransitionCallback(callback) {
+    return function (nodeOrAppearing, maybeAppearing) {
+      if (callback) {
+        var _ref = enableStrictModeCompat ? [nodeRef.current, nodeOrAppearing] : [nodeOrAppearing, maybeAppearing],
+            _ref2 = (0, _slicedToArray2.default)(_ref, 2),
+            node = _ref2[0],
+            isAppearing = _ref2[1];
+
+        callback(node, isAppearing);
+      }
+    };
+  };
+
+  var handleEntering = normalizedTransitionCallback(onEntering);
+  var handleEnter = normalizedTransitionCallback(function (node, isAppearing) {
+    (0, _utils.reflow)(node); // So the animation always start from the start.
+
+    var transitionProps = (0, _utils.getTransitionProps)({
+      style: style,
+      timeout: timeout
+    }, {
+      mode: 'enter'
+    });
+    node.style.webkitTransition = theme.transitions.create('opacity', transitionProps);
+    node.style.transition = theme.transitions.create('opacity', transitionProps);
+
+    if (onEnter) {
+      onEnter(node, isAppearing);
+    }
+  });
+  var handleEntered = normalizedTransitionCallback(onEntered);
+  var handleExiting = normalizedTransitionCallback(onExiting);
+  var handleExit = normalizedTransitionCallback(function (node) {
+    var transitionProps = (0, _utils.getTransitionProps)({
+      style: style,
+      timeout: timeout
+    }, {
+      mode: 'exit'
+    });
+    node.style.webkitTransition = theme.transitions.create('opacity', transitionProps);
+    node.style.transition = theme.transitions.create('opacity', transitionProps);
+
+    if (onExit) {
+      onExit(node);
+    }
+  });
+  var handleExited = normalizedTransitionCallback(onExited);
+  return /*#__PURE__*/React.createElement(TransitionComponent, (0, _extends2.default)({
+    appear: true,
+    in: inProp,
+    nodeRef: enableStrictModeCompat ? nodeRef : undefined,
+    onEnter: handleEnter,
+    onEntered: handleEntered,
+    onEntering: handleEntering,
+    onExit: handleExit,
+    onExited: handleExited,
+    onExiting: handleExiting,
+    timeout: timeout
+  }, other), function (state, childProps) {
+    return React.cloneElement(children, (0, _extends2.default)({
+      style: (0, _extends2.default)((0, _extends2.default)((0, _extends2.default)({
+        opacity: 0,
+        visibility: state === 'exited' && !inProp ? 'hidden' : undefined
+      }, styles[state]), style), children.props.style),
+      ref: handleRef
+    }, childProps));
+  });
+});
+"development" !== "production" ? Fade.propTypes = {
+  // ----------------------------- Warning --------------------------------
+  // | These PropTypes are generated from the TypeScript type definitions |
+  // |     To update them edit the d.ts file and run "yarn proptypes"     |
+  // ----------------------------------------------------------------------
+
+  /**
+   * A single child content element.
+   */
+  children: _propTypes.default.element,
+
+  /**
+   * Enable this prop if you encounter 'Function components cannot be given refs',
+   * use `unstable_createStrictModeTheme`,
+   * and can't forward the ref in the child component.
+   */
+  disableStrictModeCompat: _propTypes.default.bool,
+
+  /**
+   * If `true`, the component will transition in.
+   */
+  in: _propTypes.default.bool,
+
+  /**
+   * @ignore
+   */
+  onEnter: _propTypes.default.func,
+
+  /**
+   * @ignore
+   */
+  onEntered: _propTypes.default.func,
+
+  /**
+   * @ignore
+   */
+  onEntering: _propTypes.default.func,
+
+  /**
+   * @ignore
+   */
+  onExit: _propTypes.default.func,
+
+  /**
+   * @ignore
+   */
+  onExited: _propTypes.default.func,
+
+  /**
+   * @ignore
+   */
+  onExiting: _propTypes.default.func,
+
+  /**
+   * @ignore
+   */
+  style: _propTypes.default.object,
+
+  /**
+   * The duration for the transition, in milliseconds.
+   * You may specify a single timeout for all transitions, or individually with an object.
+   */
+  timeout: _propTypes.default.oneOfType([_propTypes.default.number, _propTypes.default.shape({
+    appear: _propTypes.default.number,
+    enter: _propTypes.default.number,
+    exit: _propTypes.default.number
+  })])
+} : void 0;
+var _default = Fade;
+exports.default = _default;
+},{"@babel/runtime/helpers/esm/extends":"../node_modules/@babel/runtime/helpers/esm/extends.js","@babel/runtime/helpers/esm/slicedToArray":"../node_modules/@babel/runtime/helpers/esm/slicedToArray.js","@babel/runtime/helpers/esm/objectWithoutProperties":"../node_modules/@babel/runtime/helpers/esm/objectWithoutProperties.js","react":"../node_modules/react/index.js","prop-types":"../node_modules/prop-types/index.js","react-transition-group":"../node_modules/react-transition-group/esm/index.js","../styles/transitions":"../node_modules/@material-ui/core/esm/styles/transitions.js","../styles/useTheme":"../node_modules/@material-ui/core/esm/styles/useTheme.js","../transitions/utils":"../node_modules/@material-ui/core/esm/transitions/utils.js","../utils/useForkRef":"../node_modules/@material-ui/core/esm/utils/useForkRef.js"}],"../node_modules/@material-ui/core/esm/Fade/index.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+Object.defineProperty(exports, "default", {
+  enumerable: true,
+  get: function () {
+    return _Fade.default;
+  }
+});
+
+var _Fade = _interopRequireDefault(require("./Fade"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+},{"./Fade":"../node_modules/@material-ui/core/esm/Fade/Fade.js"}],"../node_modules/@material-ui/core/esm/Backdrop/Backdrop.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -49359,14 +46214,14 @@ var ButtonGroup = React.forwardRef(function ButtonGroup(props, ref) {
 
     return React.cloneElement(child, {
       className: (0, _clsx.default)(buttonClassName, child.props.className),
-      disabled: child.props.disabled || disabled,
       color: child.props.color || color,
+      disabled: child.props.disabled || disabled,
+      disableElevation: child.props.disableElevation || disableElevation,
       disableFocusRipple: disableFocusRipple,
       disableRipple: disableRipple,
       fullWidth: fullWidth,
       size: child.props.size || size,
-      variant: child.props.variant || variant,
-      disableElevation: child.props.disableElevation || disableElevation
+      variant: child.props.variant || variant
     });
   }));
 });
@@ -52192,7 +49047,361 @@ Object.defineProperty(exports, "default", {
 var _ClickAwayListener = _interopRequireDefault(require("./ClickAwayListener"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-},{"./ClickAwayListener":"../node_modules/@material-ui/core/esm/ClickAwayListener/ClickAwayListener.js"}],"../node_modules/@material-ui/core/esm/Container/Container.js":[function(require,module,exports) {
+},{"./ClickAwayListener":"../node_modules/@material-ui/core/esm/ClickAwayListener/ClickAwayListener.js"}],"../node_modules/@material-ui/core/esm/Collapse/Collapse.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = exports.styles = void 0;
+
+var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/esm/extends"));
+
+var _slicedToArray2 = _interopRequireDefault(require("@babel/runtime/helpers/esm/slicedToArray"));
+
+var _objectWithoutProperties2 = _interopRequireDefault(require("@babel/runtime/helpers/esm/objectWithoutProperties"));
+
+var React = _interopRequireWildcard(require("react"));
+
+var _clsx = _interopRequireDefault(require("clsx"));
+
+var _propTypes = _interopRequireDefault(require("prop-types"));
+
+var _reactTransitionGroup = require("react-transition-group");
+
+var _withStyles = _interopRequireDefault(require("../styles/withStyles"));
+
+var _transitions = require("../styles/transitions");
+
+var _utils = require("../transitions/utils");
+
+var _useTheme = _interopRequireDefault(require("../styles/useTheme"));
+
+var _utils2 = require("../utils");
+
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var styles = function styles(theme) {
+  return {
+    /* Styles applied to the container element. */
+    container: {
+      height: 0,
+      overflow: 'hidden',
+      transition: theme.transitions.create('height')
+    },
+
+    /* Styles applied to the container element when the transition has entered. */
+    entered: {
+      height: 'auto',
+      overflow: 'visible'
+    },
+
+    /* Styles applied to the container element when the transition has exited and `collapsedHeight` != 0px. */
+    hidden: {
+      visibility: 'hidden'
+    },
+
+    /* Styles applied to the outer wrapper element. */
+    wrapper: {
+      // Hack to get children with a negative margin to not falsify the height computation.
+      display: 'flex'
+    },
+
+    /* Styles applied to the inner wrapper element. */
+    wrapperInner: {
+      width: '100%'
+    }
+  };
+};
+/**
+ * The Collapse transition is used by the
+ * [Vertical Stepper](/components/steppers/#vertical-stepper) StepContent component.
+ * It uses [react-transition-group](https://github.com/reactjs/react-transition-group) internally.
+ */
+
+
+exports.styles = styles;
+var Collapse = React.forwardRef(function Collapse(props, ref) {
+  var children = props.children,
+      classes = props.classes,
+      className = props.className,
+      _props$collapsedHeigh = props.collapsedHeight,
+      collapsedHeightProp = _props$collapsedHeigh === void 0 ? '0px' : _props$collapsedHeigh,
+      _props$component = props.component,
+      Component = _props$component === void 0 ? 'div' : _props$component,
+      _props$disableStrictM = props.disableStrictModeCompat,
+      disableStrictModeCompat = _props$disableStrictM === void 0 ? false : _props$disableStrictM,
+      inProp = props.in,
+      onEnter = props.onEnter,
+      onEntered = props.onEntered,
+      onEntering = props.onEntering,
+      onExit = props.onExit,
+      onExited = props.onExited,
+      onExiting = props.onExiting,
+      style = props.style,
+      _props$timeout = props.timeout,
+      timeout = _props$timeout === void 0 ? _transitions.duration.standard : _props$timeout,
+      _props$TransitionComp = props.TransitionComponent,
+      TransitionComponent = _props$TransitionComp === void 0 ? _reactTransitionGroup.Transition : _props$TransitionComp,
+      other = (0, _objectWithoutProperties2.default)(props, ["children", "classes", "className", "collapsedHeight", "component", "disableStrictModeCompat", "in", "onEnter", "onEntered", "onEntering", "onExit", "onExited", "onExiting", "style", "timeout", "TransitionComponent"]);
+  var theme = (0, _useTheme.default)();
+  var timer = React.useRef();
+  var wrapperRef = React.useRef(null);
+  var autoTransitionDuration = React.useRef();
+  var collapsedHeight = typeof collapsedHeightProp === 'number' ? "".concat(collapsedHeightProp, "px") : collapsedHeightProp;
+  React.useEffect(function () {
+    return function () {
+      clearTimeout(timer.current);
+    };
+  }, []);
+  var enableStrictModeCompat = theme.unstable_strictMode && !disableStrictModeCompat;
+  var nodeRef = React.useRef(null);
+  var handleRef = (0, _utils2.useForkRef)(ref, enableStrictModeCompat ? nodeRef : undefined);
+
+  var normalizedTransitionCallback = function normalizedTransitionCallback(callback) {
+    return function (nodeOrAppearing, maybeAppearing) {
+      if (callback) {
+        var _ref = enableStrictModeCompat ? [nodeRef.current, nodeOrAppearing] : [nodeOrAppearing, maybeAppearing],
+            _ref2 = (0, _slicedToArray2.default)(_ref, 2),
+            node = _ref2[0],
+            isAppearing = _ref2[1];
+
+        callback(node, isAppearing);
+      }
+    };
+  };
+
+  var handleEnter = normalizedTransitionCallback(function (node, isAppearing) {
+    node.style.height = collapsedHeight;
+
+    if (onEnter) {
+      onEnter(node, isAppearing);
+    }
+  });
+  var handleEntering = normalizedTransitionCallback(function (node, isAppearing) {
+    var wrapperHeight = wrapperRef.current ? wrapperRef.current.clientHeight : 0;
+
+    var _getTransitionProps = (0, _utils.getTransitionProps)({
+      style: style,
+      timeout: timeout
+    }, {
+      mode: 'enter'
+    }),
+        transitionDuration = _getTransitionProps.duration;
+
+    if (timeout === 'auto') {
+      var duration2 = theme.transitions.getAutoHeightDuration(wrapperHeight);
+      node.style.transitionDuration = "".concat(duration2, "ms");
+      autoTransitionDuration.current = duration2;
+    } else {
+      node.style.transitionDuration = typeof transitionDuration === 'string' ? transitionDuration : "".concat(transitionDuration, "ms");
+    }
+
+    node.style.height = "".concat(wrapperHeight, "px");
+
+    if (onEntering) {
+      onEntering(node, isAppearing);
+    }
+  });
+  var handleEntered = normalizedTransitionCallback(function (node, isAppearing) {
+    node.style.height = 'auto';
+
+    if (onEntered) {
+      onEntered(node, isAppearing);
+    }
+  });
+  var handleExit = normalizedTransitionCallback(function (node) {
+    var wrapperHeight = wrapperRef.current ? wrapperRef.current.clientHeight : 0;
+    node.style.height = "".concat(wrapperHeight, "px");
+
+    if (onExit) {
+      onExit(node);
+    }
+  });
+  var handleExited = normalizedTransitionCallback(onExited);
+  var handleExiting = normalizedTransitionCallback(function (node) {
+    var wrapperHeight = wrapperRef.current ? wrapperRef.current.clientHeight : 0;
+
+    var _getTransitionProps2 = (0, _utils.getTransitionProps)({
+      style: style,
+      timeout: timeout
+    }, {
+      mode: 'exit'
+    }),
+        transitionDuration = _getTransitionProps2.duration;
+
+    if (timeout === 'auto') {
+      var duration2 = theme.transitions.getAutoHeightDuration(wrapperHeight);
+      node.style.transitionDuration = "".concat(duration2, "ms");
+      autoTransitionDuration.current = duration2;
+    } else {
+      node.style.transitionDuration = typeof transitionDuration === 'string' ? transitionDuration : "".concat(transitionDuration, "ms");
+    }
+
+    node.style.height = collapsedHeight;
+
+    if (onExiting) {
+      onExiting(node);
+    }
+  });
+
+  var addEndListener = function addEndListener(nodeOrNext, maybeNext) {
+    var next = enableStrictModeCompat ? nodeOrNext : maybeNext;
+
+    if (timeout === 'auto') {
+      timer.current = setTimeout(next, autoTransitionDuration.current || 0);
+    }
+  };
+
+  return /*#__PURE__*/React.createElement(TransitionComponent, (0, _extends2.default)({
+    in: inProp,
+    onEnter: handleEnter,
+    onEntered: handleEntered,
+    onEntering: handleEntering,
+    onExit: handleExit,
+    onExited: handleExited,
+    onExiting: handleExiting,
+    addEndListener: addEndListener,
+    nodeRef: enableStrictModeCompat ? nodeRef : undefined,
+    timeout: timeout === 'auto' ? null : timeout
+  }, other), function (state, childProps) {
+    return /*#__PURE__*/React.createElement(Component, (0, _extends2.default)({
+      className: (0, _clsx.default)(classes.container, className, {
+        'entered': classes.entered,
+        'exited': !inProp && collapsedHeight === '0px' && classes.hidden
+      }[state]),
+      style: (0, _extends2.default)({
+        minHeight: collapsedHeight
+      }, style),
+      ref: handleRef
+    }, childProps), /*#__PURE__*/React.createElement("div", {
+      className: classes.wrapper,
+      ref: wrapperRef
+    }, /*#__PURE__*/React.createElement("div", {
+      className: classes.wrapperInner
+    }, children)));
+  });
+});
+"development" !== "production" ? Collapse.propTypes = {
+  // ----------------------------- Warning --------------------------------
+  // | These PropTypes are generated from the TypeScript type definitions |
+  // |     To update them edit the d.ts file and run "yarn proptypes"     |
+  // ----------------------------------------------------------------------
+
+  /**
+   * The content node to be collapsed.
+   */
+  children: _propTypes.default.node,
+
+  /**
+   * Override or extend the styles applied to the component.
+   * See [CSS API](#css) below for more details.
+   */
+  classes: _propTypes.default.object,
+
+  /**
+   * @ignore
+   */
+  className: _propTypes.default.string,
+
+  /**
+   * The height of the container when collapsed.
+   */
+  collapsedHeight: _propTypes.default.oneOfType([_propTypes.default.number, _propTypes.default.string]),
+
+  /**
+   * The component used for the root node.
+   * Either a string to use a HTML element or a component.
+   */
+  component: _propTypes.default.elementType,
+
+  /**
+   * Enable this prop if you encounter 'Function components cannot be given refs',
+   * use `unstable_createStrictModeTheme`,
+   * and can't forward the ref in the passed `Component`.
+   */
+  disableStrictModeCompat: _propTypes.default.bool,
+
+  /**
+   * If `true`, the component will transition in.
+   */
+  in: _propTypes.default.bool,
+
+  /**
+   * @ignore
+   */
+  onEnter: _propTypes.default.func,
+
+  /**
+   * @ignore
+   */
+  onEntered: _propTypes.default.func,
+
+  /**
+   * @ignore
+   */
+  onEntering: _propTypes.default.func,
+
+  /**
+   * @ignore
+   */
+  onExit: _propTypes.default.func,
+
+  /**
+   * @ignore
+   */
+  onExited: _propTypes.default.func,
+
+  /**
+   * @ignore
+   */
+  onExiting: _propTypes.default.func,
+
+  /**
+   * @ignore
+   */
+  style: _propTypes.default.object,
+
+  /**
+   * The duration for the transition, in milliseconds.
+   * You may specify a single timeout for all transitions, or individually with an object.
+   *
+   * Set to 'auto' to automatically calculate transition time based on height.
+   */
+  timeout: _propTypes.default.oneOfType([_propTypes.default.oneOf(['auto']), _propTypes.default.number, _propTypes.default.shape({
+    appear: _propTypes.default.number,
+    enter: _propTypes.default.number,
+    exit: _propTypes.default.number
+  })])
+} : void 0;
+Collapse.muiSupportAuto = true;
+
+var _default = (0, _withStyles.default)(styles, {
+  name: 'MuiCollapse'
+})(Collapse);
+
+exports.default = _default;
+},{"@babel/runtime/helpers/esm/extends":"../node_modules/@babel/runtime/helpers/esm/extends.js","@babel/runtime/helpers/esm/slicedToArray":"../node_modules/@babel/runtime/helpers/esm/slicedToArray.js","@babel/runtime/helpers/esm/objectWithoutProperties":"../node_modules/@babel/runtime/helpers/esm/objectWithoutProperties.js","react":"../node_modules/react/index.js","clsx":"../node_modules/clsx/dist/clsx.m.js","prop-types":"../node_modules/prop-types/index.js","react-transition-group":"../node_modules/react-transition-group/esm/index.js","../styles/withStyles":"../node_modules/@material-ui/core/esm/styles/withStyles.js","../styles/transitions":"../node_modules/@material-ui/core/esm/styles/transitions.js","../transitions/utils":"../node_modules/@material-ui/core/esm/transitions/utils.js","../styles/useTheme":"../node_modules/@material-ui/core/esm/styles/useTheme.js","../utils":"../node_modules/@material-ui/core/esm/utils/index.js"}],"../node_modules/@material-ui/core/esm/Collapse/index.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+Object.defineProperty(exports, "default", {
+  enumerable: true,
+  get: function () {
+    return _Collapse.default;
+  }
+});
+
+var _Collapse = _interopRequireDefault(require("./Collapse"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+},{"./Collapse":"../node_modules/@material-ui/core/esm/Collapse/Collapse.js"}],"../node_modules/@material-ui/core/esm/Container/Container.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -54766,7 +51975,332 @@ Object.defineProperty(exports, "default", {
 var _Divider = _interopRequireDefault(require("./Divider"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-},{"./Divider":"../node_modules/@material-ui/core/esm/Divider/Divider.js"}],"../node_modules/@material-ui/core/esm/Drawer/Drawer.js":[function(require,module,exports) {
+},{"./Divider":"../node_modules/@material-ui/core/esm/Divider/Divider.js"}],"../node_modules/@material-ui/core/esm/Slide/Slide.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.setTranslateValue = setTranslateValue;
+exports.default = void 0;
+
+var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/esm/extends"));
+
+var _objectWithoutProperties2 = _interopRequireDefault(require("@babel/runtime/helpers/esm/objectWithoutProperties"));
+
+var React = _interopRequireWildcard(require("react"));
+
+var _propTypes = _interopRequireDefault(require("prop-types"));
+
+var ReactDOM = _interopRequireWildcard(require("react-dom"));
+
+var _debounce = _interopRequireDefault(require("../utils/debounce"));
+
+var _reactTransitionGroup = require("react-transition-group");
+
+var _utils = require("@material-ui/utils");
+
+var _useForkRef = _interopRequireDefault(require("../utils/useForkRef"));
+
+var _useTheme = _interopRequireDefault(require("../styles/useTheme"));
+
+var _transitions = require("../styles/transitions");
+
+var _utils2 = require("../transitions/utils");
+
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+// Translate the node so he can't be seen on the screen.
+// Later, we gonna translate back the node to his original location
+// with `none`.`
+function getTranslateValue(direction, node) {
+  var rect = node.getBoundingClientRect();
+  var transform;
+
+  if (node.fakeTransform) {
+    transform = node.fakeTransform;
+  } else {
+    var computedStyle = window.getComputedStyle(node);
+    transform = computedStyle.getPropertyValue('-webkit-transform') || computedStyle.getPropertyValue('transform');
+  }
+
+  var offsetX = 0;
+  var offsetY = 0;
+
+  if (transform && transform !== 'none' && typeof transform === 'string') {
+    var transformValues = transform.split('(')[1].split(')')[0].split(',');
+    offsetX = parseInt(transformValues[4], 10);
+    offsetY = parseInt(transformValues[5], 10);
+  }
+
+  if (direction === 'left') {
+    return "translateX(".concat(window.innerWidth, "px) translateX(-").concat(rect.left - offsetX, "px)");
+  }
+
+  if (direction === 'right') {
+    return "translateX(-".concat(rect.left + rect.width - offsetX, "px)");
+  }
+
+  if (direction === 'up') {
+    return "translateY(".concat(window.innerHeight, "px) translateY(-").concat(rect.top - offsetY, "px)");
+  } // direction === 'down'
+
+
+  return "translateY(-".concat(rect.top + rect.height - offsetY, "px)");
+}
+
+function setTranslateValue(direction, node) {
+  var transform = getTranslateValue(direction, node);
+
+  if (transform) {
+    node.style.webkitTransform = transform;
+    node.style.transform = transform;
+  }
+}
+
+var defaultTimeout = {
+  enter: _transitions.duration.enteringScreen,
+  exit: _transitions.duration.leavingScreen
+};
+/**
+ * The Slide transition is used by the [Drawer](/components/drawers/) component.
+ * It uses [react-transition-group](https://github.com/reactjs/react-transition-group) internally.
+ */
+
+var Slide = React.forwardRef(function Slide(props, ref) {
+  var children = props.children,
+      _props$direction = props.direction,
+      direction = _props$direction === void 0 ? 'down' : _props$direction,
+      inProp = props.in,
+      onEnter = props.onEnter,
+      onEntered = props.onEntered,
+      onEntering = props.onEntering,
+      onExit = props.onExit,
+      onExited = props.onExited,
+      onExiting = props.onExiting,
+      style = props.style,
+      _props$timeout = props.timeout,
+      timeout = _props$timeout === void 0 ? defaultTimeout : _props$timeout,
+      _props$TransitionComp = props.TransitionComponent,
+      TransitionComponent = _props$TransitionComp === void 0 ? _reactTransitionGroup.Transition : _props$TransitionComp,
+      other = (0, _objectWithoutProperties2.default)(props, ["children", "direction", "in", "onEnter", "onEntered", "onEntering", "onExit", "onExited", "onExiting", "style", "timeout", "TransitionComponent"]);
+  var theme = (0, _useTheme.default)();
+  var childrenRef = React.useRef(null);
+  /**
+   * used in cloneElement(children, { ref: handleRef })
+   */
+
+  var handleOwnRef = React.useCallback(function (instance) {
+    // #StrictMode ready
+    childrenRef.current = ReactDOM.findDOMNode(instance);
+  }, []);
+  var handleRefIntermediary = (0, _useForkRef.default)(children.ref, handleOwnRef);
+  var handleRef = (0, _useForkRef.default)(handleRefIntermediary, ref);
+
+  var normalizedTransitionCallback = function normalizedTransitionCallback(callback) {
+    return function (isAppearing) {
+      if (callback) {
+        callback(childrenRef.current, isAppearing);
+      }
+    };
+  };
+
+  var handleEnter = normalizedTransitionCallback(function (node, isAppearing) {
+    setTranslateValue(direction, node);
+    (0, _utils2.reflow)(node);
+
+    if (onEnter) {
+      onEnter(node, isAppearing);
+    }
+  });
+  var handleEntering = normalizedTransitionCallback(function (node, isAppearing) {
+    var transitionProps = (0, _utils2.getTransitionProps)({
+      timeout: timeout,
+      style: style
+    }, {
+      mode: 'enter'
+    });
+    node.style.webkitTransition = theme.transitions.create('-webkit-transform', (0, _extends2.default)((0, _extends2.default)({}, transitionProps), {}, {
+      easing: theme.transitions.easing.easeOut
+    }));
+    node.style.transition = theme.transitions.create('transform', (0, _extends2.default)((0, _extends2.default)({}, transitionProps), {}, {
+      easing: theme.transitions.easing.easeOut
+    }));
+    node.style.webkitTransform = 'none';
+    node.style.transform = 'none';
+
+    if (onEntering) {
+      onEntering(node, isAppearing);
+    }
+  });
+  var handleEntered = normalizedTransitionCallback(onEntered);
+  var handleExiting = normalizedTransitionCallback(onExiting);
+  var handleExit = normalizedTransitionCallback(function (node) {
+    var transitionProps = (0, _utils2.getTransitionProps)({
+      timeout: timeout,
+      style: style
+    }, {
+      mode: 'exit'
+    });
+    node.style.webkitTransition = theme.transitions.create('-webkit-transform', (0, _extends2.default)((0, _extends2.default)({}, transitionProps), {}, {
+      easing: theme.transitions.easing.sharp
+    }));
+    node.style.transition = theme.transitions.create('transform', (0, _extends2.default)((0, _extends2.default)({}, transitionProps), {}, {
+      easing: theme.transitions.easing.sharp
+    }));
+    setTranslateValue(direction, node);
+
+    if (onExit) {
+      onExit(node);
+    }
+  });
+  var handleExited = normalizedTransitionCallback(function (node) {
+    // No need for transitions when the component is hidden
+    node.style.webkitTransition = '';
+    node.style.transition = '';
+
+    if (onExited) {
+      onExited(node);
+    }
+  });
+  var updatePosition = React.useCallback(function () {
+    if (childrenRef.current) {
+      setTranslateValue(direction, childrenRef.current);
+    }
+  }, [direction]);
+  React.useEffect(function () {
+    // Skip configuration where the position is screen size invariant.
+    if (inProp || direction === 'down' || direction === 'right') {
+      return undefined;
+    }
+
+    var handleResize = (0, _debounce.default)(function () {
+      if (childrenRef.current) {
+        setTranslateValue(direction, childrenRef.current);
+      }
+    });
+    window.addEventListener('resize', handleResize);
+    return function () {
+      handleResize.clear();
+      window.removeEventListener('resize', handleResize);
+    };
+  }, [direction, inProp]);
+  React.useEffect(function () {
+    if (!inProp) {
+      // We need to update the position of the drawer when the direction change and
+      // when it's hidden.
+      updatePosition();
+    }
+  }, [inProp, updatePosition]);
+  return /*#__PURE__*/React.createElement(TransitionComponent, (0, _extends2.default)({
+    nodeRef: childrenRef,
+    onEnter: handleEnter,
+    onEntered: handleEntered,
+    onEntering: handleEntering,
+    onExit: handleExit,
+    onExited: handleExited,
+    onExiting: handleExiting,
+    appear: true,
+    in: inProp,
+    timeout: timeout
+  }, other), function (state, childProps) {
+    return React.cloneElement(children, (0, _extends2.default)({
+      ref: handleRef,
+      style: (0, _extends2.default)((0, _extends2.default)({
+        visibility: state === 'exited' && !inProp ? 'hidden' : undefined
+      }, style), children.props.style)
+    }, childProps));
+  });
+});
+"development" !== "production" ? Slide.propTypes = {
+  // ----------------------------- Warning --------------------------------
+  // | These PropTypes are generated from the TypeScript type definitions |
+  // |     To update them edit the d.ts file and run "yarn proptypes"     |
+  // ----------------------------------------------------------------------
+
+  /**
+   * A single child content element.
+   */
+  children: _utils.elementAcceptingRef,
+
+  /**
+   * Direction the child node will enter from.
+   */
+  direction: _propTypes.default.oneOf(['down', 'left', 'right', 'up']),
+
+  /**
+   * If `true`, show the component; triggers the enter or exit animation.
+   */
+  in: _propTypes.default.bool,
+
+  /**
+   * @ignore
+   */
+  onEnter: _propTypes.default.func,
+
+  /**
+   * @ignore
+   */
+  onEntered: _propTypes.default.func,
+
+  /**
+   * @ignore
+   */
+  onEntering: _propTypes.default.func,
+
+  /**
+   * @ignore
+   */
+  onExit: _propTypes.default.func,
+
+  /**
+   * @ignore
+   */
+  onExited: _propTypes.default.func,
+
+  /**
+   * @ignore
+   */
+  onExiting: _propTypes.default.func,
+
+  /**
+   * @ignore
+   */
+  style: _propTypes.default.object,
+
+  /**
+   * The duration for the transition, in milliseconds.
+   * You may specify a single timeout for all transitions, or individually with an object.
+   */
+  timeout: _propTypes.default.oneOfType([_propTypes.default.number, _propTypes.default.shape({
+    appear: _propTypes.default.number,
+    enter: _propTypes.default.number,
+    exit: _propTypes.default.number
+  })])
+} : void 0;
+var _default = Slide;
+exports.default = _default;
+},{"@babel/runtime/helpers/esm/extends":"../node_modules/@babel/runtime/helpers/esm/extends.js","@babel/runtime/helpers/esm/objectWithoutProperties":"../node_modules/@babel/runtime/helpers/esm/objectWithoutProperties.js","react":"../node_modules/react/index.js","prop-types":"../node_modules/prop-types/index.js","react-dom":"../node_modules/react-dom/index.js","../utils/debounce":"../node_modules/@material-ui/core/esm/utils/debounce.js","react-transition-group":"../node_modules/react-transition-group/esm/index.js","@material-ui/utils":"../node_modules/@material-ui/utils/esm/index.js","../utils/useForkRef":"../node_modules/@material-ui/core/esm/utils/useForkRef.js","../styles/useTheme":"../node_modules/@material-ui/core/esm/styles/useTheme.js","../styles/transitions":"../node_modules/@material-ui/core/esm/styles/transitions.js","../transitions/utils":"../node_modules/@material-ui/core/esm/transitions/utils.js"}],"../node_modules/@material-ui/core/esm/Slide/index.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+Object.defineProperty(exports, "default", {
+  enumerable: true,
+  get: function () {
+    return _Slide.default;
+  }
+});
+
+var _Slide = _interopRequireDefault(require("./Slide"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+},{"./Slide":"../node_modules/@material-ui/core/esm/Slide/Slide.js"}],"../node_modules/@material-ui/core/esm/Drawer/Drawer.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -56553,6 +54087,7 @@ var styles = function styles(theme) {
     /* Styles applied to the `input` element. */
     input: {
       font: 'inherit',
+      letterSpacing: 'inherit',
       color: 'currentColor',
       padding: "".concat(8 - 2, "px 0 ").concat(8 - 1, "px"),
       border: 0,
@@ -59520,7 +57055,299 @@ Object.defineProperty(exports, "default", {
 var _GridListTileBar = _interopRequireDefault(require("./GridListTileBar"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-},{"./GridListTileBar":"../node_modules/@material-ui/core/esm/GridListTileBar/GridListTileBar.js"}],"../node_modules/@material-ui/core/esm/useMediaQuery/useMediaQuery.js":[function(require,module,exports) {
+},{"./GridListTileBar":"../node_modules/@material-ui/core/esm/GridListTileBar/GridListTileBar.js"}],"../node_modules/@material-ui/core/esm/Grow/Grow.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/esm/extends"));
+
+var _slicedToArray2 = _interopRequireDefault(require("@babel/runtime/helpers/esm/slicedToArray"));
+
+var _objectWithoutProperties2 = _interopRequireDefault(require("@babel/runtime/helpers/esm/objectWithoutProperties"));
+
+var React = _interopRequireWildcard(require("react"));
+
+var _propTypes = _interopRequireDefault(require("prop-types"));
+
+var _reactTransitionGroup = require("react-transition-group");
+
+var _useTheme = _interopRequireDefault(require("../styles/useTheme"));
+
+var _utils = require("../transitions/utils");
+
+var _useForkRef = _interopRequireDefault(require("../utils/useForkRef"));
+
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function getScale(value) {
+  return "scale(".concat(value, ", ").concat(Math.pow(value, 2), ")");
+}
+
+var styles = {
+  entering: {
+    opacity: 1,
+    transform: getScale(1)
+  },
+  entered: {
+    opacity: 1,
+    transform: 'none'
+  }
+};
+/**
+ * The Grow transition is used by the [Tooltip](/components/tooltips/) and
+ * [Popover](/components/popover/) components.
+ * It uses [react-transition-group](https://github.com/reactjs/react-transition-group) internally.
+ */
+
+var Grow = React.forwardRef(function Grow(props, ref) {
+  var children = props.children,
+      _props$disableStrictM = props.disableStrictModeCompat,
+      disableStrictModeCompat = _props$disableStrictM === void 0 ? false : _props$disableStrictM,
+      inProp = props.in,
+      onEnter = props.onEnter,
+      onEntered = props.onEntered,
+      onEntering = props.onEntering,
+      onExit = props.onExit,
+      onExited = props.onExited,
+      onExiting = props.onExiting,
+      style = props.style,
+      _props$timeout = props.timeout,
+      timeout = _props$timeout === void 0 ? 'auto' : _props$timeout,
+      _props$TransitionComp = props.TransitionComponent,
+      TransitionComponent = _props$TransitionComp === void 0 ? _reactTransitionGroup.Transition : _props$TransitionComp,
+      other = (0, _objectWithoutProperties2.default)(props, ["children", "disableStrictModeCompat", "in", "onEnter", "onEntered", "onEntering", "onExit", "onExited", "onExiting", "style", "timeout", "TransitionComponent"]);
+  var timer = React.useRef();
+  var autoTimeout = React.useRef();
+  var theme = (0, _useTheme.default)();
+  var enableStrictModeCompat = theme.unstable_strictMode && !disableStrictModeCompat;
+  var nodeRef = React.useRef(null);
+  var foreignRef = (0, _useForkRef.default)(children.ref, ref);
+  var handleRef = (0, _useForkRef.default)(enableStrictModeCompat ? nodeRef : undefined, foreignRef);
+
+  var normalizedTransitionCallback = function normalizedTransitionCallback(callback) {
+    return function (nodeOrAppearing, maybeAppearing) {
+      if (callback) {
+        var _ref = enableStrictModeCompat ? [nodeRef.current, nodeOrAppearing] : [nodeOrAppearing, maybeAppearing],
+            _ref2 = (0, _slicedToArray2.default)(_ref, 2),
+            node = _ref2[0],
+            isAppearing = _ref2[1];
+
+        var isExitCallback = isAppearing === undefined;
+
+        if (isExitCallback) {
+          callback(node);
+        } else {
+          callback(node, isAppearing);
+        }
+      }
+    };
+  };
+
+  var handleEntering = normalizedTransitionCallback(onEntering);
+  var handleEnter = normalizedTransitionCallback(function (node, isAppearing) {
+    (0, _utils.reflow)(node); // So the animation always start from the start.
+
+    var _getTransitionProps = (0, _utils.getTransitionProps)({
+      style: style,
+      timeout: timeout
+    }, {
+      mode: 'enter'
+    }),
+        transitionDuration = _getTransitionProps.duration,
+        delay = _getTransitionProps.delay;
+
+    var duration;
+
+    if (timeout === 'auto') {
+      duration = theme.transitions.getAutoHeightDuration(node.clientHeight);
+      autoTimeout.current = duration;
+    } else {
+      duration = transitionDuration;
+    }
+
+    node.style.transition = [theme.transitions.create('opacity', {
+      duration: duration,
+      delay: delay
+    }), theme.transitions.create('transform', {
+      duration: duration * 0.666,
+      delay: delay
+    })].join(',');
+
+    if (onEnter) {
+      onEnter(node, isAppearing);
+    }
+  });
+  var handleEntered = normalizedTransitionCallback(onEntered);
+  var handleExiting = normalizedTransitionCallback(onExiting);
+  var handleExit = normalizedTransitionCallback(function (node) {
+    var _getTransitionProps2 = (0, _utils.getTransitionProps)({
+      style: style,
+      timeout: timeout
+    }, {
+      mode: 'exit'
+    }),
+        transitionDuration = _getTransitionProps2.duration,
+        delay = _getTransitionProps2.delay;
+
+    var duration;
+
+    if (timeout === 'auto') {
+      duration = theme.transitions.getAutoHeightDuration(node.clientHeight);
+      autoTimeout.current = duration;
+    } else {
+      duration = transitionDuration;
+    }
+
+    node.style.transition = [theme.transitions.create('opacity', {
+      duration: duration,
+      delay: delay
+    }), theme.transitions.create('transform', {
+      duration: duration * 0.666,
+      delay: delay || duration * 0.333
+    })].join(',');
+    node.style.opacity = '0';
+    node.style.transform = getScale(0.75);
+
+    if (onExit) {
+      onExit(node);
+    }
+  });
+  var handleExited = normalizedTransitionCallback(onExited);
+
+  var addEndListener = function addEndListener(nodeOrNext, maybeNext) {
+    var next = enableStrictModeCompat ? nodeOrNext : maybeNext;
+
+    if (timeout === 'auto') {
+      timer.current = setTimeout(next, autoTimeout.current || 0);
+    }
+  };
+
+  React.useEffect(function () {
+    return function () {
+      clearTimeout(timer.current);
+    };
+  }, []);
+  return /*#__PURE__*/React.createElement(TransitionComponent, (0, _extends2.default)({
+    appear: true,
+    in: inProp,
+    nodeRef: enableStrictModeCompat ? nodeRef : undefined,
+    onEnter: handleEnter,
+    onEntered: handleEntered,
+    onEntering: handleEntering,
+    onExit: handleExit,
+    onExited: handleExited,
+    onExiting: handleExiting,
+    addEndListener: addEndListener,
+    timeout: timeout === 'auto' ? null : timeout
+  }, other), function (state, childProps) {
+    return React.cloneElement(children, (0, _extends2.default)({
+      style: (0, _extends2.default)((0, _extends2.default)((0, _extends2.default)({
+        opacity: 0,
+        transform: getScale(0.75),
+        visibility: state === 'exited' && !inProp ? 'hidden' : undefined
+      }, styles[state]), style), children.props.style),
+      ref: handleRef
+    }, childProps));
+  });
+});
+"development" !== "production" ? Grow.propTypes = {
+  // ----------------------------- Warning --------------------------------
+  // | These PropTypes are generated from the TypeScript type definitions |
+  // |     To update them edit the d.ts file and run "yarn proptypes"     |
+  // ----------------------------------------------------------------------
+
+  /**
+   * A single child content element.
+   */
+  children: _propTypes.default.element,
+
+  /**
+   * Enable this prop if you encounter 'Function components cannot be given refs',
+   * use `unstable_createStrictModeTheme`,
+   * and can't forward the ref in the child component.
+   */
+  disableStrictModeCompat: _propTypes.default.bool,
+
+  /**
+   * If `true`, show the component; triggers the enter or exit animation.
+   */
+  in: _propTypes.default.bool,
+
+  /**
+   * @ignore
+   */
+  onEnter: _propTypes.default.func,
+
+  /**
+   * @ignore
+   */
+  onEntered: _propTypes.default.func,
+
+  /**
+   * @ignore
+   */
+  onEntering: _propTypes.default.func,
+
+  /**
+   * @ignore
+   */
+  onExit: _propTypes.default.func,
+
+  /**
+   * @ignore
+   */
+  onExited: _propTypes.default.func,
+
+  /**
+   * @ignore
+   */
+  onExiting: _propTypes.default.func,
+
+  /**
+   * @ignore
+   */
+  style: _propTypes.default.object,
+
+  /**
+   * The duration for the transition, in milliseconds.
+   * You may specify a single timeout for all transitions, or individually with an object.
+   *
+   * Set to 'auto' to automatically calculate transition time based on height.
+   */
+  timeout: _propTypes.default.oneOfType([_propTypes.default.oneOf(['auto']), _propTypes.default.number, _propTypes.default.shape({
+    appear: _propTypes.default.number,
+    enter: _propTypes.default.number,
+    exit: _propTypes.default.number
+  })])
+} : void 0;
+Grow.muiSupportAuto = true;
+var _default = Grow;
+exports.default = _default;
+},{"@babel/runtime/helpers/esm/extends":"../node_modules/@babel/runtime/helpers/esm/extends.js","@babel/runtime/helpers/esm/slicedToArray":"../node_modules/@babel/runtime/helpers/esm/slicedToArray.js","@babel/runtime/helpers/esm/objectWithoutProperties":"../node_modules/@babel/runtime/helpers/esm/objectWithoutProperties.js","react":"../node_modules/react/index.js","prop-types":"../node_modules/prop-types/index.js","react-transition-group":"../node_modules/react-transition-group/esm/index.js","../styles/useTheme":"../node_modules/@material-ui/core/esm/styles/useTheme.js","../transitions/utils":"../node_modules/@material-ui/core/esm/transitions/utils.js","../utils/useForkRef":"../node_modules/@material-ui/core/esm/utils/useForkRef.js"}],"../node_modules/@material-ui/core/esm/Grow/index.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+Object.defineProperty(exports, "default", {
+  enumerable: true,
+  get: function () {
+    return _Grow.default;
+  }
+});
+
+var _Grow = _interopRequireDefault(require("./Grow"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+},{"./Grow":"../node_modules/@material-ui/core/esm/Grow/Grow.js"}],"../node_modules/@material-ui/core/esm/useMediaQuery/useMediaQuery.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -68524,7 +66351,8 @@ var Popper = React.forwardRef(function Popper(props, ref) {
       position: 'fixed',
       // Fix Popper.js display issue
       top: 0,
-      left: 0
+      left: 0,
+      display: !open && keepMounted && !transition ? 'none' : null
     }, style)
   }), typeof children === 'function' ? children(childProps) : children));
 });
@@ -69519,6 +67347,8 @@ var _propTypes = _interopRequireDefault(require("prop-types"));
 
 var _clsx = _interopRequireDefault(require("clsx"));
 
+var _ownerDocument = _interopRequireDefault(require("../utils/ownerDocument"));
+
 var _capitalize = _interopRequireDefault(require("../utils/capitalize"));
 
 var _utils = require("@material-ui/utils");
@@ -69629,6 +67459,26 @@ var SelectInput = React.forwardRef(function SelectInput(props, ref) {
       displayNode.focus();
     }
   }, [autoFocus, displayNode]);
+  React.useEffect(function () {
+    if (displayNode) {
+      var label = (0, _ownerDocument.default)(displayNode).querySelector("#".concat(labelId));
+
+      if (label) {
+        var handler = function handler() {
+          if (getSelection().isCollapsed) {
+            displayNode.focus();
+          }
+        };
+
+        label.addEventListener('click', handler);
+        return function () {
+          label.removeEventListener('click', handler);
+        };
+      }
+    }
+
+    return undefined;
+  }, [labelId, displayNode]);
 
   var update = function update(open, event) {
     if (open) {
@@ -70069,7 +67919,7 @@ var SelectInput = React.forwardRef(function SelectInput(props, ref) {
 } : void 0;
 var _default = SelectInput;
 exports.default = _default;
-},{"@babel/runtime/helpers/esm/extends":"../node_modules/@babel/runtime/helpers/esm/extends.js","@babel/runtime/helpers/esm/toConsumableArray":"../node_modules/@babel/runtime/helpers/esm/toConsumableArray.js","@babel/runtime/helpers/esm/slicedToArray":"../node_modules/@babel/runtime/helpers/esm/slicedToArray.js","@babel/runtime/helpers/esm/objectWithoutProperties":"../node_modules/@babel/runtime/helpers/esm/objectWithoutProperties.js","@babel/runtime/helpers/esm/typeof":"../node_modules/@babel/runtime/helpers/esm/typeof.js","react":"../node_modules/react/index.js","react-is":"../node_modules/react-is/index.js","prop-types":"../node_modules/prop-types/index.js","clsx":"../node_modules/clsx/dist/clsx.m.js","../utils/capitalize":"../node_modules/@material-ui/core/esm/utils/capitalize.js","@material-ui/utils":"../node_modules/@material-ui/utils/esm/index.js","../Menu/Menu":"../node_modules/@material-ui/core/esm/Menu/Menu.js","../InputBase/utils":"../node_modules/@material-ui/core/esm/InputBase/utils.js","../utils/useForkRef":"../node_modules/@material-ui/core/esm/utils/useForkRef.js","../utils/useControlled":"../node_modules/@material-ui/core/esm/utils/useControlled.js"}],"../node_modules/@material-ui/core/esm/Select/Select.js":[function(require,module,exports) {
+},{"@babel/runtime/helpers/esm/extends":"../node_modules/@babel/runtime/helpers/esm/extends.js","@babel/runtime/helpers/esm/toConsumableArray":"../node_modules/@babel/runtime/helpers/esm/toConsumableArray.js","@babel/runtime/helpers/esm/slicedToArray":"../node_modules/@babel/runtime/helpers/esm/slicedToArray.js","@babel/runtime/helpers/esm/objectWithoutProperties":"../node_modules/@babel/runtime/helpers/esm/objectWithoutProperties.js","@babel/runtime/helpers/esm/typeof":"../node_modules/@babel/runtime/helpers/esm/typeof.js","react":"../node_modules/react/index.js","react-is":"../node_modules/react-is/index.js","prop-types":"../node_modules/prop-types/index.js","clsx":"../node_modules/clsx/dist/clsx.m.js","../utils/ownerDocument":"../node_modules/@material-ui/core/esm/utils/ownerDocument.js","../utils/capitalize":"../node_modules/@material-ui/core/esm/utils/capitalize.js","@material-ui/utils":"../node_modules/@material-ui/utils/esm/index.js","../Menu/Menu":"../node_modules/@material-ui/core/esm/Menu/Menu.js","../InputBase/utils":"../node_modules/@material-ui/core/esm/InputBase/utils.js","../utils/useForkRef":"../node_modules/@material-ui/core/esm/utils/useForkRef.js","../utils/useControlled":"../node_modules/@material-ui/core/esm/utils/useControlled.js"}],"../node_modules/@material-ui/core/esm/Select/Select.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -70846,7 +68696,10 @@ var styles = function styles(theme) {
     focusVisible: {},
 
     /* Styles applied to the thumb label element. */
-    valueLabel: {},
+    valueLabel: {
+      // IE 11 centering bug, to remove from the customization demos once no longer supported
+      left: 'calc(-50% - 4px)'
+    },
 
     /* Styles applied to the mark element. */
     mark: {
@@ -74697,21 +72550,33 @@ var Tab = React.forwardRef(function Tab(props, ref) {
       label = props.label,
       onChange = props.onChange,
       onClick = props.onClick,
+      onFocus = props.onFocus,
       selected = props.selected,
+      selectionFollowsFocus = props.selectionFollowsFocus,
       _props$textColor = props.textColor,
       textColor = _props$textColor === void 0 ? 'inherit' : _props$textColor,
       value = props.value,
       _props$wrapped = props.wrapped,
       wrapped = _props$wrapped === void 0 ? false : _props$wrapped,
-      other = (0, _objectWithoutProperties2.default)(props, ["classes", "className", "disabled", "disableFocusRipple", "fullWidth", "icon", "indicator", "label", "onChange", "onClick", "selected", "textColor", "value", "wrapped"]);
+      other = (0, _objectWithoutProperties2.default)(props, ["classes", "className", "disabled", "disableFocusRipple", "fullWidth", "icon", "indicator", "label", "onChange", "onClick", "onFocus", "selected", "selectionFollowsFocus", "textColor", "value", "wrapped"]);
 
-  var handleChange = function handleChange(event) {
+  var handleClick = function handleClick(event) {
     if (onChange) {
       onChange(event, value);
     }
 
     if (onClick) {
       onClick(event);
+    }
+  };
+
+  var handleFocus = function handleFocus(event) {
+    if (selectionFollowsFocus && !selected && onChange) {
+      onChange(event, value);
+    }
+
+    if (onFocus) {
+      onFocus(event);
     }
   };
 
@@ -74722,7 +72587,8 @@ var Tab = React.forwardRef(function Tab(props, ref) {
     role: "tab",
     "aria-selected": selected,
     disabled: disabled,
-    onClick: handleChange,
+    onClick: handleClick,
+    onFocus: handleFocus,
     tabIndex: selected ? 0 : -1
   }, other), /*#__PURE__*/React.createElement("span", {
     className: classes.wrapper
@@ -74797,7 +72663,17 @@ var Tab = React.forwardRef(function Tab(props, ref) {
   /**
    * @ignore
    */
+  onFocus: _propTypes.default.func,
+
+  /**
+   * @ignore
+   */
   selected: _propTypes.default.bool,
+
+  /**
+   * @ignore
+   */
+  selectionFollowsFocus: _propTypes.default.bool,
 
   /**
    * @ignore
@@ -76846,7 +74722,7 @@ var styles = {
 };
 /**
  * @ignore - internal component.
- * The component is originates from https://github.com/STORIS/react-scrollbar-size.
+ * The component originates from https://github.com/STORIS/react-scrollbar-size.
  * It has been moved into the core in order to minimize the bundle size.
  */
 
@@ -77246,7 +75122,9 @@ var styles = function styles(theme) {
 
 exports.styles = styles;
 var Tabs = React.forwardRef(function Tabs(props, ref) {
-  var action = props.action,
+  var ariaLabel = props['aria-label'],
+      ariaLabelledBy = props['aria-labelledby'],
+      action = props.action,
       _props$centered = props.centered,
       centered = _props$centered === void 0 ? false : _props$centered,
       childrenProp = props.children,
@@ -77263,6 +75141,7 @@ var Tabs = React.forwardRef(function Tabs(props, ref) {
       ScrollButtonComponent = _props$ScrollButtonCo === void 0 ? _TabScrollButton.default : _props$ScrollButtonCo,
       _props$scrollButtons = props.scrollButtons,
       scrollButtons = _props$scrollButtons === void 0 ? 'auto' : _props$scrollButtons,
+      selectionFollowsFocus = props.selectionFollowsFocus,
       _props$TabIndicatorPr = props.TabIndicatorProps,
       TabIndicatorProps = _props$TabIndicatorPr === void 0 ? {} : _props$TabIndicatorPr,
       TabScrollButtonProps = props.TabScrollButtonProps,
@@ -77271,7 +75150,7 @@ var Tabs = React.forwardRef(function Tabs(props, ref) {
       value = props.value,
       _props$variant = props.variant,
       variant = _props$variant === void 0 ? 'standard' : _props$variant,
-      other = (0, _objectWithoutProperties2.default)(props, ["action", "centered", "children", "classes", "className", "component", "indicatorColor", "onChange", "orientation", "ScrollButtonComponent", "scrollButtons", "TabIndicatorProps", "TabScrollButtonProps", "textColor", "value", "variant"]);
+      other = (0, _objectWithoutProperties2.default)(props, ["aria-label", "aria-labelledby", "action", "centered", "children", "classes", "className", "component", "indicatorColor", "onChange", "orientation", "ScrollButtonComponent", "scrollButtons", "selectionFollowsFocus", "TabIndicatorProps", "TabScrollButtonProps", "textColor", "value", "variant"]);
   var theme = (0, _useTheme.default)();
   var scrollable = variant === 'scrollable';
   var isRtl = theme.direction === 'rtl';
@@ -77560,6 +75439,7 @@ var Tabs = React.forwardRef(function Tabs(props, ref) {
       fullWidth: variant === 'fullWidth',
       indicator: selected && !mounted && indicator,
       selected: selected,
+      selectionFollowsFocus: selectionFollowsFocus,
       onChange: onChange,
       textColor: textColor,
       value: childValue
@@ -77624,6 +75504,8 @@ var Tabs = React.forwardRef(function Tabs(props, ref) {
     ref: tabsRef,
     onScroll: handleTabsScroll
   }, /*#__PURE__*/React.createElement("div", {
+    "aria-label": ariaLabel,
+    "aria-labelledby": ariaLabelledBy,
     className: (0, _clsx.default)(classes.flexContainer, vertical && classes.flexContainerVertical, centered && !scrollable && classes.centered),
     onKeyDown: handleKeyDown,
     ref: tabListRef,
@@ -77640,6 +75522,16 @@ var Tabs = React.forwardRef(function Tabs(props, ref) {
    * that can be triggered programmatically.
    */
   action: _utils.refType,
+
+  /**
+   * The label for the Tabs as a string.
+   */
+  'aria-label': _propTypes.default.string,
+
+  /**
+   * An id or list of ids separated by a space that label the Tabs.
+   */
+  'aria-labelledby': _propTypes.default.string,
 
   /**
    * If `true`, the tabs will be centered.
@@ -77701,6 +75593,12 @@ var Tabs = React.forwardRef(function Tabs(props, ref) {
    * - `off` will never present them.
    */
   scrollButtons: _propTypes.default.oneOf(['auto', 'desktop', 'on', 'off']),
+
+  /**
+   * If `true` the selected tab changes on focus. Otherwise it only
+   * changes on activation.
+   */
+  selectionFollowsFocus: _propTypes.default.bool,
 
   /**
    * Props applied to the tab indicator element.
@@ -78240,7 +76138,7 @@ function arrowGenerator() {
     '&[x-placement*="bottom"] $arrow': {
       top: 0,
       left: 0,
-      marginTop: '-0.95em',
+      marginTop: '-1em',
       marginLeft: 4,
       marginRight: 4,
       width: '2em',
@@ -78253,7 +76151,7 @@ function arrowGenerator() {
     '&[x-placement*="top"] $arrow': {
       bottom: 0,
       left: 0,
-      marginBottom: '-0.95em',
+      marginBottom: '-1em',
       marginLeft: 4,
       marginRight: 4,
       width: '2em',
@@ -78265,7 +76163,7 @@ function arrowGenerator() {
     },
     '&[x-placement*="right"] $arrow': {
       left: 0,
-      marginLeft: '-0.95em',
+      marginLeft: '-1em',
       marginTop: 4,
       marginBottom: 4,
       height: '2em',
@@ -78277,7 +76175,7 @@ function arrowGenerator() {
     },
     '&[x-placement*="left"] $arrow': {
       right: 0,
-      marginRight: '-0.95em',
+      marginRight: '-1em',
       marginTop: 4,
       marginBottom: 4,
       height: '2em',
@@ -79040,7 +76938,236 @@ Object.defineProperty(exports, "default", {
 var _withMobileDialog = _interopRequireDefault(require("./withMobileDialog"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-},{"./withMobileDialog":"../node_modules/@material-ui/core/esm/withMobileDialog/withMobileDialog.js"}],"../node_modules/@material-ui/core/esm/index.js":[function(require,module,exports) {
+},{"./withMobileDialog":"../node_modules/@material-ui/core/esm/withMobileDialog/withMobileDialog.js"}],"../node_modules/@material-ui/core/esm/Zoom/Zoom.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/esm/extends"));
+
+var _slicedToArray2 = _interopRequireDefault(require("@babel/runtime/helpers/esm/slicedToArray"));
+
+var _objectWithoutProperties2 = _interopRequireDefault(require("@babel/runtime/helpers/esm/objectWithoutProperties"));
+
+var React = _interopRequireWildcard(require("react"));
+
+var _propTypes = _interopRequireDefault(require("prop-types"));
+
+var _reactTransitionGroup = require("react-transition-group");
+
+var _transitions = require("../styles/transitions");
+
+var _useTheme = _interopRequireDefault(require("../styles/useTheme"));
+
+var _utils = require("../transitions/utils");
+
+var _useForkRef = _interopRequireDefault(require("../utils/useForkRef"));
+
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var styles = {
+  entering: {
+    transform: 'none'
+  },
+  entered: {
+    transform: 'none'
+  }
+};
+var defaultTimeout = {
+  enter: _transitions.duration.enteringScreen,
+  exit: _transitions.duration.leavingScreen
+};
+/**
+ * The Zoom transition can be used for the floating variant of the
+ * [Button](/components/buttons/#floating-action-buttons) component.
+ * It uses [react-transition-group](https://github.com/reactjs/react-transition-group) internally.
+ */
+
+var Zoom = React.forwardRef(function Zoom(props, ref) {
+  var children = props.children,
+      _props$disableStrictM = props.disableStrictModeCompat,
+      disableStrictModeCompat = _props$disableStrictM === void 0 ? false : _props$disableStrictM,
+      inProp = props.in,
+      onEnter = props.onEnter,
+      onEntered = props.onEntered,
+      onEntering = props.onEntering,
+      onExit = props.onExit,
+      onExited = props.onExited,
+      onExiting = props.onExiting,
+      style = props.style,
+      _props$timeout = props.timeout,
+      timeout = _props$timeout === void 0 ? defaultTimeout : _props$timeout,
+      _props$TransitionComp = props.TransitionComponent,
+      TransitionComponent = _props$TransitionComp === void 0 ? _reactTransitionGroup.Transition : _props$TransitionComp,
+      other = (0, _objectWithoutProperties2.default)(props, ["children", "disableStrictModeCompat", "in", "onEnter", "onEntered", "onEntering", "onExit", "onExited", "onExiting", "style", "timeout", "TransitionComponent"]);
+  var theme = (0, _useTheme.default)();
+  var enableStrictModeCompat = theme.unstable_strictMode && !disableStrictModeCompat;
+  var nodeRef = React.useRef(null);
+  var foreignRef = (0, _useForkRef.default)(children.ref, ref);
+  var handleRef = (0, _useForkRef.default)(enableStrictModeCompat ? nodeRef : undefined, foreignRef);
+
+  var normalizedTransitionCallback = function normalizedTransitionCallback(callback) {
+    return function (nodeOrAppearing, maybeAppearing) {
+      if (callback) {
+        var _ref = enableStrictModeCompat ? [nodeRef.current, nodeOrAppearing] : [nodeOrAppearing, maybeAppearing],
+            _ref2 = (0, _slicedToArray2.default)(_ref, 2),
+            node = _ref2[0],
+            isAppearing = _ref2[1];
+
+        callback(node, isAppearing);
+      }
+    };
+  };
+
+  var handleEntering = normalizedTransitionCallback(onEntering);
+  var handleEnter = normalizedTransitionCallback(function (node, isAppearing) {
+    (0, _utils.reflow)(node); // So the animation always start from the start.
+
+    var transitionProps = (0, _utils.getTransitionProps)({
+      style: style,
+      timeout: timeout
+    }, {
+      mode: 'enter'
+    });
+    node.style.webkitTransition = theme.transitions.create('transform', transitionProps);
+    node.style.transition = theme.transitions.create('transform', transitionProps);
+
+    if (onEnter) {
+      onEnter(node, isAppearing);
+    }
+  });
+  var handleEntered = normalizedTransitionCallback(onEntered);
+  var handleExiting = normalizedTransitionCallback(onExiting);
+  var handleExit = normalizedTransitionCallback(function (node) {
+    var transitionProps = (0, _utils.getTransitionProps)({
+      style: style,
+      timeout: timeout
+    }, {
+      mode: 'exit'
+    });
+    node.style.webkitTransition = theme.transitions.create('transform', transitionProps);
+    node.style.transition = theme.transitions.create('transform', transitionProps);
+
+    if (onExit) {
+      onExit(node);
+    }
+  });
+  var handleExited = normalizedTransitionCallback(onExited);
+  return /*#__PURE__*/React.createElement(TransitionComponent, (0, _extends2.default)({
+    appear: true,
+    in: inProp,
+    nodeRef: enableStrictModeCompat ? nodeRef : undefined,
+    onEnter: handleEnter,
+    onEntered: handleEntered,
+    onEntering: handleEntering,
+    onExit: handleExit,
+    onExited: handleExited,
+    onExiting: handleExiting,
+    timeout: timeout
+  }, other), function (state, childProps) {
+    return React.cloneElement(children, (0, _extends2.default)({
+      style: (0, _extends2.default)((0, _extends2.default)((0, _extends2.default)({
+        transform: 'scale(0)',
+        visibility: state === 'exited' && !inProp ? 'hidden' : undefined
+      }, styles[state]), style), children.props.style),
+      ref: handleRef
+    }, childProps));
+  });
+});
+"development" !== "production" ? Zoom.propTypes = {
+  // ----------------------------- Warning --------------------------------
+  // | These PropTypes are generated from the TypeScript type definitions |
+  // |     To update them edit the d.ts file and run "yarn proptypes"     |
+  // ----------------------------------------------------------------------
+
+  /**
+   * A single child content element.
+   */
+  children: _propTypes.default.element,
+
+  /**
+   * Enable this prop if you encounter 'Function components cannot be given refs',
+   * use `unstable_createStrictModeTheme`,
+   * and can't forward the ref in the child component.
+   */
+  disableStrictModeCompat: _propTypes.default.bool,
+
+  /**
+   * If `true`, the component will transition in.
+   */
+  in: _propTypes.default.bool,
+
+  /**
+   * @ignore
+   */
+  onEnter: _propTypes.default.func,
+
+  /**
+   * @ignore
+   */
+  onEntered: _propTypes.default.func,
+
+  /**
+   * @ignore
+   */
+  onEntering: _propTypes.default.func,
+
+  /**
+   * @ignore
+   */
+  onExit: _propTypes.default.func,
+
+  /**
+   * @ignore
+   */
+  onExited: _propTypes.default.func,
+
+  /**
+   * @ignore
+   */
+  onExiting: _propTypes.default.func,
+
+  /**
+   * @ignore
+   */
+  style: _propTypes.default.object,
+
+  /**
+   * The duration for the transition, in milliseconds.
+   * You may specify a single timeout for all transitions, or individually with an object.
+   */
+  timeout: _propTypes.default.oneOfType([_propTypes.default.number, _propTypes.default.shape({
+    appear: _propTypes.default.number,
+    enter: _propTypes.default.number,
+    exit: _propTypes.default.number
+  })])
+} : void 0;
+var _default = Zoom;
+exports.default = _default;
+},{"@babel/runtime/helpers/esm/extends":"../node_modules/@babel/runtime/helpers/esm/extends.js","@babel/runtime/helpers/esm/slicedToArray":"../node_modules/@babel/runtime/helpers/esm/slicedToArray.js","@babel/runtime/helpers/esm/objectWithoutProperties":"../node_modules/@babel/runtime/helpers/esm/objectWithoutProperties.js","react":"../node_modules/react/index.js","prop-types":"../node_modules/prop-types/index.js","react-transition-group":"../node_modules/react-transition-group/esm/index.js","../styles/transitions":"../node_modules/@material-ui/core/esm/styles/transitions.js","../styles/useTheme":"../node_modules/@material-ui/core/esm/styles/useTheme.js","../transitions/utils":"../node_modules/@material-ui/core/esm/transitions/utils.js","../utils/useForkRef":"../node_modules/@material-ui/core/esm/utils/useForkRef.js"}],"../node_modules/@material-ui/core/esm/Zoom/index.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+Object.defineProperty(exports, "default", {
+  enumerable: true,
+  get: function () {
+    return _Zoom.default;
+  }
+});
+
+var _Zoom = _interopRequireDefault(require("./Zoom"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+},{"./Zoom":"../node_modules/@material-ui/core/esm/Zoom/Zoom.js"}],"../node_modules/@material-ui/core/esm/index.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -81520,6 +79647,8 @@ var _react = _interopRequireDefault(require("react"));
 
 var _Slide = _interopRequireDefault(require("@material-ui/core/Slide"));
 
+var _Zoom = _interopRequireDefault(require("@material-ui/core/Zoom"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var SlideMobile = function SlideMobile(_ref) {
@@ -81531,17 +79660,44 @@ var SlideMobile = function SlideMobile(_ref) {
     mountOnEnter: true,
     unmountOnExit: true,
     className: "sliderMobile"
-  }, /*#__PURE__*/_react.default.createElement("ul", null, info.map(function (item) {
-    return /*#__PURE__*/_react.default.createElement("li", {
-      className: "linkMobile",
-      key: item
-    }, item);
-  })));
+  }, /*#__PURE__*/_react.default.createElement("ul", null, /*#__PURE__*/_react.default.createElement(_Zoom.default, {
+    in: open,
+    style: {
+      transitionDelay: open ? "500ms" : "0ms"
+    }
+  }, /*#__PURE__*/_react.default.createElement("li", null, /*#__PURE__*/_react.default.createElement("a", {
+    className: "linkMobile",
+    href: "#"
+  }, info[0]))), /*#__PURE__*/_react.default.createElement(_Zoom.default, {
+    in: open,
+    style: {
+      transitionDelay: open ? "700ms" : "0ms"
+    }
+  }, /*#__PURE__*/_react.default.createElement("li", null, /*#__PURE__*/_react.default.createElement("a", {
+    className: "linkMobile",
+    href: "#"
+  }, info[1]))), /*#__PURE__*/_react.default.createElement(_Zoom.default, {
+    in: open,
+    style: {
+      transitionDelay: open ? "900ms" : "0ms"
+    }
+  }, /*#__PURE__*/_react.default.createElement("li", null, /*#__PURE__*/_react.default.createElement("a", {
+    className: "linkMobile",
+    href: "#"
+  }, info[2]))), /*#__PURE__*/_react.default.createElement(_Zoom.default, {
+    in: open,
+    style: {
+      transitionDelay: open ? "1100ms" : "0ms"
+    }
+  }, /*#__PURE__*/_react.default.createElement("li", null, /*#__PURE__*/_react.default.createElement("a", {
+    className: "linkMobile",
+    href: "#"
+  }, info[3])))));
 };
 
 var _default = SlideMobile;
 exports.default = _default;
-},{"react":"../node_modules/react/index.js","@material-ui/core/Slide":"../node_modules/@material-ui/core/esm/Slide/index.js"}],"Components/Header.jsx":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","@material-ui/core/Slide":"../node_modules/@material-ui/core/esm/Slide/index.js","@material-ui/core/Zoom":"../node_modules/@material-ui/core/esm/Zoom/index.js"}],"Components/Header.jsx":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -81952,7 +80108,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "33419" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "45497" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
