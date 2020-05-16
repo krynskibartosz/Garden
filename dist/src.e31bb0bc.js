@@ -79643,7 +79643,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _react = _interopRequireWildcard(require("react"));
+var _react = _interopRequireDefault(require("react"));
 
 var _Slide = _interopRequireDefault(require("@material-ui/core/Slide"));
 
@@ -79653,52 +79653,48 @@ var _Link = _interopRequireDefault(require("@material-ui/core/Link"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
-
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
-
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
-
-function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
-
-function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
-
 var SlideMobile = function SlideMobile(_ref) {
   var open = _ref.open,
       info = _ref.info;
-
-  // const arr = [];
-  var _useState = (0, _react.useState)(500),
-      _useState2 = _slicedToArray(_useState, 2),
-      timing = _useState2[0],
-      setTiming = _useState2[1];
-
   return /*#__PURE__*/_react.default.createElement(_Slide.default, {
     direction: "down",
     in: open,
     mountOnEnter: true,
     unmountOnExit: true,
     className: "sliderMobile"
-  }, /*#__PURE__*/_react.default.createElement("ul", null, info.map(function (item) {
-    return /*#__PURE__*/_react.default.createElement(_Zoom.default, {
-      key: item,
-      in: open,
-      style: {
-        transitionDelay: open ? (function () {
-          return setTiming(timing + 200);
-        }, "".concat(timing - 100, "ms")) : "0ms"
-      }
-    }, /*#__PURE__*/_react.default.createElement(_Link.default, {
-      href: "#",
-      className: "linkMobile"
-    }, item));
-  })));
+  }, /*#__PURE__*/_react.default.createElement("ul", null, /*#__PURE__*/_react.default.createElement(_Zoom.default, {
+    in: open,
+    style: {
+      transitionDelay: open ? "500ms" : "0ms"
+    }
+  }, /*#__PURE__*/_react.default.createElement(_Link.default, {
+    href: "#",
+    className: "linkMobile"
+  }, info[0])), /*#__PURE__*/_react.default.createElement(_Zoom.default, {
+    in: open,
+    style: {
+      transitionDelay: open ? "700ms" : "0ms"
+    }
+  }, /*#__PURE__*/_react.default.createElement(_Link.default, {
+    href: "#",
+    className: "linkMobile"
+  }, info[1])), /*#__PURE__*/_react.default.createElement(_Zoom.default, {
+    in: open,
+    style: {
+      transitionDelay: open ? "900ms" : "0ms"
+    }
+  }, /*#__PURE__*/_react.default.createElement(_Link.default, {
+    href: "#",
+    className: "linkMobile"
+  }, info[2])), /*#__PURE__*/_react.default.createElement(_Zoom.default, {
+    in: open,
+    style: {
+      transitionDelay: open ? "1100ms" : "0ms"
+    }
+  }, /*#__PURE__*/_react.default.createElement(_Link.default, {
+    href: "#",
+    className: "linkMobile"
+  }, info[3]))));
 };
 
 var _default = SlideMobile;
@@ -79882,75 +79878,7 @@ var Title = function Title(_ref) {
 
 var _default = Title;
 exports.default = _default;
-},{"react":"../node_modules/react/index.js","@material-ui/core":"../node_modules/@material-ui/core/esm/index.js"}],"assets/hubert.jpg":[function(require,module,exports) {
-module.exports = "/hubert.3f07c9b0.jpg";
-},{}],"Components/Test.jsx":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _react = _interopRequireDefault(require("react"));
-
-var _styles = require("@material-ui/core/styles");
-
-var _Card = _interopRequireDefault(require("@material-ui/core/Card"));
-
-var _CardActionArea = _interopRequireDefault(require("@material-ui/core/CardActionArea"));
-
-var _CardActions = _interopRequireDefault(require("@material-ui/core/CardActions"));
-
-var _CardContent = _interopRequireDefault(require("@material-ui/core/CardContent"));
-
-var _CardMedia = _interopRequireDefault(require("@material-ui/core/CardMedia"));
-
-var _Button = _interopRequireDefault(require("@material-ui/core/Button"));
-
-var _Typography = _interopRequireDefault(require("@material-ui/core/Typography"));
-
-var _hubert = _interopRequireDefault(require("../assets/hubert.jpg"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var useStyles = (0, _styles.makeStyles)({
-  root: {
-    maxWidth: 345
-  },
-  media: {
-    height: 140
-  }
-});
-
-var MediaCard = function MediaCard() {
-  var classes = useStyles();
-  return /*#__PURE__*/_react.default.createElement(_Card.default, {
-    className: classes.root
-  }, /*#__PURE__*/_react.default.createElement(_CardActionArea.default, null, /*#__PURE__*/_react.default.createElement(_CardMedia.default, {
-    className: classes.media,
-    image: _hubert.default,
-    title: "Contemplative Reptile"
-  }), /*#__PURE__*/_react.default.createElement(_CardContent.default, null, /*#__PURE__*/_react.default.createElement(_Typography.default, {
-    gutterBottom: true,
-    variant: "h5",
-    component: "h2"
-  }, "Lizard"), /*#__PURE__*/_react.default.createElement(_Typography.default, {
-    variant: "body2",
-    color: "textSecondary",
-    component: "p"
-  }, "Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging across all continents except Antarctica"))), /*#__PURE__*/_react.default.createElement(_CardActions.default, null, /*#__PURE__*/_react.default.createElement(_Button.default, {
-    size: "small",
-    color: "primary"
-  }, "Share"), /*#__PURE__*/_react.default.createElement(_Button.default, {
-    size: "small",
-    color: "primary"
-  }, "Learn More")));
-};
-
-var _default = MediaCard;
-exports.default = _default;
-},{"react":"../node_modules/react/index.js","@material-ui/core/styles":"../node_modules/@material-ui/core/esm/styles/index.js","@material-ui/core/Card":"../node_modules/@material-ui/core/esm/Card/index.js","@material-ui/core/CardActionArea":"../node_modules/@material-ui/core/esm/CardActionArea/index.js","@material-ui/core/CardActions":"../node_modules/@material-ui/core/esm/CardActions/index.js","@material-ui/core/CardContent":"../node_modules/@material-ui/core/esm/CardContent/index.js","@material-ui/core/CardMedia":"../node_modules/@material-ui/core/esm/CardMedia/index.js","@material-ui/core/Button":"../node_modules/@material-ui/core/esm/Button/index.js","@material-ui/core/Typography":"../node_modules/@material-ui/core/esm/Typography/index.js","../assets/hubert.jpg":"assets/hubert.jpg"}],"assets/professional-gardening-services-in-london-fantastic-gardeners_xiJZxU80_SD8X.mp4":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","@material-ui/core":"../node_modules/@material-ui/core/esm/index.js"}],"assets/professional-gardening-services-in-london-fantastic-gardeners_xiJZxU80_SD8X.mp4":[function(require,module,exports) {
 module.exports = "/professional-gardening-services-in-london-fantastic-gardeners_xiJZxU80_SD8X.6d071c77.mp4";
 },{}],"Components/Video.jsx":[function(require,module,exports) {
 "use strict";
@@ -79988,7 +79916,73 @@ var Video = function Video() {
 
 var _default = Video;
 exports.default = _default;
-},{"react":"../node_modules/react/index.js","../assets/professional-gardening-services-in-london-fantastic-gardeners_xiJZxU80_SD8X.mp4":"assets/professional-gardening-services-in-london-fantastic-gardeners_xiJZxU80_SD8X.mp4"}],"App.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","../assets/professional-gardening-services-in-london-fantastic-gardeners_xiJZxU80_SD8X.mp4":"assets/professional-gardening-services-in-london-fantastic-gardeners_xiJZxU80_SD8X.mp4"}],"assets/jard.svg":[function(require,module,exports) {
+module.exports = "/jard.10c71cc2.svg";
+},{}],"assets/jardin.jpg":[function(require,module,exports) {
+module.exports = "/jardin.47a129b6.jpg";
+},{}],"Components/CardCreation.jsx":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = CardCreation;
+
+var _react = _interopRequireDefault(require("react"));
+
+var _styles = require("@material-ui/core/styles");
+
+var _Card = _interopRequireDefault(require("@material-ui/core/Card"));
+
+var _CardActionArea = _interopRequireDefault(require("@material-ui/core/CardActionArea"));
+
+var _CardActions = _interopRequireDefault(require("@material-ui/core/CardActions"));
+
+var _CardContent = _interopRequireDefault(require("@material-ui/core/CardContent"));
+
+var _CardMedia = _interopRequireDefault(require("@material-ui/core/CardMedia"));
+
+var _Button = _interopRequireDefault(require("@material-ui/core/Button"));
+
+var _Typography = _interopRequireDefault(require("@material-ui/core/Typography"));
+
+var _jardin = _interopRequireDefault(require("../assets/jardin.jpg"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var useStyles = (0, _styles.makeStyles)({
+  root: {
+    maxWidth: 345
+  }
+});
+
+function CardCreation() {
+  var classes = useStyles();
+  return /*#__PURE__*/_react.default.createElement(_Card.default, {
+    className: classes.root
+  }, /*#__PURE__*/_react.default.createElement(_CardActionArea.default, null, /*#__PURE__*/_react.default.createElement(_CardMedia.default, {
+    component: "img",
+    alt: "Contemplative Reptile",
+    height: "140",
+    image: _jardin.default,
+    title: "Contemplative Reptile"
+  }), /*#__PURE__*/_react.default.createElement(_CardContent.default, null, /*#__PURE__*/_react.default.createElement(_Typography.default, {
+    gutterBottom: true,
+    variant: "h5",
+    component: "h2"
+  }, "Lizard"), /*#__PURE__*/_react.default.createElement(_Typography.default, {
+    variant: "body2",
+    color: "textSecondary",
+    component: "p"
+  }, "Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging across all continents except Antarctica"))), /*#__PURE__*/_react.default.createElement(_CardActions.default, null, /*#__PURE__*/_react.default.createElement(_Button.default, {
+    size: "small",
+    color: "primary"
+  }, "Share"), /*#__PURE__*/_react.default.createElement(_Button.default, {
+    size: "small",
+    color: "primary"
+  }, "Learn More")));
+}
+},{"react":"../node_modules/react/index.js","@material-ui/core/styles":"../node_modules/@material-ui/core/esm/styles/index.js","@material-ui/core/Card":"../node_modules/@material-ui/core/esm/Card/index.js","@material-ui/core/CardActionArea":"../node_modules/@material-ui/core/esm/CardActionArea/index.js","@material-ui/core/CardActions":"../node_modules/@material-ui/core/esm/CardActions/index.js","@material-ui/core/CardContent":"../node_modules/@material-ui/core/esm/CardContent/index.js","@material-ui/core/CardMedia":"../node_modules/@material-ui/core/esm/CardMedia/index.js","@material-ui/core/Button":"../node_modules/@material-ui/core/esm/Button/index.js","@material-ui/core/Typography":"../node_modules/@material-ui/core/esm/Typography/index.js","../assets/jardin.jpg":"assets/jardin.jpg"}],"App.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -80006,9 +80000,11 @@ var _Devis = _interopRequireDefault(require("./Components/Devis.jsx"));
 
 var _Title = _interopRequireDefault(require("./Components/Title.jsx"));
 
-var _Test = _interopRequireDefault(require("./Components/Test.jsx"));
-
 var _Video = _interopRequireDefault(require("./Components/Video.jsx"));
+
+var _jard = _interopRequireDefault(require("./assets/jard.svg"));
+
+var _CardCreation = _interopRequireDefault(require("./Components/CardCreation.jsx"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -80049,15 +80045,32 @@ var App = function App() {
   })), /*#__PURE__*/_react.default.createElement(_core.Grid, {
     item: true
   }, /*#__PURE__*/_react.default.createElement(_Devis.default, null))))), /*#__PURE__*/_react.default.createElement("section", null, /*#__PURE__*/_react.default.createElement(_core.Grid, {
-    container: true
+    container: true,
+    direction: "row",
+    className: classes.main,
+    alignContent: "center"
   }, /*#__PURE__*/_react.default.createElement(_core.Grid, {
-    item: true
-  }, "There'll be our second content", /*#__PURE__*/_react.default.createElement(_Test.default, null)))));
+    item: true,
+    md: 2
+  }), /*#__PURE__*/_react.default.createElement(_core.Grid, {
+    item: true,
+    md: 4
+  }, /*#__PURE__*/_react.default.createElement(_CardCreation.default, null)), /*#__PURE__*/_react.default.createElement(_core.Grid, {
+    item: true,
+    md: 4
+  }, /*#__PURE__*/_react.default.createElement("img", {
+    className: "svgConstruction",
+    src: _jard.default,
+    alt: "SVGConstruction"
+  })), /*#__PURE__*/_react.default.createElement(_core.Grid, {
+    item: true,
+    md: 2
+  }))));
 };
 
 var _default = App;
 exports.default = _default;
-},{"react":"../node_modules/react/index.js","@material-ui/core":"../node_modules/@material-ui/core/esm/index.js","./Components/Header.jsx":"Components/Header.jsx","./Components/Devis.jsx":"Components/Devis.jsx","./Components/Title.jsx":"Components/Title.jsx","./Components/Test.jsx":"Components/Test.jsx","./Components/Video.jsx":"Components/Video.jsx"}],"index.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","@material-ui/core":"../node_modules/@material-ui/core/esm/index.js","./Components/Header.jsx":"Components/Header.jsx","./Components/Devis.jsx":"Components/Devis.jsx","./Components/Title.jsx":"Components/Title.jsx","./Components/Video.jsx":"Components/Video.jsx","./assets/jard.svg":"assets/jard.svg","./Components/CardCreation.jsx":"Components/CardCreation.jsx"}],"index.js":[function(require,module,exports) {
 "use strict";
 
 var _react = _interopRequireDefault(require("react"));
@@ -80114,7 +80127,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "39691" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "38811" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

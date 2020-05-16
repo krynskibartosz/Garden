@@ -1,12 +1,9 @@
-import React, { useState } from "react";
+import React from "react";
 import Slide from "@material-ui/core/Slide";
 import Zoom from "@material-ui/core/Zoom";
 import Link from "@material-ui/core/Link";
 
-const SlideMobile = ({ open, info }) => {
-  // const arr = [];
-  const [timing, setTiming] = useState(500);
-  return (
+const SlideMobile = ({ open, info }) => 
     <Slide
       direction="down"
       in={open}
@@ -15,24 +12,51 @@ const SlideMobile = ({ open, info }) => {
       className="sliderMobile"
     >
       <ul>
-        {info.map((item) => (
-          <Zoom
-            key={item}
-            in={open}
-            style={{
-              transitionDelay: open
-                ? (() => setTiming(timing + 200), `${timing - 100}ms`)
-                : "0ms",
-            }}
-          >
-            <Link href="#" className="linkMobile">
-              {item}
-            </Link>
-          </Zoom>
-        ))}
+        <Zoom
+          in={open}
+          style={{
+            transitionDelay: open ? "500ms" : "0ms",
+          }}
+        >
+          <Link href="#" className="linkMobile">
+            {info[0]}
+          </Link>
+        </Zoom>
+
+        <Zoom
+          in={open}
+          style={{
+            transitionDelay: open ? "700ms" : "0ms",
+          }}
+        >
+          <Link href="#" className="linkMobile">
+            {info[1]}
+          </Link>
+        </Zoom>
+
+        <Zoom
+          in={open}
+          style={{
+            transitionDelay: open ? "900ms" : "0ms",
+          }}
+        >
+          <Link href="#" className="linkMobile">
+            {info[2]}
+          </Link>
+        </Zoom>
+
+        <Zoom
+          in={open}
+          style={{
+            transitionDelay: open ? "1100ms" : "0ms",
+          }}
+        >
+          <Link href="#" className="linkMobile">
+            {info[3]}
+          </Link>
+        </Zoom>
       </ul>
     </Slide>
-  );
-};
+  
 
 export default SlideMobile;

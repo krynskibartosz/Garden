@@ -4,8 +4,9 @@ import Header from "./Components/Header.jsx";
 import Devis from "./Components/Devis.jsx";
 import Title from "./Components/Title.jsx";
 import { makeStyles } from "@material-ui/core";
-import MediaCart from "./Components/Test.jsx";
 import Video from "./Components/Video.jsx";
+import svgConstruction from "./assets/jard.svg";
+import CardCreation from "./Components/CardCreation.jsx";
 
 const useStyles = makeStyles(() => ({
   main: {
@@ -43,14 +44,22 @@ const App = () => {
             </Grid>
           </Grid>
         </Grid>
-      </section>
+      </section> 
 
       <section>
-        <Grid container>
-          <Grid item>
-            {"There'll be our second content"}
-            <MediaCart />
+        <Grid container direction="row"  className={classes.main} alignContent="center">
+        <Grid item md={2}/>
+          <Grid item md={4}>
+            <CardCreation />
           </Grid>
+            <Grid item md={4}>
+              <img
+                className="svgConstruction"
+                src={svgConstruction}
+                alt="SVGConstruction"
+              ></img>
+            </Grid>
+            <Grid item md={2}/>
         </Grid>
       </section>
     </main>
