@@ -79916,17 +79916,13 @@ var Video = function Video() {
 
 var _default = Video;
 exports.default = _default;
-},{"react":"../node_modules/react/index.js","../assets/professional-gardening-services-in-london-fantastic-gardeners_xiJZxU80_SD8X.mp4":"assets/professional-gardening-services-in-london-fantastic-gardeners_xiJZxU80_SD8X.mp4"}],"assets/jard.svg":[function(require,module,exports) {
-module.exports = "/jard.10c71cc2.svg";
-},{}],"assets/jardin.jpg":[function(require,module,exports) {
-module.exports = "/jardin.47a129b6.jpg";
-},{}],"Components/CardCreation.jsx":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","../assets/professional-gardening-services-in-london-fantastic-gardeners_xiJZxU80_SD8X.mp4":"assets/professional-gardening-services-in-london-fantastic-gardeners_xiJZxU80_SD8X.mp4"}],"Components/Card.jsx":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = CardCreation;
+exports.default = void 0;
 
 var _react = _interopRequireDefault(require("react"));
 
@@ -79946,43 +79942,47 @@ var _Button = _interopRequireDefault(require("@material-ui/core/Button"));
 
 var _Typography = _interopRequireDefault(require("@material-ui/core/Typography"));
 
-var _jardin = _interopRequireDefault(require("../assets/jardin.jpg"));
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var useStyles = (0, _styles.makeStyles)({
   root: {
-    maxWidth: 345
+    maxWidth: 400
   }
 });
 
-function CardCreation() {
+var CardTravaux = function CardTravaux(_ref) {
+  var Title = _ref.Title,
+      img = _ref.img;
   var classes = useStyles();
   return /*#__PURE__*/_react.default.createElement(_Card.default, {
     className: classes.root
   }, /*#__PURE__*/_react.default.createElement(_CardActionArea.default, null, /*#__PURE__*/_react.default.createElement(_CardMedia.default, {
     component: "img",
-    alt: "Contemplative Reptile",
+    alt: "Garden",
     height: "140",
-    image: _jardin.default,
-    title: "Contemplative Reptile"
+    image: img,
+    title: "Garden"
   }), /*#__PURE__*/_react.default.createElement(_CardContent.default, null, /*#__PURE__*/_react.default.createElement(_Typography.default, {
     gutterBottom: true,
     variant: "h5",
     component: "h2"
-  }, "Lizard"), /*#__PURE__*/_react.default.createElement(_Typography.default, {
+  }, Title), /*#__PURE__*/_react.default.createElement(_Typography.default, {
     variant: "body2",
     color: "textSecondary",
     component: "p"
   }, "Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging across all continents except Antarctica"))), /*#__PURE__*/_react.default.createElement(_CardActions.default, null, /*#__PURE__*/_react.default.createElement(_Button.default, {
     size: "small",
-    color: "primary"
-  }, "Share"), /*#__PURE__*/_react.default.createElement(_Button.default, {
-    size: "small",
-    color: "primary"
+    color: "secondary"
   }, "Learn More")));
-}
-},{"react":"../node_modules/react/index.js","@material-ui/core/styles":"../node_modules/@material-ui/core/esm/styles/index.js","@material-ui/core/Card":"../node_modules/@material-ui/core/esm/Card/index.js","@material-ui/core/CardActionArea":"../node_modules/@material-ui/core/esm/CardActionArea/index.js","@material-ui/core/CardActions":"../node_modules/@material-ui/core/esm/CardActions/index.js","@material-ui/core/CardContent":"../node_modules/@material-ui/core/esm/CardContent/index.js","@material-ui/core/CardMedia":"../node_modules/@material-ui/core/esm/CardMedia/index.js","@material-ui/core/Button":"../node_modules/@material-ui/core/esm/Button/index.js","@material-ui/core/Typography":"../node_modules/@material-ui/core/esm/Typography/index.js","../assets/jardin.jpg":"assets/jardin.jpg"}],"App.js":[function(require,module,exports) {
+};
+
+var _default = CardTravaux;
+exports.default = _default;
+},{"react":"../node_modules/react/index.js","@material-ui/core/styles":"../node_modules/@material-ui/core/esm/styles/index.js","@material-ui/core/Card":"../node_modules/@material-ui/core/esm/Card/index.js","@material-ui/core/CardActionArea":"../node_modules/@material-ui/core/esm/CardActionArea/index.js","@material-ui/core/CardActions":"../node_modules/@material-ui/core/esm/CardActions/index.js","@material-ui/core/CardContent":"../node_modules/@material-ui/core/esm/CardContent/index.js","@material-ui/core/CardMedia":"../node_modules/@material-ui/core/esm/CardMedia/index.js","@material-ui/core/Button":"../node_modules/@material-ui/core/esm/Button/index.js","@material-ui/core/Typography":"../node_modules/@material-ui/core/esm/Typography/index.js"}],"assets/jardin.jpg":[function(require,module,exports) {
+module.exports = "/jardin.47a129b6.jpg";
+},{}],"assets/pelle.jpg":[function(require,module,exports) {
+module.exports = "/pelle.cfd6351d.jpg";
+},{}],"App.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -80002,16 +80002,20 @@ var _Title = _interopRequireDefault(require("./Components/Title.jsx"));
 
 var _Video = _interopRequireDefault(require("./Components/Video.jsx"));
 
-var _jard = _interopRequireDefault(require("./assets/jard.svg"));
+var _Card = _interopRequireDefault(require("./Components/Card.jsx"));
 
-var _CardCreation = _interopRequireDefault(require("./Components/CardCreation.jsx"));
+var _jardin = _interopRequireDefault(require("./assets/jardin.jpg"));
+
+var _pelle = _interopRequireDefault(require("./assets/pelle.jpg"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var useStyles = (0, _core.makeStyles)(function () {
   return {
     main: {
-      height: "100vh"
+      height: "100vh",
+      width: "100vw",
+      margin: 0
     },
     devisCenter: {
       alignItems: "center",
@@ -80053,16 +80057,20 @@ var App = function App() {
     item: true,
     md: 2
   }), /*#__PURE__*/_react.default.createElement(_core.Grid, {
+    container: true
+  }, /*#__PURE__*/_react.default.createElement(_core.Grid, {
     item: true,
     md: 4
-  }, /*#__PURE__*/_react.default.createElement(_CardCreation.default, null)), /*#__PURE__*/_react.default.createElement(_core.Grid, {
-    item: true,
-    md: 4
-  }, /*#__PURE__*/_react.default.createElement("img", {
-    className: "svgConstruction",
-    src: _jard.default,
-    alt: "SVGConstruction"
+  }, /*#__PURE__*/_react.default.createElement(_Card.default, {
+    Title: "Cr\xE9ation",
+    img: _jardin.default
   })), /*#__PURE__*/_react.default.createElement(_core.Grid, {
+    item: true,
+    md: 4
+  }, /*#__PURE__*/_react.default.createElement(_Card.default, {
+    Title: "Entretien",
+    img: _pelle.default
+  }))), /*#__PURE__*/_react.default.createElement(_core.Grid, {
     item: true,
     md: 2
   }))));
@@ -80070,7 +80078,7 @@ var App = function App() {
 
 var _default = App;
 exports.default = _default;
-},{"react":"../node_modules/react/index.js","@material-ui/core":"../node_modules/@material-ui/core/esm/index.js","./Components/Header.jsx":"Components/Header.jsx","./Components/Devis.jsx":"Components/Devis.jsx","./Components/Title.jsx":"Components/Title.jsx","./Components/Video.jsx":"Components/Video.jsx","./assets/jard.svg":"assets/jard.svg","./Components/CardCreation.jsx":"Components/CardCreation.jsx"}],"index.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","@material-ui/core":"../node_modules/@material-ui/core/esm/index.js","./Components/Header.jsx":"Components/Header.jsx","./Components/Devis.jsx":"Components/Devis.jsx","./Components/Title.jsx":"Components/Title.jsx","./Components/Video.jsx":"Components/Video.jsx","./Components/Card.jsx":"Components/Card.jsx","./assets/jardin.jpg":"assets/jardin.jpg","./assets/pelle.jpg":"assets/pelle.jpg"}],"index.js":[function(require,module,exports) {
 "use strict";
 
 var _react = _interopRequireDefault(require("react"));
@@ -80127,7 +80135,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "38811" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "34191" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

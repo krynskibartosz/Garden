@@ -7,15 +7,14 @@ import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
-import imgCreation from "../assets/jardin.jpg"
 
 const useStyles = makeStyles({
   root: {
-    maxWidth: 345,
+    maxWidth: 400,
   },
 });
 
-export default function CardCreation() {
+const CardTravaux = ({ Title, img }) => {
   const classes = useStyles();
 
   return (
@@ -23,14 +22,14 @@ export default function CardCreation() {
       <CardActionArea>
         <CardMedia
           component="img"
-          alt="Contemplative Reptile"
+          alt="Garden"
           height="140"
-          image={imgCreation}
-          title="Contemplative Reptile"
+          image={img}
+          title="Garden"
         />
         <CardContent>
           <Typography gutterBottom variant="h5" component="h2">
-            Lizard
+            {Title}
           </Typography>
           <Typography variant="body2" color="textSecondary" component="p">
             Lizards are a widespread group of squamate reptiles, with over 6,000
@@ -39,13 +38,12 @@ export default function CardCreation() {
         </CardContent>
       </CardActionArea>
       <CardActions>
-        <Button size="small" color="primary">
-          Share
-        </Button>
-        <Button size="small" color="primary">
+        <Button size="small" color="secondary">
           Learn More
         </Button>
       </CardActions>
     </Card>
   );
-}
+};
+
+export default CardTravaux;

@@ -5,12 +5,16 @@ import Devis from "./Components/Devis.jsx";
 import Title from "./Components/Title.jsx";
 import { makeStyles } from "@material-ui/core";
 import Video from "./Components/Video.jsx";
-import svgConstruction from "./assets/jard.svg";
-import CardCreation from "./Components/CardCreation.jsx";
+import CardTravaux from "./Components/Card.jsx";
+import imgCreation from "./assets/jardin.jpg";
+import imgEntretien from "./assets/pelle.jpg"
+
 
 const useStyles = makeStyles(() => ({
   main: {
     height: "100vh",
+    width: "100vw",
+    margin: 0,
   },
   devisCenter: {
     alignItems: "center",
@@ -47,19 +51,18 @@ const App = () => {
       </section> 
 
       <section>
-        <Grid container direction="row"  className={classes.main} alignContent="center">
+        <Grid container direction="row"  className={classes.main} alignContent="center" >
         <Grid item md={2}/>
+        <Grid container>
+
           <Grid item md={4}>
-            <CardCreation />
+            <CardTravaux Title="Création" img={imgCreation}/>
           </Grid>
-            <Grid item md={4}>
-              <img
-                className="svgConstruction"
-                src={svgConstruction}
-                alt="SVGConstruction"
-              ></img>
-            </Grid>
-            <Grid item md={2}/>
+          <Grid item md={4}>
+            <CardTravaux Title="Entretien" img={imgEntretien}/>
+          </Grid>
+        </Grid>
+          <Grid item md={2}/>
         </Grid>
       </section>
     </main>
